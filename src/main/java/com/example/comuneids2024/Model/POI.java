@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class POI {
+public abstract class POI {
 
     @Id
     private Long idPOI;
@@ -32,6 +32,23 @@ public class POI {
         this.tipo=tipo;
 
     }
+
+    public POI(Coordinate coordinate)
+    {
+        if(coordinate==null)
+        {
+            throw new NullPointerException("Coordinate null");
+        }
+        this.coordinate=coordinate;
+        this.content= new ArrayList<>();
+        this.contentPending=new ArrayList<>();
+    }
+
+    public POI()
+    {
+        this.content=new ArrayList<>();
+        this.contentPending=new ArrayList<>();
+    }
     public String getName() {
         return name;
     }
@@ -40,7 +57,7 @@ public class POI {
         return description;
     }
 
-    public Tipo getType() {
+    public Tipo getTipo() {
         return tipo;
     }
 
@@ -83,4 +100,7 @@ public class POI {
         return idPOI;
     }
 
+    public abstract Long getPOIID();
+
+    public abstract Coordinate getCoordinate();
 }
