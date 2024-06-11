@@ -12,34 +12,41 @@ public class UtenteAutenticato implements Utente{
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "utente_generator")
     @Id
     private Long id;
-    private String Username;
+    private String username;
     private String password;
     private Role ruolo;
     private String email;
+
+    public UtenteAutenticato(String username,String password, Role ruolo, String email)
+    {
+        this.email=email;
+        this.password=password;
+        this.ruolo=ruolo;
+        this.username=username;
+    }
+
+    public Long getId()
+    {
+        return id;
+    }
+
     @Override
     public Role getRole() {
-        return null;
+        return this.ruolo;
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return this.username;
     }
 
     @Override
     public String getPassword() {
-        return null;
+        return this.password;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    public Long getId() {
-        return id;
-    }
+
+
 }
