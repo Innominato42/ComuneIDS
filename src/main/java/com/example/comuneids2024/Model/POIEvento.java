@@ -51,6 +51,13 @@ public class POIEvento extends POI{
     }
 
     @Override
+    public void insertPOIInfo(String name, String description) {
+        this.setName(name);
+        this.setDescription(description);
+
+    }
+
+    @Override
     @ManyToMany
     public List<Content> getContents()
     {
@@ -83,10 +90,5 @@ public class POIEvento extends POI{
         super.addContent(c);
     }
 
-    @Override
-    public POIGI getPOI()
-    {
-        return new POIGI(this.getPOIID(),this.getName(),this.getDescription(),this.getCoordinate(),this.getTipo());
-    }
 
 }

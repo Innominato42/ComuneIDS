@@ -109,9 +109,9 @@ public abstract class POI {
         return coordinate;
     }
 
-    public abstract void insertPOIInfo();
+    public abstract void insertPOIInfo(String name, String description);
 
-    public abstract POIGI getPOI();
+
 
 
 }
