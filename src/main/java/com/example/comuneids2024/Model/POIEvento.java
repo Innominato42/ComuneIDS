@@ -24,7 +24,7 @@ public class POIEvento extends POI{
         super();
     }
     @Override
-    public Long getPOIID()
+    public Long getPOIId()
     {
         return super.getPOIId();
     }
@@ -89,6 +89,8 @@ public class POIEvento extends POI{
     {
         super.addContent(c);
     }
+
+
 
 
 }

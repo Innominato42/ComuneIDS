@@ -7,8 +7,7 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class POIController {
 
-    @Autowired
-    private ComuneRepository comuneRepository;
+
 
 
 }

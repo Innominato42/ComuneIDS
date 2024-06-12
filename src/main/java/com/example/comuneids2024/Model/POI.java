@@ -102,7 +102,6 @@ public abstract class POI {
         return idPOI;
     }
 
-    public abstract Long getPOIID();
 
     public  Coordinate getCoordinate()
     {

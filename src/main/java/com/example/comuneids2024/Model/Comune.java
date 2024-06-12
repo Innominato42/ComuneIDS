@@ -2,6 +2,7 @@ package com.example.comuneids2024.Model;
 
 import jakarta.persistence.*;
 
+import javax.imageio.stream.IIOByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -107,8 +108,26 @@ public class Comune {
      */
     public POI getPOI(Long id)
     {
-        return this.POIValidate.stream().filter(p -> p.getPOIId().equals(id)).findFirst().orElse(null);
+        for(POI p : getPOIValidate())
+        {
+            if(p.getPOIId().equals(id))
+            {
+                return p;
+            }
+        }
+        return null;
     }
+
+    public void addItinerary(Itinerary itinerary)
+    {
+        this.itinerarioValidato.add(itinerary);
+    }
+
+    public void addItineraryPending(Itinerary itinerary)
+    {
+        this.itinerarioAttesa.add(itinerary);
+    }
+
 
 
 }

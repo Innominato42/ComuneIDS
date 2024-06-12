@@ -3,6 +3,7 @@ package com.example.comuneids2024.Model.GI;
 import com.example.comuneids2024.Model.Coordinate;
 import com.example.comuneids2024.Model.Tipo;
 
+//TODO CAPIRE SE QUESTO TIPO DI CLASSE SERVE VERAMENTE
 public class POIGI {
     private final Long id;
     private final String name;

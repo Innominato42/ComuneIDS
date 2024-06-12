@@ -25,10 +25,16 @@ public class UtenteAutenticato implements Utente{
         this.username=username;
     }
 
+    public UtenteAutenticato() {
+
+    }
+
     public Long getId()
     {
         return id;
     }
+
+    public String getEmail() {return this.email;}
 
     @Override
     public Role getRole() {
