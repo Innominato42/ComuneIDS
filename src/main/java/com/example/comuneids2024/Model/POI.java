@@ -1,11 +1,13 @@
 package com.example.comuneids2024.Model;
 
+import com.example.comuneids2024.Model.GI.POIGI;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class POI {
 
     @Id
@@ -91,7 +93,7 @@ public abstract class POI {
         this.description = description;
     }
 
-    public void setType(Tipo tipo){
+    public void setTipo(Tipo tipo){
         this.tipo = tipo;
     }
 
@@ -102,5 +104,14 @@ public abstract class POI {
 
     public abstract Long getPOIID();
 
-    public abstract Coordinate getCoordinate();
+    public  Coordinate getCoordinate()
+    {
+        return coordinate;
+    }
+
+    public abstract void insertPOIInfo();
+
+    public abstract POIGI getPOI();
+
+
 }
