@@ -90,6 +90,12 @@ public class POIEvento extends POI{
         super.addContent(c);
     }
 
+    @Override
+    public POIGI getPOIInfo()
+    {
+        return new POIGI(this.getPOIId(),this.getName(),this.getDescription(),this.getCoordinate(),this.getTipo());
+    }
+
 
 
 

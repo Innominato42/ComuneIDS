@@ -111,6 +111,8 @@ public abstract class POI {
     public abstract void insertPOIInfo(String name, String description);
 
 
+    public abstract POIGI getPOIInfo();
+
 
 
 }

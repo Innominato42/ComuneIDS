@@ -1,22 +1,27 @@
 package com.example.comuneids2024.Model;
 
 import com.example.comuneids2024.Model.GI.POIGI;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
+import org.bson.codecs.jsr310.LocalTimeCodec;
 
+import java.time.LocalTime;
 import java.util.List;
 
-@Entity
-public class POILuogo extends POI{
+public class POILuogoOra extends POI{
 
-    public POILuogo(Coordinate coordinate)
+    private LocalTime[] openingTime;
+
+    private LocalTime[] closingTime;
+
+    public POILuogoOra(Coordinate coordinate)
     {
         super(coordinate);
-        this.setTipo(Tipo.LUOGO);
+        this.setTipo(Tipo.LUOGOCONORA);
+        openingTime=new LocalTime[7];
+        closingTime=new LocalTime[7];
     }
-    public POILuogo()
-    {
-        super();
+    @Override
+    public void insertPOIInfo(String name, String description) {
+
     }
 
     @Override
@@ -40,13 +45,11 @@ public class POILuogo extends POI{
     }
 
     @Override
-    @ManyToMany
     public List<Content> getContents() {
         return super.getContents();
     }
 
     @Override
-    @ManyToMany
     public List<Content> getContentsPending() {
         return super.getContentsPending();
     }
@@ -77,30 +80,21 @@ public class POILuogo extends POI{
     }
 
     @Override
-    public Coordinate getCoordinate() {
-        return super.getCoordinate();
-    }
-
-    @Override
     public Long getPOIId() {
         return super.getPOIId();
     }
 
     @Override
-    public void insertPOIInfo(String name, String description) {
-        if((name==null)||(description==null))
-        {
-            throw new NullPointerException();
-        }
-        this.setName(name);
-        this.setDescription(description);
+    public Coordinate getCoordinate() {
+        return super.getCoordinate();
     }
 
-
     @Override
-    public POIGI getPOIInfo()
-    {
+    public POIGI getPOIInfo() {
         return new POIGI(this.getPOIId(),this.getName(),this.getDescription(),this.getCoordinate(),this.getTipo());
     }
 
+    public LocalTime[] getOpeningTime(){return openingTime;}
+
+    public LocalTime[] getClosingTime(){return closingTime;}
 }
