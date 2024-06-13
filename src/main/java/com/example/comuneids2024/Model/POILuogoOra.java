@@ -20,9 +20,16 @@ public class POILuogoOra extends POI{
         openingTime=new LocalTime[7];
         closingTime=new LocalTime[7];
     }
+
+    public void insertTime(LocalTime[] openingTime, LocalTime[] closingTime)
+    {
+        this.openingTime=openingTime;
+        this.closingTime=closingTime;
+    }
     @Override
     public void insertPOIInfo(String name, String description) {
-
+        this.setName(name);
+        this.setDescription(description);
     }
 
     @Override

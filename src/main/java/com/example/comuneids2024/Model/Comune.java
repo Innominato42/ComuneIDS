@@ -45,6 +45,10 @@ public class Comune {
         itinerarioValidato=new ArrayList<>();
     }
 
+    public Comune() {
+
+    }
+
     public Long getComuneId() {
         return comuneId;
     }
@@ -128,6 +132,63 @@ public class Comune {
         this.itinerarioAttesa.add(itinerary);
     }
 
+
+    /**
+     * Resistuisce l'itinerario con l'id passato come argomento
+     * @param id dell itinerario
+     * @return l itinerario con quell id, null altrimenti
+     */
+    public Itinerary getItinerary(Long id)
+    {
+        for(Itinerary i : itinerarioValidato)
+        {
+            if(i.getItineraryId()==id)
+            {
+                return i;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Elimina uno specifico POI. Scorro con una stream tutte le liste che possono contenere POI
+     * @param id del POI da eliminare
+     */
+    public void deletePOI(Long id) {
+        this.itinerarioValidato.stream().forEach(itinerary -> itinerary.getPOIs().removeIf(p -> p.getPOIId().equals(id)));
+        this.itinerarioAttesa.stream().forEach(itinerary -> itinerary.getPOIs().removeIf(p -> p.getPOIId().equals(id)));
+        this.POIValidate.removeIf(poi -> poi.getPOIId().equals(id));
+    }
+
+    public Itinerary getItineraryPending(Long id)
+    {
+        for(Itinerary i : itinerarioAttesa)
+        {
+            if(i.getItineraryId()==id)
+            {
+                return i;
+            }
+        }
+        return null;
+    }
+
+    public void insertPOI(POI poi)
+    {
+        this.POIValidate.add(poi);
+    }
+    public void insertPOIPending(POI poi)
+    {
+        this.POIAttesa.add(poi);
+    }
+
+    public List<POI> getAllPOI()
+    {
+        return POIValidate;
+    }
+    public List<POI> getAllPOIPending()
+    {
+        return POIAttesa;
+    }
 
 
 }

@@ -89,6 +89,15 @@ public class POIGI {
         return closingTime;
     }
 
+    public LocalDateTime getDateOpen()
+    {
+        return dataInizio;
+    }
+    public LocalDateTime getDateClose()
+    {
+        return dataFine;
+    }
+
     @Override
     public String toString() {
         return  "Id: "+this.id+" Name= " + name +
