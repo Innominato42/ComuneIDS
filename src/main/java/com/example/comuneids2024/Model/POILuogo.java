@@ -1,5 +1,6 @@
 package com.example.comuneids2024.Model;
 
+import com.example.comuneids2024.Model.GI.ContentGI;
 import com.example.comuneids2024.Model.GI.POIGI;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
@@ -100,7 +101,9 @@ public class POILuogo extends POI{
     @Override
     public POIGI getPOIInfo()
     {
-        return new POIGI(this.getPOIId(),this.getName(),this.getDescription(),this.getCoordinate(),this.getTipo());
+        List<ContentGI> contentsGI = this.getContents().stream().map(c -> c.getContentInfo()).toList();
+        List<ContentGI> pendingContentsGI = this.getContentsPending().stream().map(pc -> pc.getContentInfo()).toList();
+        return new POIGI(this.getPOIId(),this.getName(),this.getDescription(),this.getCoordinate(),this.getTipo(),contentsGI,pendingContentsGI);
     }
 
 }
