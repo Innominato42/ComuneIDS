@@ -16,6 +16,7 @@ public class Itinerary {
 
     private String descrizione;
 
+
     @ManyToMany
     private List<POI> POIs;
 
