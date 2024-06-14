@@ -25,6 +25,16 @@ public class UtenteAutenticato implements Utente{
         this.username=username;
     }
 
+    public UtenteAutenticato(Long id, String username, String password, Role ruolo, String email)
+    {
+        this.email=email;
+        this.id=id;
+        this.username=username;
+        this.password=password;
+        this.ruolo=ruolo;
+    }
+
+
     public UtenteAutenticato() {
 
     }
@@ -51,8 +61,15 @@ public class UtenteAutenticato implements Utente{
         return this.password;
     }
 
+    public UtenteAutenticato getUtenteInfo()
+    {
+        return new UtenteAutenticato(this.id,this.username,this.password,this.ruolo,this.email);
+    }
 
-
+    public void setRole(Role r)
+    {
+        this.ruolo=r;
+    }
 
 
 }
