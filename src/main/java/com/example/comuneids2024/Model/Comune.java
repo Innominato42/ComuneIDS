@@ -17,8 +17,6 @@ public class Comune {
     @OneToMany
     private List<POI> POIValidate;
 
-    //test test !
-
     @OneToMany
     private List<POI> POIAttesa;
 
