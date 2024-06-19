@@ -160,6 +160,15 @@ public class Comune {
         this.POIValidate.removeIf(poi -> poi.getPOIId().equals(id));
     }
 
+    /**
+     * Elimina uno specifico itinerario.
+     * @param id dell'itinerario da eliminare
+     */
+    public void deleteItinerario (Long id){
+        this.itinerarioValidato.removeIf(Itinerary -> Itinerary.getItineraryId().equals(id));
+        this.itinerarioAttesa.removeIf(Itinerary -> Itinerary.getItineraryId().equals(id));
+    }
+
     public Itinerary getItineraryPending(Long id)
     {
         for(Itinerary i : itinerarioAttesa)
@@ -189,6 +198,5 @@ public class Comune {
     {
         return POIAttesa;
     }
-
 
 }
