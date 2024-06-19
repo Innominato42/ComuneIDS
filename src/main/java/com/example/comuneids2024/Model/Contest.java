@@ -1,9 +1,8 @@
 package com.example.comuneids2024.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 public class Contest {
@@ -20,7 +19,77 @@ public class Contest {
 
     private boolean isClosed;
 
+    @ManyToMany
     private List<UtenteAutenticato> utentiInvitati;
 
-    private List<>
+    @ManyToMany
+    private List<Content> contents;
+
+    public Contest(String nome, String descrizione, boolean onInvite, boolean isClosed, List<UtenteAutenticato> utentiInvitati, List<Content> content)
+    {
+        this.contents=content;
+        this.utentiInvitati = utentiInvitati;
+        this.name = nome;
+        this.descrizione = descrizione;
+    }
+
+    public Contest() {
+
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescrizione() {
+        return descrizione;
+    }
+
+    public boolean isOnInvite() {
+        return onInvite;
+    }
+
+    public boolean isClosed() {
+        return isClosed;
+    }
+
+    public List<UtenteAutenticato> getUtentiInvitati() {
+        return utentiInvitati;
+    }
+
+    public List<Content> getContents() {
+        return contents;
+    }
+
+    public void setOnInvite(boolean b)
+    {
+        this.onInvite=b;
+    }
+
+    public void addContent (Content content){
+        this.contents.add(content);
+    }
+
+    public boolean contributorInvited(Long contributorId) {
+
+        if(isOnInvite())
+        {
+            return utentiInvitati.stream().anyMatch(utenteAutenticato -> utenteAutenticato.getId()== contributorId);
+
+        }
+        else
+        {
+            return true;
+        }
+
+    }
+
+    public Contest getContestInfo()
+    {
+        return new Contest(this.name,this.descrizione,this.onInvite, this.isClosed,this.utentiInvitati,this.contents);
+    }
 }

@@ -13,7 +13,6 @@ public class POIController {
     private ComuneRepository comuneRepository;
 
 
-
     public void insertPOI(Long idComune, POIFactory p, POIGI poigi)
     {
         POI poi= p.createPOI(poigi.getCoordinate());
@@ -25,7 +24,7 @@ public class POIController {
             pe.addDate(poigi.getDateOpen(), poigi.getDateClose());
         }
         Comune c = this.comuneRepository.findById(idComune).get();
-        c.insertPOI(poi);
+        c.addPOI(poi);
         this.comuneRepository.save(c);
 
     }
@@ -41,7 +40,7 @@ public class POIController {
             pe.addDate(poigi.getDateOpen(), poigi.getDateClose());
         }
         Comune c = this.comuneRepository.findById(idComune).get();
-        c.insertPOIPending(poi);
+        c.addPOIPending(poi);
         this.comuneRepository.save(c);
     }
 

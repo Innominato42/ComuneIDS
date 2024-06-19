@@ -28,6 +28,7 @@ public class Itinerary {
     }
 
 
+
     public Itinerary() {
         this.POIs=new ArrayList<>();
     }

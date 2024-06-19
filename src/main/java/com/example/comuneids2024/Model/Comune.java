@@ -29,6 +29,8 @@ public class Comune {
     @OneToOne
     private UtenteAutenticato curatore;
 
+    @OneToMany
+    private List<Contest> contests;
     public Comune(String nome,Coordinate coordinate, UtenteAutenticato curatore){
         if(curatore.getRole().equals(Role.CURATORE))
         {
@@ -43,6 +45,7 @@ public class Comune {
         POIValidate=new ArrayList<>();
         itinerarioAttesa=new ArrayList<>();
         itinerarioValidato=new ArrayList<>();
+        this.contests=new ArrayList<>();
     }
 
     public Comune() {
@@ -80,6 +83,8 @@ public class Comune {
     public UtenteAutenticato getCuratore() {
         return curatore;
     }
+
+
 
     /**
      * Controlla se esiste un POI con le coordinate passate come parametro
@@ -181,11 +186,11 @@ public class Comune {
         return null;
     }
 
-    public void insertPOI(POI poi)
+    public void addPOI(POI poi)
     {
         this.POIValidate.add(poi);
     }
-    public void insertPOIPending(POI poi)
+    public void addPOIPending(POI poi)
     {
         this.POIAttesa.add(poi);
     }
