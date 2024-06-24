@@ -92,4 +92,24 @@ public class Contest {
     {
         return new Contest(this.name,this.descrizione,this.onInvite, this.isClosed,this.utentiInvitati,this.contents);
     }
+
+    /**
+     * Restituisce l email del creatore del contest
+     * @param contentId l id del content di cui trovare l autore
+     * @return l email dell autore
+     */
+
+    public String getAutoreContentEmail(Long contentId) {
+        Optional<Content> contentOpt = contents.stream()
+                .filter(content -> content.getId().equals(contentId))
+                .findFirst();
+
+        if (contentOpt.isPresent()) {
+            UtenteAutenticato author = contentOpt.get().getCreatore();
+            return author != null ? author.getEmail() : null;
+        } else {
+            return null;
+        }
+    }
+
 }

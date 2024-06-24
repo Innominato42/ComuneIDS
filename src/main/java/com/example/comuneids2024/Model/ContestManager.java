@@ -58,4 +58,16 @@ public class ContestManager {
 
     }
 
+    public List<Contest> getAllOpenContest(){
+
+        List <Contest> contests = new ArrayList<>();
+        this.contestRepository.findAll().forEach(contest -> {
+            if(!contest.isClosed())
+            {
+                contests.add(contest.getContestInfo());
+            }
+        });
+
+        return contests;
+    }
 }
