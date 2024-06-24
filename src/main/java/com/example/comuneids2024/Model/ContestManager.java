@@ -48,7 +48,7 @@ public class ContestManager {
     public List<Contest> getAllContest(Long contributorID)
     {
 
-        List <Contest> contests = new ArrayList<Contest>();
+        List <Contest> contests = new ArrayList<>();
         this.contestRepository.findAll().forEach(contest -> {
             if((!contest.isClosed()) && contest.contributorInvited(contributorID)){
                 contests.add(contest.getContestInfo());

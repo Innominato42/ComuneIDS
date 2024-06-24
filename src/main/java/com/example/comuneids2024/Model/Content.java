@@ -1,10 +1,7 @@
 package com.example.comuneids2024.Model;
 
 import com.example.comuneids2024.Model.GI.ContentGI;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Content {
@@ -17,6 +14,9 @@ public class Content {
 
     private String descrizione;
 
+    @ManyToOne
+    @JoinColumn(name = "author_id", nullable = false)
+    private UtenteAutenticato creatore;
     private byte[] file;
 
     public Content(String nome,String descrizione, byte[] file)
@@ -30,6 +30,10 @@ public class Content {
 
     }
 
+    public UtenteAutenticato getCreatore()
+    {
+        return this.creatore;
+    }
     public Long getId(){return this.idContent;}
     public String getNome()
     {

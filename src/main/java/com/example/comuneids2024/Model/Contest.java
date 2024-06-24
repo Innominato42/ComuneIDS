@@ -3,6 +3,7 @@ package com.example.comuneids2024.Model;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 public class Contest {
@@ -74,6 +75,12 @@ public class Contest {
         this.contents.add(content);
     }
 
+    /**
+     * Controlla se un contributor partecipa al contest
+     * @param contributorId id del contributor da controllare
+     * @return true se il contributor è invitato, false altrimenti
+     * @return true se il contest non è su invito
+     */
     public boolean contributorInvited(Long contributorId) {
 
         if(isOnInvite())
@@ -86,6 +93,11 @@ public class Contest {
             return true;
         }
 
+    }
+
+    public void closeContest()
+    {
+        this.isClosed=true;
     }
 
     public Contest getContestInfo()

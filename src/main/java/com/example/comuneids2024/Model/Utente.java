@@ -5,4 +5,6 @@ public interface Utente {
     public Role getRole();
     public String getUsername();
     public String getPassword();
+
+    UtenteAutenticato getUtenteInfo();
 }

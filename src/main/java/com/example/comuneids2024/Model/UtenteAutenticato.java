@@ -61,6 +61,7 @@ public class UtenteAutenticato implements Utente{
         return this.password;
     }
 
+    @Override
     public UtenteAutenticato getUtenteInfo()
     {
         return new UtenteAutenticato(this.id,this.username,this.password,this.ruolo,this.email);
