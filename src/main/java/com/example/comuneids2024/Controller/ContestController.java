@@ -2,6 +2,7 @@ package com.example.comuneids2024.Controller;
 
 import com.example.comuneids2024.Model.Content;
 import com.example.comuneids2024.Model.Contest;
+import com.example.comuneids2024.Model.POI;
 import com.example.comuneids2024.Repository.ComuneRepository;
 import com.example.comuneids2024.Repository.ContentRepository;
 import com.example.comuneids2024.Repository.ContestRepository;
@@ -19,6 +20,9 @@ public class ContestController {
     @Autowired
     private ContentRepository contentRepository;
 
+    @Autowired
+    private ContestRepository contestRepository;
+
     public void createContest(Long idComune, Contest c, Long[] content)
     {
         for(Long i : content)
@@ -30,7 +34,9 @@ public class ContestController {
 
     }
 
-
+    public Contest viewContest(Long contestID) {
+        return contestRepository.findById(contestID).orElse(null);
+    }
 
 
 }
