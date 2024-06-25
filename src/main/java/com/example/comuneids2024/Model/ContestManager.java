@@ -12,10 +12,10 @@ import java.util.List;
 public class ContestManager {
 
     @Autowired
-    private ContestRepository contestRepository;
+    private static ContestRepository contestRepository;
 
     public void addContest(Contest contest) {
-        this.contestRepository.save(contest);
+        contestRepository.save(contest);
     }
 
     /**
@@ -70,4 +70,9 @@ public class ContestManager {
 
         return contests;
     }
+
+    public void deleteContest(Long id) {
+        this.contestRepository.deleteById(id);
+    }
+
 }

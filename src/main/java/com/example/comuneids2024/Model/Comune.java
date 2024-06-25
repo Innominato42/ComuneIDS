@@ -52,6 +52,10 @@ public class Comune {
 
     }
 
+    public void addContest(Contest contest)
+    {
+        this.contests.add(contest);
+    }
     public Long getComuneId() {
         return comuneId;
     }
@@ -174,6 +178,9 @@ public class Comune {
         this.itinerarioAttesa.removeIf(Itinerary -> Itinerary.getItineraryId().equals(id));
     }
 
+
+
+
     public Itinerary getItineraryPending(Long id)
     {
         for(Itinerary i : itinerarioAttesa)
@@ -202,6 +209,11 @@ public class Comune {
     public List<POI> getAllPOIPending()
     {
         return POIAttesa;
+    }
+
+
+    public boolean removeContest(Long id) {
+        return this.contests.removeIf(contest -> contest.getId().equals(id));
     }
 
 }

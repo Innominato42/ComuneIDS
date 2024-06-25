@@ -99,9 +99,9 @@ public class POILuogoOra extends POI{
 
     @Override
     public POIGI getPOIInfo() {
-        List<ContentGI> contentsGI = this.getContents().stream().map(c -> c.getContentInfo()).toList();
-        List<ContentGI> pendingContentsGI = this.getContentsPending().stream().map(pc -> pc.getContentInfo()).toList();
-        return new POIGI(this.getPOIId(),this.getName(),this.getDescription(),this.getCoordinate(),this.getTipo(),contentsGI,pendingContentsGI);
+        List<Content> contents = this.getContents().stream().map(c -> c.getContentInfo()).toList();
+        List<Content> pendingContents = this.getContentsPending().stream().map(pc -> pc.getContentInfo()).toList();
+        return new POIGI(this.getPOIId(),this.getName(),this.getDescription(),this.getCoordinate(),this.getTipo(),contents,pendingContents);
     }
 
     public LocalTime[] getOpeningTime(){return openingTime;}

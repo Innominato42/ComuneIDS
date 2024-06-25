@@ -15,6 +15,8 @@ public abstract class POI {
     private String name;
     private String description;
     private Tipo tipo;
+
+
     @Embedded
     private Coordinate coordinate;
 

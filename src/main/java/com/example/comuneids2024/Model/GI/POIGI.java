@@ -1,5 +1,6 @@
 package com.example.comuneids2024.Model.GI;
 
+import com.example.comuneids2024.Model.Content;
 import com.example.comuneids2024.Model.Coordinate;
 import com.example.comuneids2024.Model.Tipo;
 
@@ -15,9 +16,9 @@ public class POIGI {
     private final Coordinate coordinate;
     private final Tipo type;
 
-    private List<ContentGI> contentGI;
+    private List<Content> content;
 
-    private List<ContentGI> contentPendingGI;
+    private List<Content> contentPending;
 
     private LocalDateTime dataInizio;
 
@@ -27,15 +28,15 @@ public class POIGI {
 
     private LocalTime[] closingTime;
 
-    public POIGI(Long id, String name, String description, Coordinate coordinate, Tipo type, List<ContentGI> contestGI, List<ContentGI> contentPendingGI) {
+    public POIGI(Long id, String name, String description, Coordinate coordinate, Tipo type, List<Content> contest, List<Content> contentPending) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.coordinate = coordinate;
         this.type = type;
         this.closingTime=null;
-        this.contentGI=contestGI;
-        this.contentPendingGI=contentPendingGI;
+        this.content=contest;
+        this.contentPending=contentPending;
         this.openingTime=null;
         this.dataFine=null;
         this.dataInizio=null;
@@ -65,12 +66,12 @@ public class POIGI {
         return coordinate;
     }
 
-    public List<ContentGI> getContentGI() {
-        return contentGI;
+    public List<Content> getContent() {
+        return content;
     }
 
-    public List<ContentGI> getContentPendingGI() {
-        return contentPendingGI;
+    public List<Content> getContentPending() {
+        return contentPending;
     }
 
     public LocalDateTime getDataInizio() {

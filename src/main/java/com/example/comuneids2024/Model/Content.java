@@ -30,6 +30,13 @@ public class Content {
 
     }
 
+
+    public void addFile(byte[] file)
+    {
+        this.file=file;
+    }
+
+
     public UtenteAutenticato getCreatore()
     {
         return this.creatore;
@@ -46,9 +53,9 @@ public class Content {
     }
 
     public byte[] getFile(){return this.file;}
-    public ContentGI getContentInfo()
+    public Content getContentInfo()
     {
-        return new ContentGI(this.getId(),this.getNome(),this.getDescrizione(),this.getFile());
+        return  new Content(this.getNome(),this.getDescrizione(),this.getFile());
     }
 
 }

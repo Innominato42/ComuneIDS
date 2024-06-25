@@ -10,10 +10,10 @@ import org.springframework.stereotype.Controller;
 public class POIController {
 
     @Autowired
-    private ComuneRepository comuneRepository;
+    private static ComuneRepository comuneRepository;
 
 
-    public void insertPOI(Long idComune, POIFactory p, POIGI poigi)
+    public static void insertPOI(Long idComune, POIFactory p, POIGI poigi)
     {
         POI poi= p.createPOI(poigi.getCoordinate());
         poi.insertPOIInfo(poigi.getName(),poigi.getDescription());
@@ -23,14 +23,14 @@ public class POIController {
         if (poi instanceof POIEvento pe) {
             pe.addDate(poigi.getDateOpen(), poigi.getDateClose());
         }
-        Comune c = this.comuneRepository.findById(idComune).get();
+        Comune c = comuneRepository.findById(idComune).get();
         c.addPOI(poi);
-        this.comuneRepository.save(c);
+        comuneRepository.save(c);
 
     }
 
 
-    public void insertPOIPending(Long idComune, POIFactory p, POIGI poigi) {
+    public static void insertPOIPending(Long idComune, POIFactory p, POIGI poigi) {
         POI poi = p.createPOI(poigi.getCoordinate());
         poi.insertPOIInfo(poigi.getName(), poigi.getDescription());
         if (poi instanceof POILuogoOra plo) {
@@ -39,9 +39,9 @@ public class POIController {
         if (poi instanceof POIEvento pe) {
             pe.addDate(poigi.getDateOpen(), poigi.getDateClose());
         }
-        Comune c = this.comuneRepository.findById(idComune).get();
+        Comune c = comuneRepository.findById(idComune).get();
         c.addPOIPending(poi);
-        this.comuneRepository.save(c);
+        comuneRepository.save(c);
     }
 
 }
