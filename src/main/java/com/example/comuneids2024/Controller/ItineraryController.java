@@ -3,6 +3,7 @@ package com.example.comuneids2024.Controller;
 import com.example.comuneids2024.Model.Comune;
 import com.example.comuneids2024.Model.Itinerary;
 import com.example.comuneids2024.Repository.ComuneRepository;
+import com.example.comuneids2024.Repository.ItineraryRepository;
 import com.example.comuneids2024.Repository.POIRepositoriy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,9 @@ public class ItineraryController {
 
     @Autowired
     private POIRepositoriy poiRepositoriy;
+
+    @Autowired
+    private ItineraryRepository itineraryRepository;
 
     public void createItinerary(Long idComune, Itinerary i, Long[] poi)
     {
@@ -36,6 +40,11 @@ public class ItineraryController {
         Comune c =this.comuneRepository.findById(idComune).get();
         c.addItineraryPending(i);
         this.comuneRepository.save(c);
+    }
+
+    public Itinerary viewItinerary(Long ItineraryID)
+    {
+        return this.itineraryRepository.findById(ItineraryID).orElse(null);
     }
 
 }

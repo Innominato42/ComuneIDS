@@ -1,12 +1,15 @@
 package com.example.comuneids2024.Model;
 
 import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.imageio.stream.IIOByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+@Document(collection = "comuni")
 public class Comune {
 
     @Id
@@ -14,22 +17,22 @@ public class Comune {
     private Long comuneId;
     private Coordinate coordinate;
     private String nome;
-    @OneToMany
+    @DBRef
     private List<POI> POIValidate;
 
-    @OneToMany
+    @DBRef
     private List<POI> POIAttesa;
 
-    @OneToMany
+    @DBRef
     private List<Itinerary> itinerarioValidato;
 
-    @OneToMany
+    @DBRef
     private List<Itinerary> itinerarioAttesa;
 
-    @OneToOne
+    @DBRef
     private UtenteAutenticato curatore;
 
-    @OneToMany
+    @DBRef
     private List<Contest> contests;
     public Comune(String nome,Coordinate coordinate, UtenteAutenticato curatore){
         if(curatore.getRole().equals(Role.CURATORE))

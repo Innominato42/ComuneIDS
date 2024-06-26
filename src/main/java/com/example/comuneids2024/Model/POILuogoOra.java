@@ -3,10 +3,12 @@ package com.example.comuneids2024.Model;
 import com.example.comuneids2024.Model.GI.ContentGI;
 import com.example.comuneids2024.Model.GI.POIGI;
 import org.bson.codecs.jsr310.LocalTimeCodec;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalTime;
 import java.util.List;
 
+@Document(collection = "POILuogoOra")
 public class POILuogoOra extends POI{
 
     private LocalTime[] openingTime;

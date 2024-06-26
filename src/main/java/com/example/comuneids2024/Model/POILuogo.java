@@ -4,10 +4,11 @@ import com.example.comuneids2024.Model.GI.ContentGI;
 import com.example.comuneids2024.Model.GI.POIGI;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
-@Entity
+@Document(collection = "POILuogo")
 public class POILuogo extends POI{
 
     public POILuogo(Coordinate coordinate)

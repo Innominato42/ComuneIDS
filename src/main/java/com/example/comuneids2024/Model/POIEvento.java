@@ -4,11 +4,12 @@ import com.example.comuneids2024.Model.GI.ContentGI;
 import com.example.comuneids2024.Model.GI.POIGI;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Entity
+@Document(collection = "POIEvento")
 public class POIEvento extends POI{
 
     private LocalDateTime oraInizio;

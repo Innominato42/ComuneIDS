@@ -4,6 +4,7 @@ import com.example.comuneids2024.Model.Comune;
 import com.example.comuneids2024.Model.Content;
 import com.example.comuneids2024.Model.Contest;
 import com.example.comuneids2024.Repository.ComuneRepository;
+import com.example.comuneids2024.Repository.ContentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

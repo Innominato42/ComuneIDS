@@ -1,11 +1,14 @@
 package com.example.comuneids2024.Model;
 
 import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 import java.util.Optional;
 
-@Entity
+@Document(collection = "contest")
 public class Contest {
 
     @Id
@@ -20,10 +23,10 @@ public class Contest {
 
     private boolean isClosed;
 
-    @ManyToMany
+    @DBRef
     private List<UtenteAutenticato> utentiInvitati;
 
-    @ManyToMany
+    @DBRef
     private List<Content> contents;
 
     public Contest(String nome, String descrizione, boolean onInvite, boolean isClosed, List<UtenteAutenticato> utentiInvitati, List<Content> content)

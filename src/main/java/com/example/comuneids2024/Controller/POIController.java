@@ -3,6 +3,7 @@ package com.example.comuneids2024.Controller;
 import com.example.comuneids2024.Model.*;
 import com.example.comuneids2024.Model.GI.POIGI;
 import com.example.comuneids2024.Repository.ComuneRepository;
+import com.example.comuneids2024.Repository.POIRepositoriy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -10,8 +11,10 @@ import org.springframework.stereotype.Controller;
 public class POIController {
 
     @Autowired
-    private static ComuneRepository comuneRepository;
+    private  static ComuneRepository comuneRepository;
 
+    @Autowired
+    private POIRepositoriy poiRepository;
 
     public static void insertPOI(Long idComune, POIFactory p, POIGI poigi)
     {
@@ -42,6 +45,10 @@ public class POIController {
         Comune c = comuneRepository.findById(idComune).get();
         c.addPOIPending(poi);
         comuneRepository.save(c);
+    }
+
+    public POI viewPOI(Long poiID) {
+        return poiRepository.findById(poiID).orElse(null);
     }
 
 }

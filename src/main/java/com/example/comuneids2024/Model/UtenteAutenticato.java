@@ -3,19 +3,28 @@ package com.example.comuneids2024.Model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
+import java.util.List;
+
+@Document(collection = "utentiAutenticati")
 public class UtenteAutenticato implements Utente{
-
-
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "utente_generator")
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "utente_generator")
+
     private Long id;
     private String username;
     private String password;
     private Role ruolo;
     private String email;
+
+    @DBRef
+    private List<POI> POIFavourites;
+
+    @DBRef
+    private List<Itinerary> ItineraryFavourites;
 
     public UtenteAutenticato(String username,String password, Role ruolo, String email)
     {
@@ -72,5 +81,43 @@ public class UtenteAutenticato implements Utente{
         this.ruolo=r;
     }
 
+    public List<POI> getPOIFavourites() {
+        return POIFavourites;
+    }
+
+    public void setPOIFavourites(List<POI> POIFavourites) {
+        this.POIFavourites = POIFavourites;
+    }
+
+    public List<Itinerary> getItineraryFavourites() {
+        return ItineraryFavourites;
+    }
+
+    public void setItineraryFavourites(List<Itinerary> ItineraryFavourites) {
+        this.ItineraryFavourites = ItineraryFavourites;
+    }
+
+    public void addPOIToFavourites(POI poi) {
+        if (!POIFavourites.contains(poi)) {
+            POIFavourites.add(poi);
+        }
+    }
+
+    // Rimuovi un POI dai preferiti
+    public void removePOIFromFavourites(POI poi) {
+        POIFavourites.remove(poi);
+    }
+
+    // Aggiungi un Itinerary ai preferiti
+    public void addItineraryToFavourites(Itinerary itinerary) {
+        if (!ItineraryFavourites.contains(itinerary)) {
+            ItineraryFavourites.add(itinerary);
+        }
+    }
+
+    // Rimuovi un Itinerary dai preferiti
+    public void removeItineraryFromFavourites(Itinerary itinerary) {
+        ItineraryFavourites.remove(itinerary);
+    }
 
 }

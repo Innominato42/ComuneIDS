@@ -2,8 +2,11 @@ package com.example.comuneids2024.Model;
 
 import com.example.comuneids2024.Model.GI.ContentGI;
 import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
+@Document(collection = "content")
 public class Content {
 
     @Id
@@ -14,8 +17,7 @@ public class Content {
 
     private String descrizione;
 
-    @ManyToOne
-    @JoinColumn(name = "author_id", nullable = false)
+    @DBRef
     private UtenteAutenticato creatore;
     private byte[] file;
 

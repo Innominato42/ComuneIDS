@@ -1,11 +1,16 @@
 package com.example.comuneids2024.Model;
 
 import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-@Entity
+
+@Document(collection = "Itinerary")
 public class Itinerary {
 
     @Id
@@ -16,8 +21,7 @@ public class Itinerary {
 
     private String descrizione;
 
-
-    @ManyToMany
+    @DBRef
     private List<POI> POIs;
 
     private Itinerary(String nome,String descrizione)

@@ -2,12 +2,14 @@ package com.example.comuneids2024.Model;
 
 import com.example.comuneids2024.Model.GI.POIGI;
 import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Document(collection = "POI")
 public abstract class POI {
 
     @Id
@@ -20,10 +22,10 @@ public abstract class POI {
     @Embedded
     private Coordinate coordinate;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @DBRef
     private List<Content> content;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @DBRef
     private List<Content> contentPending;
 
     public POI(String name,String description,Coordinate coordinate,Tipo tipo)
