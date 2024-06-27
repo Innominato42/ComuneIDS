@@ -1,6 +1,6 @@
 package com.example.comuneids2024.Model;
 
-import com.example.comuneids2024.Model.GI.ContentGI;
+import com.example.comuneids2024.Model.DTO.ContentDTO;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;

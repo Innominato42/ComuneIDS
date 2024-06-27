@@ -1,6 +1,7 @@
 package com.example.comuneids2024.Model;
 
-import com.example.comuneids2024.Model.GI.POIGI;
+
+import com.example.comuneids2024.Model.DTO.POIDTO;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -115,7 +116,7 @@ public abstract class POI {
     public abstract void insertPOIInfo(String name, String description);
 
 
-    public abstract POIGI getPOIInfo();
+    public abstract POIDTO getPOIInfo();
 
 
 

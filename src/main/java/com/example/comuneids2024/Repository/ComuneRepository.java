@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ComuneRepository extends MongoRepository<Comune,Long> {
 
-    Comune findByName(String nome);
+    Comune findByNome(String nome);
 }

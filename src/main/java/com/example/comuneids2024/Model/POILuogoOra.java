@@ -1,33 +1,34 @@
 package com.example.comuneids2024.Model;
 
-import com.example.comuneids2024.Model.GI.ContentGI;
-import com.example.comuneids2024.Model.GI.POIGI;
-import org.bson.codecs.jsr310.LocalTimeCodec;
+import com.example.comuneids2024.Model.DTO.POIDTO;
+
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalTime;
 import java.util.List;
 
 @Document(collection = "POILuogoOra")
-public class POILuogoOra extends POI{
+public class POILuogoOra extends POI {
 
+    @Field("openingTime")
     private LocalTime[] openingTime;
 
+    @Field("closingTime")
     private LocalTime[] closingTime;
 
-    public POILuogoOra(Coordinate coordinate)
-    {
+    public POILuogoOra(Coordinate coordinate) {
         super(coordinate);
         this.setTipo(Tipo.LUOGOCONORA);
-        openingTime=new LocalTime[7];
-        closingTime=new LocalTime[7];
+        this.openingTime = new LocalTime[7];
+        this.closingTime = new LocalTime[7];
     }
 
-    public void insertTime(LocalTime[] openingTime, LocalTime[] closingTime)
-    {
-        this.openingTime=openingTime;
-        this.closingTime=closingTime;
+    public void insertTime(LocalTime[] openingTime, LocalTime[] closingTime) {
+        this.openingTime = openingTime;
+        this.closingTime = closingTime;
     }
+
     @Override
     public void insertPOIInfo(String name, String description) {
         this.setName(name);
@@ -35,78 +36,25 @@ public class POILuogoOra extends POI{
     }
 
     @Override
-    public String getName() {
-        return super.getName();
+    public POIDTO getPOIInfo() {
+        List<Content> contents = this.getContents().stream().map(Content::getContentInfo).toList();
+        List<Content> pendingContents = this.getContentsPending().stream().map(Content::getContentInfo).toList();
+        return new POIDTO(this.getPOIId(), this.getName(), this.getDescription(), this.getCoordinate(), this.getTipo(), contents, pendingContents);
     }
 
-    @Override
-    public String getDescription() {
-        return super.getDescription();
+    public LocalTime[] getOpeningTime() {
+        return openingTime;
     }
 
-    @Override
-    public Tipo getTipo() {
-        return super.getTipo();
+    public void setOpeningTime(LocalTime[] openingTime) {
+        this.openingTime = openingTime;
     }
 
-    @Override
-    public Coordinate getCoord() {
-        return super.getCoord();
+    public LocalTime[] getClosingTime() {
+        return closingTime;
     }
 
-    @Override
-    public List<Content> getContents() {
-        return super.getContents();
+    public void setClosingTime(LocalTime[] closingTime) {
+        this.closingTime = closingTime;
     }
-
-    @Override
-    public List<Content> getContentsPending() {
-        return super.getContentsPending();
-    }
-
-    @Override
-    public void addContent(Content c) {
-        super.addContent(c);
-    }
-
-    @Override
-    public void addContentPending(Content c) {
-        super.addContentPending(c);
-    }
-
-    @Override
-    public void setName(String name) {
-        super.setName(name);
-    }
-
-    @Override
-    public void setDescription(String description) {
-        super.setDescription(description);
-    }
-
-    @Override
-    public void setTipo(Tipo tipo) {
-        super.setTipo(tipo);
-    }
-
-    @Override
-    public Long getPOIId() {
-        return super.getPOIId();
-    }
-
-    @Override
-    public Coordinate getCoordinate() {
-        return super.getCoordinate();
-    }
-
-    @Override
-    public POIGI getPOIInfo() {
-        List<Content> contents = this.getContents().stream().map(c -> c.getContentInfo()).toList();
-        List<Content> pendingContents = this.getContentsPending().stream().map(pc -> pc.getContentInfo()).toList();
-        return new POIGI(this.getPOIId(),this.getName(),this.getDescription(),this.getCoordinate(),this.getTipo(),contents,pendingContents);
-    }
-
-    public LocalTime[] getOpeningTime(){return openingTime;}
-
-    public LocalTime[] getClosingTime(){return closingTime;}
 }

@@ -2,20 +2,19 @@ package com.example.comuneids2024.Controller;
 
 
 import com.example.comuneids2024.Model.*;
-import com.example.comuneids2024.Model.GI.POIGI;
+import com.example.comuneids2024.Model.DTO.ComuneDTO;
+import com.example.comuneids2024.Model.DTO.POIDTO;
 import com.example.comuneids2024.Repository.ComuneRepository;
 import com.example.comuneids2024.Repository.ContentRepository;
 import com.example.comuneids2024.Repository.POIRepositoriy;
 import com.example.comuneids2024.Repository.UtenteAutenticatoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -44,7 +43,48 @@ public class ComuneController {
     @Autowired
     private ContestManager contestManager;
 
+    @Autowired
+    private UtenteAutenticatoRepository utenteAutenticatoRepository;
 
+
+    @PostMapping("/addComune")
+    public ResponseEntity<String> addComune(@RequestBody ComuneDTO comuneDTO) {
+        // Valida i dati del ComuneDTO
+        if (comuneDTO.getNome() == null || comuneDTO.getNome().isEmpty()) {
+            return new ResponseEntity<>("Nome del comune mancante", HttpStatus.BAD_REQUEST);
+        }
+        if (comuneDTO.getCoordinate() == null) {
+            return new ResponseEntity<>("Coordinate del comune mancanti", HttpStatus.BAD_REQUEST);
+        }
+        if (comuneDTO.getCuratore() == null || comuneDTO.getCuratore().getId() == null) {
+            return new ResponseEntity<>("Curatore del comune mancante", HttpStatus.BAD_REQUEST);
+        }
+
+        // Recupera il curatore dal repository
+        Optional<UtenteAutenticato> curatoreOpt = utenteAutenticatoRepository.findById(comuneDTO.getCuratore().getId());
+        if (curatoreOpt.isEmpty()) {
+            return new ResponseEntity<>("Curatore non trovato", HttpStatus.BAD_REQUEST);
+        }
+
+        // Crea un nuovo oggetto Comune dall'oggetto ComuneDTO
+        Comune comune = new Comune();
+        comune.setNome(comuneDTO.getNome());
+        comune.setCoordinate(comuneDTO.getCoordinate());
+        comune.setCuratore(curatoreOpt.get());
+
+        // Aggiungi le liste (validati, in attesa, ecc.) se presenti
+        comune.setPOIValidate(comuneDTO.getPOIValidate());
+        comune.setPOIAttesa(comuneDTO.getPOIAttesa());
+        comune.setItinerarioValidato(comuneDTO.getItinerarioValidato());
+        comune.setItinerarioAttesa(comuneDTO.getItinerarioAttesa());
+        comune.setContests(comuneDTO.getContests());
+
+        // Salva il comune nel repository
+        comuneRepository.save(comune);
+
+        // Ritorna una risposta di successo
+        return new ResponseEntity<>("Comune aggiunto con successo", HttpStatus.OK);
+    }
 
 
     @GetMapping("/getAllPOI")
@@ -131,7 +171,7 @@ public class ComuneController {
         {
             return new ResponseEntity<>("Errore : Tipo errato", HttpStatus.BAD_REQUEST);
         }
-        POIGI p = new POIGI(poi.getPOIId(), poi.getName(), poi.getDescription(),poi.getCoordinate(), poi.getTipo(), poi.getContents(), poi.getContentsPending());
+        POIDTO p = new POIDTO(poi.getPOIId(), poi.getName(), poi.getDescription(),poi.getCoordinate(), poi.getTipo(), poi.getContents(), poi.getContentsPending());
         POIController.insertPOI(id, pf, p);
         return new ResponseEntity<>("ok", HttpStatus.OK);
     }
@@ -155,7 +195,7 @@ public class ComuneController {
         {
             return new ResponseEntity<>("Errore : Tipo errato", HttpStatus.BAD_REQUEST);
         }
-        POIGI p = new POIGI(poi.getPOIId(), poi.getName(), poi.getDescription(),poi.getCoordinate(), poi.getTipo(), poi.getContents(), poi.getContentsPending());
+        POIDTO p = new POIDTO(poi.getPOIId(), poi.getName(), poi.getDescription(),poi.getCoordinate(), poi.getTipo(), poi.getContents(), poi.getContentsPending());
         POIController.insertPOIPending(id, pf, p);
         return new ResponseEntity<>("ok", HttpStatus.OK);
 
@@ -173,7 +213,7 @@ public class ComuneController {
         return new ResponseEntity<>("ok", HttpStatus.OK);
     }
 
-    @PostMapping("insertContentToPOI")
+    @PostMapping("insertPendingContentToPOI")
     public ResponseEntity<Object> insertPendingContentToPOI(@RequestParam("idComune") Long idComune, @RequestParam("idPOI") Long id,  @RequestPart("content") Content c, @RequestPart("file") MultipartFile file)
     {
         try {

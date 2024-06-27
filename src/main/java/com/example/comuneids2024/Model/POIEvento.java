@@ -1,8 +1,6 @@
 package com.example.comuneids2024.Model;
 
-import com.example.comuneids2024.Model.GI.ContentGI;
-import com.example.comuneids2024.Model.GI.POIGI;
-import jakarta.persistence.Entity;
+import com.example.comuneids2024.Model.DTO.POIDTO;
 import jakarta.persistence.ManyToMany;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -93,11 +91,11 @@ public class POIEvento extends POI{
     }
 
     @Override
-    public POIGI getPOIInfo()
+    public POIDTO getPOIInfo()
     {
         List<Content> contents = this.getContents().stream().map(c -> c.getContentInfo()).toList();
         List<Content> pendingContentsGI = this.getContentsPending().stream().map(pc -> pc.getContentInfo()).toList();
-        return new POIGI(this.getPOIId(),this.getName(),this.getDescription(),this.getCoordinate(),this.getTipo(),contents,pendingContentsGI);
+        return new POIDTO(this.getPOIId(),this.getName(),this.getDescription(),this.getCoordinate(),this.getTipo(),contents,pendingContentsGI);
     }
 
 

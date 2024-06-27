@@ -1,4 +1,4 @@
-package com.example.comuneids2024.Model.GI;
+package com.example.comuneids2024.Model.DTO;
 
 import com.example.comuneids2024.Model.Content;
 import com.example.comuneids2024.Model.Coordinate;
@@ -9,7 +9,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 //TODO CAPIRE SE QUESTO TIPO DI CLASSE SERVE VERAMENTE
-public class POIGI {
+public class POIDTO {
     private final Long id;
     private final String name;
     private final String description;
@@ -28,7 +28,7 @@ public class POIGI {
 
     private LocalTime[] closingTime;
 
-    public POIGI(Long id, String name, String description, Coordinate coordinate, Tipo type, List<Content> contest, List<Content> contentPending) {
+    public POIDTO(Long id, String name, String description, Coordinate coordinate, Tipo type, List<Content> contest, List<Content> contentPending) {
         this.id = id;
         this.name = name;
         this.description = description;

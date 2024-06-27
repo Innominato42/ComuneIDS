@@ -1,7 +1,7 @@
 package com.example.comuneids2024.Controller;
 
 import com.example.comuneids2024.Model.*;
-import com.example.comuneids2024.Model.GI.POIGI;
+import com.example.comuneids2024.Model.DTO.POIDTO;
 import com.example.comuneids2024.Repository.ComuneRepository;
 import com.example.comuneids2024.Repository.POIRepositoriy;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,12 +11,12 @@ import org.springframework.stereotype.Controller;
 public class POIController {
 
     @Autowired
-    private  static ComuneRepository comuneRepository;
+    private   ComuneRepository comuneRepository;
 
     @Autowired
     private POIRepositoriy poiRepository;
 
-    public static void insertPOI(Long idComune, POIFactory p, POIGI poigi)
+    public void insertPOI(Long idComune, POIFactory p, POIDTO poigi)
     {
         POI poi= p.createPOI(poigi.getCoordinate());
         poi.insertPOIInfo(poigi.getName(),poigi.getDescription());
@@ -33,7 +33,7 @@ public class POIController {
     }
 
 
-    public static void insertPOIPending(Long idComune, POIFactory p, POIGI poigi) {
+    public  void insertPOIPending(Long idComune, POIFactory p, POIDTO poigi) {
         POI poi = p.createPOI(poigi.getCoordinate());
         poi.insertPOIInfo(poigi.getName(), poigi.getDescription());
         if (poi instanceof POILuogoOra plo) {

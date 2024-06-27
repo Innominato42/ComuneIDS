@@ -55,6 +55,8 @@ public class Comune {
 
     }
 
+
+
     public void addContest(Contest contest)
     {
         this.contests.add(contest);
@@ -215,8 +217,43 @@ public class Comune {
     }
 
 
+    public void setCuratore(UtenteAutenticato curatore)
+    {
+        this.curatore=curatore;
+    }
+
+
+    public void setItinerarioValidato(List<Itinerary> itinerarioValidato) {
+        this.itinerarioValidato = itinerarioValidato;
+    }
+
+    public void setItinerarioAttesa(List<Itinerary> itinerarioAttesa) {
+        this.itinerarioAttesa = itinerarioAttesa;
+    }
+
+    public void setContests(List<Contest> contests) {
+        this.contests = contests;
+    }
+
+    public void setPOIValidate(List<POI> POIValidate) {
+        this.POIValidate = POIValidate;
+    }
+
+    public void setPOIAttesa(List<POI> POIAttesa) {
+        this.POIAttesa = POIAttesa;
+    }
+
     public boolean removeContest(Long id) {
         return this.contests.removeIf(contest -> contest.getId().equals(id));
     }
+
+    public void setCoordinate(Coordinate coordinate) {
+        this.coordinate = coordinate;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
 
 }
