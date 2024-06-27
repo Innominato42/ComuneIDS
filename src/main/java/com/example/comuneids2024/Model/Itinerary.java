@@ -1,5 +1,6 @@
 package com.example.comuneids2024.Model;
 
+import com.example.comuneids2024.Model.DTO.ItineraryDTO;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -63,6 +64,12 @@ public class Itinerary {
             throw new NullPointerException();
         }
         this.POIs.add(p);
+    }
+
+    public ItineraryDTO getItineraryInfo()
+    {
+
+        return new ItineraryDTO(this.ItineraryId,this.nome,this.descrizione,this.getPOIs());
     }
 }
 

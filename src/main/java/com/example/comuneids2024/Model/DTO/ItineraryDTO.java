@@ -7,10 +7,20 @@ import java.util.List;
 
 public class ItineraryDTO {
 
+    private Long id;
     private String name;
-    private UtenteAutenticato curatore;
+    private String descrizione;
     private List<POI> POIs;
 
+
+
+    public ItineraryDTO(Long id,String name, String descrizione, List<POI> POIs)
+    {
+        this.id=id;
+        this.descrizione=descrizione;
+        this.name=name;
+        this.POIs=POIs;
+    }
     public String getName() {
         return name;
     }
@@ -19,12 +29,13 @@ public class ItineraryDTO {
         this.name = name;
     }
 
-    public UtenteAutenticato getCuratore() {
-        return curatore;
+    public void setDescrizione(String descrizione)
+    {
+        this.descrizione=descrizione;
     }
-
-    public void setCuratore(UtenteAutenticato curatore) {
-        this.curatore = curatore;
+    public String getDescrizione()
+    {
+        return this.descrizione;
     }
 
     public List<POI> getPOIs() {
