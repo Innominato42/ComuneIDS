@@ -1,4 +1,4 @@
-package com.example.comuneids2024.Model;
+package com.example.comuneids2024.Model.Config;
 
 import org.bson.BsonReader;
 import org.bson.BsonWriter;
@@ -8,6 +8,8 @@ import org.bson.codecs.EncoderContext;
 
 import java.time.LocalTime;
 
+
+//TODO CAPIRE SE SERVE
 public class LocalTimeCodec implements Codec<LocalTime> {
 
     @Override

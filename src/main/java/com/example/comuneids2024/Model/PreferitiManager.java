@@ -14,28 +14,25 @@ public class PreferitiManager {
     @Autowired
     private ItineraryRepository itineraryRepository;
 
-    /*
-    @Autowired
-    private PreferitiRepository preferitiRepository;
-    */
-
     @Autowired
     private UtenteAutenticatoManager utenteAutenticatoManager;
 
 
-    public void addPOItoFavourites(Long id, Long idComune, Long idPOI) {
+    public boolean addPOItoFavourites(Long id, Long idComune, Long idPOI) {
         UtenteAutenticato utente = utenteAutenticatoManager.getUtente(id);
         if (utente != null) {
             POI poi = poiRepository.findById(idPOI).orElse(null);
             if (poi != null) {
                 utente.addPOIToFavourites(poi);
                 utenteAutenticatoManager.addUtente(utente);
+                return true;
             } else {
                 throw new RuntimeException("POI non trovato");
             }
         } else {
             throw new RuntimeException("Utente non trovato");
         }
+
     }
 
     public void removePOIfromFavourites(Long id, Long idPOI) {

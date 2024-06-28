@@ -127,4 +127,8 @@ public class Contest {
         }
     }
 
+
+    public void inviteContributor(UtenteAutenticato user) {
+        this.utentiInvitati.add(user);
+    }
 }

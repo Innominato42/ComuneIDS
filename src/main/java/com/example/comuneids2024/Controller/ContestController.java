@@ -1,14 +1,15 @@
 package com.example.comuneids2024.Controller;
 
-import com.example.comuneids2024.Model.Content;
-import com.example.comuneids2024.Model.Contest;
-import com.example.comuneids2024.Model.POI;
+import com.example.comuneids2024.Model.*;
+import com.example.comuneids2024.Model.DTO.ContentDTO;
+import com.example.comuneids2024.Model.DTO.UtenteAutenticatoDTO;
 import com.example.comuneids2024.Repository.ComuneRepository;
 import com.example.comuneids2024.Repository.ContentRepository;
 import com.example.comuneids2024.Repository.ContestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.example.comuneids2024.Model.Comune;
+
+import java.util.List;
 
 @Service
 public class ContestController {
@@ -22,6 +23,9 @@ public class ContestController {
 
     @Autowired
     private ContestRepository contestRepository;
+
+    @Autowired
+    private UtenteAutenticatoManager utenteAutenticatoManager;
 
     public void createContest(Long idComune, Contest c, Long[] content)
     {
@@ -37,6 +41,20 @@ public class ContestController {
     public Contest viewContest(Long contestID) {
         return contestRepository.findById(contestID).orElse(null);
     }
+
+    public List<UtenteAutenticatoDTO> selectedContestContibutors() {
+        return this.utenteAutenticatoManager.getAllContributors();
+    }
+
+    public void inviteContributor(Long id, Long idContributor) {
+        Contest contest = this.contestRepository.findById(id).get();
+        contest.inviteContributor(this.utenteAutenticatoManager.getUtente(idContributor));
+        this.contestRepository.save(contest);
+    }
+
+
+
+
 
 
 }

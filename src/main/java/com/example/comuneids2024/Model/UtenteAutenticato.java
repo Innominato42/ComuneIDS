@@ -1,5 +1,6 @@
 package com.example.comuneids2024.Model;
 
+import com.example.comuneids2024.Model.DTO.UtenteAutenticatoDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -7,6 +8,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Document(collection = "utentiAutenticati")
@@ -21,10 +23,10 @@ public class UtenteAutenticato implements Utente{
     private String email;
 
     @DBRef
-    private List<POI> POIFavourites;
+    private List<POI> POIFavourites=new ArrayList<>();
 
     @DBRef
-    private List<Itinerary> ItineraryFavourites;
+    private List<Itinerary> ItineraryFavourites=new ArrayList<>();
 
     public UtenteAutenticato(String username,String password, Role ruolo, String email)
     {
@@ -71,9 +73,9 @@ public class UtenteAutenticato implements Utente{
     }
 
     @Override
-    public UtenteAutenticato getUtenteInfo()
+    public UtenteAutenticatoDTO getUtenteInfo()
     {
-        return new UtenteAutenticato(this.id,this.username,this.password,this.ruolo,this.email);
+        return new UtenteAutenticatoDTO(this.id,this.username,this.password,this.ruolo,this.email,this.getPOIFavourites(),this.getItineraryFavourites());
     }
 
     public void setRole(Role r)

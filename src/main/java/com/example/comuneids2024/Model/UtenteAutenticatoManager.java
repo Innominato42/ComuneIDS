@@ -1,5 +1,6 @@
 package com.example.comuneids2024.Model;
 
+import com.example.comuneids2024.Model.DTO.UtenteAutenticatoDTO;
 import com.example.comuneids2024.Repository.UtenteAutenticatoRepository;
 import jakarta.persistence.OneToMany;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ public class UtenteAutenticatoManager {
     @OneToMany
     private List<UtenteAutenticato> registrazioniUtenti = new ArrayList<>();
 
-    public List<UtenteAutenticato> getAllContributors()
+    public List<UtenteAutenticatoDTO> getAllContributors()
     {
         return utenteAutenticatoRepository.findAll().stream().filter(u -> u.getRole().equals(Role.CONTRIBUTOR) ||
                 u.getRole().equals(Role.CONTRIBUTORAUTORIZZATO)).map(UtenteAutenticato::getUtenteInfo).toList();
@@ -26,7 +27,12 @@ public class UtenteAutenticatoManager {
         this.utenteAutenticatoRepository.save(utenteAutenticato);
     }
 
-    public UtenteAutenticato getUtente(Long id) {
+    public UtenteAutenticato getUtente(Long id)
+    {
+        return this.utenteAutenticatoRepository.findById(id).get();
+    }
+
+    public UtenteAutenticatoDTO getUtenteDTO(Long id) {
         return this.utenteAutenticatoRepository.findById(id).get().getUtenteInfo();
     }
 
@@ -59,5 +65,17 @@ public class UtenteAutenticatoManager {
         this.registrazioniUtenti.removeIf(u -> u.getId().equals(id));
         this.utenteAutenticatoRepository.deleteById(id);
     }
+
+    public void cambiaRuolo(Long id, Role role) {
+        UtenteAutenticato utente = utenteAutenticatoRepository.findById(id).get();
+        utente.setRole(role);
+        this.utenteAutenticatoRepository.save(utente);
+    }
+
+    public List<UtenteAutenticatoDTO> viewAllUser()
+    {
+        return this.utenteAutenticatoRepository.findAll().stream().filter(u -> !u.getRole().equals(Role.GESTORE)).map(UtenteAutenticato::getUtenteInfo).toList();
+    }
+
 
 }
