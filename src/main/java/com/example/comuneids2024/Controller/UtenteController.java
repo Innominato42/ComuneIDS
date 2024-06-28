@@ -1,9 +1,6 @@
 package com.example.comuneids2024.Controller;
 
-import com.example.comuneids2024.Model.PreferitiManager;
-import com.example.comuneids2024.Model.Role;
-import com.example.comuneids2024.Model.RoleManager;
-import com.example.comuneids2024.Model.UtenteAutenticatoManager;
+import com.example.comuneids2024.Model.*;
 import com.example.comuneids2024.Repository.ComuneRepository;
 import com.example.comuneids2024.Repository.UtenteAutenticatoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -30,6 +29,11 @@ public class UtenteController {
 
     @Autowired
     private UtenteAutenticatoManager utenteAutenticatoManager;
+
+    @Autowired
+    private RegistrazioneController registrazioneController;
+
+
 
     @PostMapping("addPOIToFavorites")
     public ResponseEntity<Object> addPOIToFavorites(Authentication authentication, @RequestParam("POIid") Long POIid, @RequestParam("idComune") Long idComune) {
@@ -69,6 +73,25 @@ public class UtenteController {
     public ResponseEntity<Object> viewAllUsers() {
         return new ResponseEntity<>(this.utenteAutenticatoManager.viewAllUser(), HttpStatus.OK);
     }
+
+    @GetMapping("viewRegistrationUsers")
+    public ResponseEntity<Object> viewRegistrationUsers() {
+        return new ResponseEntity<>(this.utenteAutenticatoManager.viewRegistrationUsers(), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/gestore/refuseRegistration")
+    public ResponseEntity<Object> refuseRegistration(@RequestParam("id") Long id) {
+        this.registrazioneController.refuseRegistration(id);
+        return new ResponseEntity<>("ok", HttpStatus.OK);
+    }
+    @PutMapping("/gestore/approveRegistration")
+    public ResponseEntity<Object> approveRegistration(@RequestParam("id") Long id) {
+        this.registrazioneController.approveRegistration(id);
+        return new ResponseEntity<>("ok", HttpStatus.OK);
+    }
+
+
+
 
 
 }

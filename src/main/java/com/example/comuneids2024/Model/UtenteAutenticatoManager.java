@@ -13,7 +13,7 @@ public class UtenteAutenticatoManager {
     @Autowired
     private UtenteAutenticatoRepository utenteAutenticatoRepository;
 
-    @OneToMany
+
     private List<UtenteAutenticato> registrazioniUtenti = new ArrayList<>();
 
     public List<UtenteAutenticatoDTO> getAllContributors()
@@ -38,8 +38,8 @@ public class UtenteAutenticatoManager {
 
     /**
      * Controlla se esiste un utente con l email e la password passati come parametri
-     * @param email
-     * @param username
+     * @param email email dell utente
+     * @param username username dell utente
      * @return true se esiste, false altrimenti
      */
     public boolean ContainsUtente(String email, String username)
@@ -76,6 +76,11 @@ public class UtenteAutenticatoManager {
     {
         return this.utenteAutenticatoRepository.findAll().stream().filter(u -> !u.getRole().equals(Role.GESTORE)).map(UtenteAutenticato::getUtenteInfo).toList();
     }
+
+    public List<UtenteAutenticatoDTO> viewRegistrationUsers() {
+        return this.registrazioniUtenti.stream().map(UtenteAutenticato::getUtenteInfo).toList();
+    }
+
 
 
 }
