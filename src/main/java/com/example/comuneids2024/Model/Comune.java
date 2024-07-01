@@ -34,6 +34,11 @@ public class Comune {
 
     @DBRef
     private List<Contest> contests;
+
+    @DBRef
+    private List<POI> POISegnalati;
+
+    private List<Itinerary> itinerariSegnalati;
     public Comune(String nome,Coordinate coordinate, UtenteAutenticato curatore){
         if(curatore.getRole().equals(Role.CURATORE))
         {
@@ -253,6 +258,16 @@ public class Comune {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public void addPOISegnalato(POI p)
+    {
+        this.POISegnalati.add(p);
+    }
+
+    public void addItinerarioSegnalato(Itinerary i)
+    {
+        this.itinerariSegnalati.add(i);
     }
 
 

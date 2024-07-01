@@ -6,12 +6,17 @@ import com.example.comuneids2024.Model.DTO.UtenteAutenticatoDTO;
 import com.example.comuneids2024.Repository.ComuneRepository;
 import com.example.comuneids2024.Repository.ContentRepository;
 import com.example.comuneids2024.Repository.ContestRepository;
+import com.example.comuneids2024.Repository.UtenteAutenticatoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
-@Service
+@RestController
+@RequestMapping("/contest")
 public class ContestController {
 
 
@@ -23,6 +28,9 @@ public class ContestController {
 
     @Autowired
     private ContestRepository contestRepository;
+
+    @Autowired
+    private UtenteAutenticatoRepository utenteAutenticatoRepository;
 
     @Autowired
     private UtenteAutenticatoManager utenteAutenticatoManager;
@@ -42,9 +50,7 @@ public class ContestController {
         return new ResponseEntity<>("Contest created successfully", HttpStatus.OK);
     }
 
-    public Contest viewContest(Long contestID) {
-        return contestRepository.findById(contestID).orElse(null);
-    }
+
 
     @GetMapping("/viewContest/{contestID}")
     public ResponseEntity<Contest> viewContest(@PathVariable Long contestID) {

@@ -13,7 +13,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/Utente")
 public class UtenteController {
 
     @Autowired
@@ -88,6 +88,12 @@ public class UtenteController {
     public ResponseEntity<Object> approveRegistration(@RequestParam("id") Long id) {
         this.registrazioneController.approveRegistration(id);
         return new ResponseEntity<>("ok", HttpStatus.OK);
+    }
+
+    private ResponseEntity<Object> rendiContribuorAutorizzato(@RequestParam("id") Long id)
+    {
+        this.roleManager.nuovoRuolo(id, Role.valueOf("CONTRIBUTORAUTORIZZATO"));
+        return new ResponseEntity<>("ok",HttpStatus.OK);
     }
 
 

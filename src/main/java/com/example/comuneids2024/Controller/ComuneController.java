@@ -4,10 +4,7 @@ package com.example.comuneids2024.Controller;
 import com.example.comuneids2024.Model.*;
 import com.example.comuneids2024.Model.DTO.ComuneDTO;
 import com.example.comuneids2024.Model.DTO.POIDTO;
-import com.example.comuneids2024.Repository.ComuneRepository;
-import com.example.comuneids2024.Repository.ContentRepository;
-import com.example.comuneids2024.Repository.POIRepositoriy;
-import com.example.comuneids2024.Repository.UtenteAutenticatoRepository;
+import com.example.comuneids2024.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +29,9 @@ public class ComuneController {
     private ItineraryController itineraryController;
 
     @Autowired
+    private ItineraryRepository itineraryRepository;
+
+    @Autowired
     private POIRepositoriy POIRepository;
 
     @Autowired
@@ -45,6 +45,9 @@ public class ComuneController {
 
     @Autowired
     private UtenteAutenticatoRepository utenteAutenticatoRepository;
+
+    @Autowired
+    private POIController poiController;
 
 
     @PostMapping("/addComune")
@@ -172,7 +175,7 @@ public class ComuneController {
             return new ResponseEntity<>("Errore : Tipo errato", HttpStatus.BAD_REQUEST);
         }
         POIDTO p = new POIDTO(poi.getPOIId(), poi.getName(), poi.getDescription(),poi.getCoordinate(), poi.getTipo(), poi.getContents(), poi.getContentsPending());
-        POIController.insertPOI(id, pf, p);
+        poiController.insertPOI(id, pf, p);
         return new ResponseEntity<>("ok", HttpStatus.OK);
     }
     @GetMapping("/insertPOIPending")
@@ -196,7 +199,7 @@ public class ComuneController {
             return new ResponseEntity<>("Errore : Tipo errato", HttpStatus.BAD_REQUEST);
         }
         POIDTO p = new POIDTO(poi.getPOIId(), poi.getName(), poi.getDescription(),poi.getCoordinate(), poi.getTipo(), poi.getContents(), poi.getContentsPending());
-        POIController.insertPOIPending(id, pf, p);
+        poiController.insertPOIPending(id, pf, p);
         return new ResponseEntity<>("ok", HttpStatus.OK);
 
     }
@@ -337,6 +340,49 @@ public class ComuneController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Comune non trovato");
         }
+    }
+
+
+    @PostMapping("/segnalaPOI/{comuneId}/{poiId}")
+    public ResponseEntity<Object> segnalaPOI(@PathVariable Long comuneId, @PathVariable Long poiId) {
+        // Verifica l'esistenza del comune
+        Comune comune = comuneRepository.findById(comuneId).orElse(null);
+        if (comune == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Comune non trovato");
+        }
+
+        // Verifica l'esistenza del POI
+        POI poi = POIRepository.findById(poiId).orElse(null);
+        if (poi == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("POI non trovato");
+        }
+
+        // Aggiungi il POI segnalato alla lista POISegnalati del comune
+        comune.addPOISegnalato(poi);
+        comuneRepository.save(comune);
+
+        return ResponseEntity.ok("POI segnalato con successo");
+    }
+
+    @PostMapping("/segnalaItinerario/{comuneId}/{itinerarioId}")
+    public ResponseEntity<Object> segnalaItinerario(@PathVariable Long comuneId, @PathVariable Long itinerarioId) {
+        // Verifica l'esistenza del comune
+        Comune comune = comuneRepository.findById(comuneId).orElse(null);
+        if (comune == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Comune non trovato");
+        }
+
+        // Verifica l'esistenza dell'Itinerario
+        Itinerary itinerario = itineraryRepository.findById(itinerarioId).orElse(null);
+        if (itinerario == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Itinerario non trovato");
+        }
+
+        // Aggiungi l'Itinerario segnalato alla lista ItinerariSegnalati del comune
+        comune.addItinerarioSegnalato(itinerario);
+        comuneRepository.save(comune);
+
+        return ResponseEntity.ok("Itinerario segnalato con successo");
     }
 
 }

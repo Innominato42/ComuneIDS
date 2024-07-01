@@ -29,6 +29,9 @@ public class Contest {
     @DBRef
     private List<Content> contents;
 
+    @DBRef
+    private UtenteAutenticato vincitore;
+
     public Contest(String nome, String descrizione, boolean onInvite, boolean isClosed, List<UtenteAutenticato> utentiInvitati, List<Content> content)
     {
         this.contents=content;
@@ -41,6 +44,10 @@ public class Contest {
 
     }
 
+    public void setVincitore(UtenteAutenticato vincitore)
+    {
+        this.vincitore=vincitore;
+    }
     public Long getId() {
         return id;
     }
@@ -78,6 +85,28 @@ public class Contest {
         this.contents.add(content);
     }
 
+    public void setNome(String nome)
+    {
+        this.name=nome;
+    }
+
+    public void setDescrizione(String descrizione)
+    {
+        this.descrizione=descrizione;
+    }
+
+    public void setContents(List<Content> contents)
+    {
+        this.contents=contents;
+    }
+
+    public void addContestInfo(String nome, String descrizione, boolean onInvite, List<Content> content)
+    {
+        setContents(content);
+        setNome(nome);
+        setDescrizione(descrizione);
+        setOnInvite(onInvite);
+    }
     /**
      * Controlla se un contributor partecipa al contest
      * @param contributorId id del contributor da controllare
