@@ -12,7 +12,7 @@ import java.util.List;
 public class ContestManager {
 
     @Autowired
-    private static ContestRepository contestRepository;
+    private ContestRepository contestRepository;
 
     public void addContest(Contest contest) {
         contestRepository.save(contest);

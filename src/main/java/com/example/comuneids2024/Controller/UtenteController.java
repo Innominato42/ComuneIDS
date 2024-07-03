@@ -90,6 +90,7 @@ public class UtenteController {
         return new ResponseEntity<>("ok", HttpStatus.OK);
     }
 
+    @PostMapping("/gestore/rendiContributor/Autorizzato")
     private ResponseEntity<Object> rendiContribuorAutorizzato(@RequestParam("id") Long id)
     {
         this.roleManager.nuovoRuolo(id, Role.valueOf("CONTRIBUTORAUTORIZZATO"));
