@@ -22,6 +22,7 @@ public class UtenteAutenticato implements Utente{
     private Role ruolo;
     private String email;
 
+    private Role richiestaRuolo;
     @DBRef
     private List<POI> POIFavourites=new ArrayList<>();
 
@@ -34,6 +35,7 @@ public class UtenteAutenticato implements Utente{
         this.password=password;
         this.ruolo=ruolo;
         this.username=username;
+        this.richiestaRuolo=null;
     }
 
     public UtenteAutenticato(Long id, String username, String password, Role ruolo, String email)
@@ -43,11 +45,12 @@ public class UtenteAutenticato implements Utente{
         this.username=username;
         this.password=password;
         this.ruolo=ruolo;
+        this.richiestaRuolo=null;
     }
 
 
     public UtenteAutenticato() {
-
+        this.richiestaRuolo=null;
     }
 
     public Long getId()
