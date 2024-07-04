@@ -97,6 +97,35 @@ public class UtenteController {
         return new ResponseEntity<>("ok",HttpStatus.OK);
     }
 
+    @PostMapping("requestChangeRole")
+    public ResponseEntity<Object> requestChangeRole(Authentication authentication,Role ruolo) {
+        Long id = this.utenteAutenticatoRepository.findByUsername(authentication.getName()).getId();
+        if(this.roleManager.viewChangeRoleRequests().stream().filter(x -> x.getId().equals(id)).count() > 0){
+            return new ResponseEntity<>("Richiesta già inviata", HttpStatus.BAD_REQUEST);
+        }
+        this.roleManager.nuovaRichiestaCambioRuolo(id,ruolo);
+        return new ResponseEntity<>("ok", HttpStatus.OK);
+    }
+
+    @GetMapping("viewChangeRoleRequests")
+    public ResponseEntity<Object> viewChangeRoleRequests() {
+        return new ResponseEntity<>(this.roleManager.viewChangeRoleRequests(), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/rifiutaRichiesta")
+    public ResponseEntity<Object> rifiutaRichiesta(@RequestParam("id") Long id) {
+        this.roleManager.rifiutaRichiesta(id);
+        return new ResponseEntity<>("ok", HttpStatus.OK);
+    }
+
+
+    @PutMapping("/approvaRichiesta")
+    public ResponseEntity<Object> approvaRichiesta(@RequestParam("id") Long id) {
+        this.roleManager.approvaRichiesta(id);
+        return new ResponseEntity<>("ok", HttpStatus.OK);
+    }
+
+
 
 
 

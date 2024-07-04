@@ -55,12 +55,17 @@ public class RoleManager {
         });
     }
 
-    public void approvaRichiesta(Long id) {
-        UtenteAutenticato u = this.utentiAutenticatiManager.getUtente(id);
-        switch (u.getRole()) {
-            case CONTRIBUTOR -> u.setRole(Role.CONTRIBUTORAUTORIZZATO);
-            case TURISTAAUTENTICATO -> u.setRole(Role.CONTRIBUTOR);
-            default -> throw new IllegalArgumentException("Unexpected value: " + u.getRole());
+    public void approvaRichiesta(Long id)
+    {
+        RichiestaRuolo richiestaRuolo= this.richiestaRuoloRepository.findById(id).get();
+        UtenteAutenticato utente= this.utenteAutenticatoRepository.findById(richiestaRuolo.getId()).get();
+        if(richiestaRuolo.getRuoloRichiesto().equals("GESTORE"))
+        {
+            throw new RuntimeException("Impossibile diventare il gestore della piattaforma");
         }
+        else {
+            utente.setRole(richiestaRuolo.getRuoloRichiesto());
+        }
+        this.utenteAutenticatoRepository.save(utente);
     }
 }
