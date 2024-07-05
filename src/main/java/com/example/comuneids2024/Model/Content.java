@@ -60,4 +60,17 @@ public class Content {
         return  new Content(this.getNome(),this.getDescrizione(),this.getFile());
     }
 
+    public void setDescrizione(String descrizione) {
+        this.descrizione = descrizione;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void insertContentInfo(String nome, String descrizione)
+    {
+        this.setDescrizione(descrizione);
+        this.setNome(nome);
+    }
 }

@@ -43,6 +43,16 @@ public class Itinerary {
         return nome;
     }
 
+    public void setNome(String nome)
+    {
+        this.nome=nome;
+    }
+
+    public void setDescrizione(String descrizione)
+    {
+        this.descrizione=descrizione;
+    }
+
     public String getDescrizione()
     {
         return descrizione;
@@ -70,6 +80,12 @@ public class Itinerary {
     {
 
         return new ItineraryDTO(this.ItineraryId,this.nome,this.descrizione,this.getPOIs());
+    }
+
+    public void addItineraryInfo(String nome, String descrizione)
+    {
+        this.setNome(nome);
+        this.setDescrizione(descrizione);
     }
 }
 

@@ -23,7 +23,7 @@ public class ComuneController {
     private ComuneRepository comuneRepository;
 
     @Autowired
-    private ContentRepository ContentRepository;
+    private ContentRepository contentRepository;
 
     @Autowired
     private ItineraryController itineraryController;
@@ -232,19 +232,6 @@ public class ComuneController {
 
 
 
-
-
-    //Da spostare in comune?
-    /*public boolean isInComune(Coordinate coordinate) {
-        for (POI poi : poiList) {
-            if (poi.getCoordinate().equals(coordinate)) {
-                return true; // Trovato un POI con le stesse coordinate
-            }
-        }
-        return false; // Nessun POI trovato con le stesse coordinate
-    }*/
-
-
     @GetMapping("/getPOI/{comuneId}/{poiId}")
     public ResponseEntity<Object> getPOI(@PathVariable Long comuneId, @PathVariable Long poiId) {
         Optional<Comune> comuneOpt = comuneRepository.findById(comuneId);
@@ -383,6 +370,52 @@ public class ComuneController {
         comuneRepository.save(comune);
 
         return ResponseEntity.ok("Itinerario segnalato con successo");
+    }
+
+    @PostMapping("/modificaItinerario")
+    public ResponseEntity<Object> modificaItinerario(Long id, String nome, String descrizione)
+    {
+        Itinerary i= this.itineraryRepository.findById(id).orElse(null);
+        if(i==null)
+        {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Itinerario non trovato");
+        }
+        else {
+            i.addItineraryInfo(nome, descrizione);
+            itineraryRepository.save(i);
+            return ResponseEntity.ok("Itinerario modificato con successo");
+        }
+
+    }
+    @PostMapping("/modificaContenuto")
+    public ResponseEntity<Object> modificaContenuto(Long id, String nome, String descrizione)
+    {
+        Content i= this.contentRepository.findById(id).orElse(null);
+        if(i==null)
+        {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Contenuto non trovato");
+        }
+        else {
+            i.insertContentInfo(nome,descrizione);
+            contentRepository.save(i);
+            return ResponseEntity.ok("Contenuto modificato con successo");
+        }
+
+    }
+    @PostMapping("/modificaPOI")
+    public ResponseEntity<Object> modificaPOI(Long id, String nome, String descrizione)
+    {
+        POI poi=this.POIRepository.findById(id).orElse(null);
+        if(poi==null)
+        {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("POI non trovato");
+        }
+        else {
+            poi.insertPOIInfo(nome,descrizione);
+            POIRepository.save(poi);
+            return ResponseEntity.ok("POI modificato con successo");
+        }
+
     }
 
 }

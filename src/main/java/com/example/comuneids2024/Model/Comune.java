@@ -141,6 +141,15 @@ public class Comune {
         return null;
     }
 
+    public boolean isInComune(Coordinate coordinate) {
+        for (POI poi : POIValidate) {
+            if (poi.getCoordinate().equals(coordinate)) {
+                return true; // Trovato un POI con le stesse coordinate
+            }
+        }
+        return false; // Nessun POI trovato con le stesse coordinate
+    }
+
     public void addItinerary(Itinerary itinerary)
     {
         this.itinerarioValidato.add(itinerary);
@@ -269,6 +278,8 @@ public class Comune {
     {
         this.itinerariSegnalati.add(i);
     }
+
+
 
 
 }
