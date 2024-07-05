@@ -35,9 +35,6 @@ public class ComuneController {
     private POIRepositoriy POIRepository;
 
     @Autowired
-    private UtenteAutenticatoRepository UtenteAutenticatoRepository;
-
-    @Autowired
     private ContentController contentController;
 
     @Autowired
