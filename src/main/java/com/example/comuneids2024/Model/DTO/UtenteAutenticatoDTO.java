@@ -29,6 +29,9 @@ public class UtenteAutenticatoDTO {
         ItineraryFavourites = itineraryFavourites;
     }
 
+    public UtenteAutenticatoDTO()
+    {}
+
     public Long getId() {
         return id;
     }

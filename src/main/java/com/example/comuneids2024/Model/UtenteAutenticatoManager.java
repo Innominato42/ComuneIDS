@@ -42,7 +42,7 @@ public class UtenteAutenticatoManager {
      * @param username username dell utente
      * @return true se esiste, false altrimenti
      */
-    public boolean ContainsUtente(String email, String username)
+    public boolean containsUtente(String email, String username)
     {
         return utenteAutenticatoRepository.findAll().stream().anyMatch(u -> u.getEmail().equals(email) || (u.getUsername().equals(username)));
     }

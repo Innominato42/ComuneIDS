@@ -1,16 +1,16 @@
 package com.example.comuneids2024.Controller;
 
 import com.example.comuneids2024.Model.*;
+import com.example.comuneids2024.Model.DTO.UtenteAutenticatoDTO;
 import com.example.comuneids2024.Repository.ComuneRepository;
 import com.example.comuneids2024.Repository.UtenteAutenticatoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
 
 @RestController
 @RequestMapping("/Utente")
@@ -127,7 +127,24 @@ public class UtenteController {
 
 
 
-
+    @PostMapping("registrazioneUtente")
+    public ResponseEntity<Object> registrationUser(@RequestBody UtenteAutenticatoDTO utente) {
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if (!(auth instanceof AnonymousAuthenticationToken)) {
+                return new ResponseEntity<>("Utente già autenticato o ruolo non disponibile alla registrazione", HttpStatus.BAD_REQUEST);
+            }
+            if (this.utenteAutenticatoManager.containsUtente(utente.getEmail(), utente.getUsername())) {
+                return new ResponseEntity<>("Username e/o email già utilizzate", HttpStatus.BAD_REQUEST);
+            }
+            System.out.println("Utente: " + utente.getEmail() + ", " + utente.getUsername());
+            this.registrazioneController.registrationUser(utente.getEmail(), utente.getUsername(), utente.getPassword(), utente.getRuolo());
+            return new ResponseEntity<>("ok", HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Errore interno del server", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 
 }

@@ -13,7 +13,7 @@ public class RegistrazioneController {
     private UtenteAutenticatoManager utenteAutenticatoManager;
 
     public boolean registrationUser(String email, String username, String password, Role role) {
-        if (this.utenteAutenticatoManager.ContainsUtente(email, username)) {
+        if (this.utenteAutenticatoManager.containsUtente(email, username)) {
             return false;
         }
         if (role.equals(Role.TURISTAAUTENTICATO) || role.equals(Role.CONTRIBUTOR)) {
