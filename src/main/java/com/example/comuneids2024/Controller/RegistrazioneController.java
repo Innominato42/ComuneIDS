@@ -24,11 +24,11 @@ public class RegistrazioneController {
         }
     }
 
-    public void refuseRegistration(Long id) {
+    public void refuseRegistration(String id) {
         this.utenteAutenticatoManager.rifiutaRegistration(id);
     }
 
-    public void approveRegistration(Long id) {
+    public void approveRegistration(String id) {
         this.utenteAutenticatoManager.approvaRegistration(id);
     }
 }

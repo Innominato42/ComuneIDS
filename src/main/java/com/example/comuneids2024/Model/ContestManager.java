@@ -24,7 +24,7 @@ public class ContestManager {
      * @param id del contest
      * @return contest richiesto
      */
-    public Contest getContest(Long id) {
+    public Contest getContest(String id) {
         return contestRepository.findById(id).orElse(null);
     }
 
@@ -45,7 +45,7 @@ public class ContestManager {
      * @param contributorID id del contributor
      * @return la lista con tutti i contest del contributor
      */
-    public List<Contest> getAllContest(Long contributorID)
+    public List<Contest> getAllContest(String contributorID)
     {
 
         List <Contest> contests = new ArrayList<>();
@@ -71,7 +71,7 @@ public class ContestManager {
         return contests;
     }
 
-    public void deleteContest(Long id) {
+    public void deleteContest(String id) {
         this.contestRepository.deleteById(id);
     }
 

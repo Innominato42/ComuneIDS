@@ -18,21 +18,21 @@ public class ContentController {
     private ContentRepository contentRepository;
 
 
-    public void insertContentToPOI(Long idComune, Long idPOI, Content c)
+    public void insertContentToPOI(String idComune, String idPOI, Content c)
     {
         Comune comune=this.comuneRepository.findById(idComune).get();
         comune.getPOI(idPOI).addContent(c);
         this.comuneRepository.save(comune);
     }
 
-    public void insertContentToPOIPending(Long idComune, Long idPOI, Content c)
+    public void insertContentToPOIPending(String idComune, String idPOI, Content c)
     {
         Comune comune=this.comuneRepository.findById(idComune).get();
         comune.getPOI(idPOI).addContentPending(c);
         this.comuneRepository.save(comune);
     }
 
-    public Content viewContent(Long contentID) {
+    public Content viewContent(String contentID) {
         return contentRepository.findById(contentID).orElse(null);
     }
 

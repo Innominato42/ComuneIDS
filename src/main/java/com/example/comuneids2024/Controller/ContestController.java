@@ -37,8 +37,8 @@ public class ContestController {
 
 
     @PostMapping("/createContest")
-    public ResponseEntity<Object> createContest(@RequestParam("idComune") Long idComune, @RequestBody Contest c, @RequestParam("content") Long[] content) {
-        for (Long i : content) {
+    public ResponseEntity<Object> createContest(@RequestParam("idComune") String idComune, @RequestBody Contest c, @RequestParam("content") String[] content) {
+        for (String i : content) {
             c.addContent(this.contentRepository.findById(i).orElse(null));
         }
         Comune comune = this.comuneRepository.findById(idComune).orElse(null);

@@ -14,7 +14,7 @@ import java.util.List;
 public abstract class POI {
 
     @Id
-    private Long idPOI;
+    private String idPOI;
     private String name;
     private String description;
     private Tipo tipo;
@@ -103,7 +103,7 @@ public abstract class POI {
     }
 
 
-    public Long getPOIId() {
+    public String getPOIId() {
         return idPOI;
     }
 

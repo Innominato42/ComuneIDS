@@ -36,11 +36,11 @@ public class UtenteController {
 
 
     @PostMapping("addPOIToFavorites")
-    public ResponseEntity<Object> addPOIToFavorites(Authentication authentication, @RequestParam("POIid") Long POIid, @RequestParam("idComune") Long idComune) {
+    public ResponseEntity<Object> addPOIToFavorites(Authentication authentication, @RequestParam("POIid") String POIid, @RequestParam("idComune") String idComune) {
         if(comuneRepository.findById(idComune).get().getPOI(POIid) == null){
             return new ResponseEntity<>("POI non presente nel comune", HttpStatus.BAD_REQUEST);
         }
-        Long id = this.utenteAutenticatoRepository.findByUsername(authentication.getName()).getId();
+        String id = this.utenteAutenticatoRepository.findByUsername(authentication.getName()).getId();
         if (this.preferitiManager.addPOItoFavourites(id, POIid, idComune)) {
             return new ResponseEntity<>("ok", HttpStatus.OK);
         }else {
@@ -49,11 +49,11 @@ public class UtenteController {
     }
 
     @PostMapping("addItineraryToFavorites")
-    public ResponseEntity<Object> addItineraryToFavorites(Authentication authentication, @RequestParam("itineraryId") Long itineraryId, @RequestParam("idComune") Long idComune) {
+    public ResponseEntity<Object> addItineraryToFavorites(Authentication authentication, @RequestParam("itineraryId") String itineraryId, @RequestParam("idComune") String idComune) {
         if(comuneRepository.findById(idComune).get().getItinerary(itineraryId) == null){
             return new ResponseEntity<>("Itinerario non presente nel comune", HttpStatus.BAD_REQUEST);
         }
-        Long id = this.utenteAutenticatoRepository.findByUsername(authentication.getName()).getId();
+        String id = this.utenteAutenticatoRepository.findByUsername(authentication.getName()).getId();
         if (this.preferitiManager.addPOItoFavourites(id, itineraryId, idComune)) {
             return new ResponseEntity<>("ok", HttpStatus.OK);
         }else {
@@ -61,7 +61,7 @@ public class UtenteController {
         }
     }
     @PutMapping ("changeRole")
-    public ResponseEntity<Object> changeRole(@RequestParam("id") Long id, @RequestParam("role") Role role) {
+    public ResponseEntity<Object> changeRole(@RequestParam("id") String id, @RequestParam("role") Role role) {
         if(role.equals(Role.GESTORE) || role.equals(Role.CURATORE)){
             return new ResponseEntity<>("Ruolo non assegnabile", HttpStatus.BAD_REQUEST);
         }
@@ -80,18 +80,18 @@ public class UtenteController {
     }
 
     @DeleteMapping("/gestore/refuseRegistration")
-    public ResponseEntity<Object> refuseRegistration(@RequestParam("id") Long id) {
+    public ResponseEntity<Object> refuseRegistration(@RequestParam("id") String id) {
         this.registrazioneController.refuseRegistration(id);
         return new ResponseEntity<>("ok", HttpStatus.OK);
     }
     @PutMapping("/gestore/approveRegistration")
-    public ResponseEntity<Object> approveRegistration(@RequestParam("id") Long id) {
+    public ResponseEntity<Object> approveRegistration(@RequestParam("id") String id) {
         this.registrazioneController.approveRegistration(id);
         return new ResponseEntity<>("ok", HttpStatus.OK);
     }
 
     @PostMapping("/gestore/rendiContributor/Autorizzato")
-    private ResponseEntity<Object> rendiContributorAutorizzato(@RequestParam("id") Long id)
+    private ResponseEntity<Object> rendiContributorAutorizzato(@RequestParam("id") String id)
     {
         this.roleManager.nuovoRuolo(id, Role.valueOf("CONTRIBUTORAUTORIZZATO"));
         return new ResponseEntity<>("ok",HttpStatus.OK);
@@ -99,7 +99,7 @@ public class UtenteController {
 
     @PostMapping("requestChangeRole")
     public ResponseEntity<Object> requestChangeRole(Authentication authentication,Role ruolo) {
-        Long id = this.utenteAutenticatoRepository.findByUsername(authentication.getName()).getId();
+        String id = this.utenteAutenticatoRepository.findByUsername(authentication.getName()).getId();
         if(this.roleManager.viewChangeRoleRequests().stream().filter(x -> x.getId().equals(id)).count() > 0){
             return new ResponseEntity<>("Richiesta già inviata", HttpStatus.BAD_REQUEST);
         }

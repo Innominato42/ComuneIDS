@@ -16,7 +16,7 @@ public class POIController {
     @Autowired
     private POIRepositoriy poiRepository;
 
-    public void insertPOI(Long idComune, POIFactory p, POIDTO poigi)
+    public void insertPOI(String idComune, POIFactory p, POIDTO poigi)
     {
         POI poi= p.createPOI(poigi.getCoordinate());
         poi.insertPOIInfo(poigi.getName(),poigi.getDescription());
@@ -33,7 +33,7 @@ public class POIController {
     }
 
 
-    public  void insertPOIPending(Long idComune, POIFactory p, POIDTO poigi) {
+    public  void insertPOIPending(String idComune, POIFactory p, POIDTO poigi) {
         POI poi = p.createPOI(poigi.getCoordinate());
         poi.insertPOIInfo(poigi.getName(), poigi.getDescription());
         if (poi instanceof POILuogoOra plo) {
@@ -47,7 +47,7 @@ public class POIController {
         comuneRepository.save(c);
     }
 
-    public POI viewPOI(Long poiID) {
+    public POI viewPOI(String poiID) {
         return poiRepository.findById(poiID).orElse(null);
     }
 

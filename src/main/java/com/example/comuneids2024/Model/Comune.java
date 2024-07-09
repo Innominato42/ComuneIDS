@@ -129,7 +129,7 @@ public class Comune {
      * @param id di cui cercare il POI
      * @return il POI se presente, null altrimenti
      */
-    public POI getPOI(Long id)
+    public POI getPOI(String id)
     {
         for(POI p : getPOIValidate())
         {
@@ -166,7 +166,7 @@ public class Comune {
      * @param id dell itinerario
      * @return l itinerario con quell id, null altrimenti
      */
-    public Itinerary getItinerary(Long id)
+    public Itinerary getItinerary(String id)
     {
         for(Itinerary i : itinerarioValidato)
         {
@@ -182,7 +182,7 @@ public class Comune {
      * Elimina uno specifico POI. Scorro con una stream tutte le liste che possono contenere POI
      * @param id del POI da eliminare
      */
-    public void deletePOI(Long id) {
+    public void deletePOI(String id) {
         this.itinerarioValidato.stream().forEach(itinerary -> itinerary.getPOIs().removeIf(p -> p.getPOIId().equals(id)));
         this.itinerarioAttesa.stream().forEach(itinerary -> itinerary.getPOIs().removeIf(p -> p.getPOIId().equals(id)));
         this.POIValidate.removeIf(poi -> poi.getPOIId().equals(id));
@@ -192,7 +192,7 @@ public class Comune {
      * Elimina uno specifico itinerario.
      * @param id dell'itinerario da eliminare
      */
-    public void deleteItinerario (Long id){
+    public void deleteItinerario (String id){
         this.itinerarioValidato.removeIf(Itinerary -> Itinerary.getItineraryId().equals(id));
         this.itinerarioAttesa.removeIf(Itinerary -> Itinerary.getItineraryId().equals(id));
     }
@@ -200,7 +200,7 @@ public class Comune {
 
 
 
-    public Itinerary getItineraryPending(Long id)
+    public Itinerary getItineraryPending(String id)
     {
         for(Itinerary i : itinerarioAttesa)
         {
@@ -257,7 +257,7 @@ public class Comune {
         this.POIAttesa = POIAttesa;
     }
 
-    public boolean removeContest(Long id) {
+    public boolean removeContest(String id) {
         return this.contests.removeIf(contest -> contest.getId().equals(id));
     }
 

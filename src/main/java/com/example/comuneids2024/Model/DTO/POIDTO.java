@@ -28,7 +28,7 @@ public class POIDTO {
 
     private LocalTime[] closingTime;
 
-    public POIDTO(Long id, String name, String description, Coordinate coordinate, Tipo type, List<Content> contest, List<Content> contentPending) {
+    public POIDTO(String id, String name, String description, Coordinate coordinate, Tipo type, List<Content> contest, List<Content> contentPending) {
         this.id = id;
         this.name = name;
         this.description = description;

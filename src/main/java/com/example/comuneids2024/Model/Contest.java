@@ -13,7 +13,7 @@ public class Contest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "contest_generator")
-    private Long id;
+    private String id;
 
     private String name;
 
@@ -48,7 +48,7 @@ public class Contest {
     {
         this.vincitore=vincitore;
     }
-    public Long getId() {
+    public String getId() {
         return id;
     }
 

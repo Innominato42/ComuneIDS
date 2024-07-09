@@ -27,12 +27,12 @@ public class UtenteAutenticatoManager {
         this.utenteAutenticatoRepository.save(utenteAutenticato);
     }
 
-    public UtenteAutenticato getUtente(Long id)
+    public UtenteAutenticato getUtente(String id)
     {
         return this.utenteAutenticatoRepository.findById(id).get();
     }
 
-    public UtenteAutenticatoDTO getUtenteDTO(Long id) {
+    public UtenteAutenticatoDTO getUtenteDTO(String id) {
         return this.utenteAutenticatoRepository.findById(id).get().getUtenteInfo();
     }
 
@@ -56,17 +56,17 @@ public class UtenteAutenticatoManager {
         this.utenteAutenticatoRepository.save(user);
     }
 
-    public void approvaRegistration(Long id) {
+    public void approvaRegistration(String id) {
         this.utenteAutenticatoRepository.findAll().add(this.registrazioniUtenti.stream().filter(u -> u.getId().equals(id)).findFirst().get());
         this.registrazioniUtenti.removeIf(u -> u.getId().equals(id));
     }
 
-    public void rifiutaRegistration(Long id) {
+    public void rifiutaRegistration(String id) {
         this.registrazioniUtenti.removeIf(u -> u.getId().equals(id));
         this.utenteAutenticatoRepository.deleteById(id);
     }
 
-    public void cambiaRuolo(Long id, Role role) {
+    public void cambiaRuolo(String id, Role role) {
         UtenteAutenticato utente = utenteAutenticatoRepository.findById(id).get();
         utente.setRole(role);
         this.utenteAutenticatoRepository.save(utente);

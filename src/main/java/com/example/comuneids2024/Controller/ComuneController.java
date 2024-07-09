@@ -88,7 +88,7 @@ public class ComuneController {
 
 
     @GetMapping("/getAllPOI")
-    public ResponseEntity<Object> getAllPOI(Long id){
+    public ResponseEntity<Object> getAllPOI(String id){
 
         if(this.comuneRepository.findById(id).isEmpty())
         {
@@ -102,7 +102,7 @@ public class ComuneController {
     }
 
     @GetMapping("/getAllPendingPOI")
-    public ResponseEntity<Object> getAllPendingPOI(Long id){
+    public ResponseEntity<Object> getAllPendingPOI(String id){
 
         if(this.comuneRepository.findById(id).isEmpty())
         {
@@ -115,7 +115,7 @@ public class ComuneController {
     }
 
     @GetMapping("/getAllItinerary")
-    public ResponseEntity<Object> getAllItinerary(@RequestParam("comuneId") Long id) {
+    public ResponseEntity<Object> getAllItinerary(@RequestParam("comuneId") String id) {
         if (this.comuneRepository.findById(id).isEmpty())
             return new ResponseEntity<>("Errore: Comune non trovato", HttpStatus.BAD_REQUEST);
         else
@@ -132,7 +132,7 @@ public class ComuneController {
 
 
     @PostMapping("/createItinerary")
-    public ResponseEntity<Object> createItinerary(Long idComune, Itinerary i, Long [] poi)
+    public ResponseEntity<Object> createItinerary(String idComune, Itinerary i, String [] poi)
     {
         if(poi.length < 2)
             return new ResponseEntity<>("Errore: Itinerario deve contenere almeno 2 POI", HttpStatus.BAD_REQUEST);
@@ -141,7 +141,7 @@ public class ComuneController {
     }
 
     @PostMapping("/createPendingItinerary")
-    public ResponseEntity<Object> createPendingItinerary(Long idComune, Itinerary i, Long [] poi)
+    public ResponseEntity<Object> createPendingItinerary(String idComune, Itinerary i, String [] poi)
     {
         if(poi.length < 2)
             return new ResponseEntity<>("Errore: Itinerario deve contenere almeno 2 POI", HttpStatus.BAD_REQUEST);
@@ -152,7 +152,7 @@ public class ComuneController {
 
 
     @GetMapping("/insertPOI")
-    public ResponseEntity<Object> insertPOI(Long id, POI poi)
+    public ResponseEntity<Object> insertPOI(String id, POI poi)
     {
         POIFactory pf;
         if(poi.getTipo().equals(Tipo.LUOGO))
@@ -176,7 +176,7 @@ public class ComuneController {
         return new ResponseEntity<>("ok", HttpStatus.OK);
     }
     @GetMapping("/insertPOIPending")
-    public ResponseEntity<Object> insertPOIPending(Long id, POI poi)
+    public ResponseEntity<Object> insertPOIPending(String id, POI poi)
     {
         POIFactory pf;
         if(poi.getTipo().equals(Tipo.LUOGO))
@@ -202,7 +202,7 @@ public class ComuneController {
     }
 
     @PostMapping("insertContentToPOI")
-    public ResponseEntity<Object> insertContentToPOI(@RequestParam("idComune") Long idComune, @RequestParam("idPOI") Long id,  @RequestPart("content") Content c, @RequestPart("file") MultipartFile file)
+    public ResponseEntity<Object> insertContentToPOI(@RequestParam("idComune") String idComune, @RequestParam("idPOI") String id,  @RequestPart("content") Content c, @RequestPart("file") MultipartFile file)
     {
         try {
             c.addFile(file.getBytes());
@@ -214,7 +214,7 @@ public class ComuneController {
     }
 
     @PostMapping("insertPendingContentToPOI")
-    public ResponseEntity<Object> insertPendingContentToPOI(@RequestParam("idComune") Long idComune, @RequestParam("idPOI") Long id,  @RequestPart("content") Content c, @RequestPart("file") MultipartFile file)
+    public ResponseEntity<Object> insertPendingContentToPOI(@RequestParam("idComune") String idComune, @RequestParam("idPOI") String id,  @RequestPart("content") Content c, @RequestPart("file") MultipartFile file)
     {
         try {
             c.addFile(file.getBytes());

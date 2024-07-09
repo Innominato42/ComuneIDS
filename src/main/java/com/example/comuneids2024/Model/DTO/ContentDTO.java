@@ -10,7 +10,7 @@ public class ContentDTO {
     private final byte[] file;
 
 
-    public ContentDTO(Long id, String nome, String descrizione,byte[] file)
+    public ContentDTO(String id, String nome, String descrizione,byte[] file)
     {
         this.descrizione=descrizione;
         this.nome=nome;

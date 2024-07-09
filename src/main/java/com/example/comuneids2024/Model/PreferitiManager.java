@@ -18,7 +18,7 @@ public class PreferitiManager {
     private UtenteAutenticatoManager utenteAutenticatoManager;
 
 
-    public boolean addPOItoFavourites(Long id, Long idComune, Long idPOI) {
+    public boolean addPOItoFavourites(String id, String idComune, String idPOI) {
         UtenteAutenticato utente = utenteAutenticatoManager.getUtente(id);
         if (utente != null) {
             POI poi = poiRepository.findById(idPOI).orElse(null);
@@ -35,7 +35,7 @@ public class PreferitiManager {
 
     }
 
-    public void removePOIfromFavourites(Long id, Long idPOI) {
+    public void removePOIfromFavourites(String id, String idPOI) {
         UtenteAutenticato utente = utenteAutenticatoManager.getUtente(id);
         if (utente != null) {
             POI poi = poiRepository.findById(idPOI).orElse(null);
@@ -50,7 +50,7 @@ public class PreferitiManager {
         }
     }
 
-    public void addItineraryToFavourites(Long id, Long idComune, Long idItinerary) {
+    public void addItineraryToFavourites(String id, String idComune, String idItinerary) {
         UtenteAutenticato utente = utenteAutenticatoManager.getUtente(id);
         if (utente != null) {
             Itinerary itinerary = itineraryRepository.findById(idItinerary).orElse(null);
@@ -65,7 +65,7 @@ public class PreferitiManager {
         }
     }
 
-    public void removeItineraryFromFavourites(Long id, Long idItinerary) {
+    public void removeItineraryFromFavourites(String id, String idItinerary) {
         UtenteAutenticato utente = utenteAutenticatoManager.getUtente(id);
         if (utente != null) {
             Itinerary itinerary = itineraryRepository.findById(idItinerary).orElse(null);

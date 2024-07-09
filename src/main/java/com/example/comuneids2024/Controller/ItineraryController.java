@@ -20,9 +20,9 @@ public class ItineraryController {
     @Autowired
     private ItineraryRepository itineraryRepository;
 
-    public void createItinerary(Long idComune, Itinerary i, Long[] poi)
+    public void createItinerary(String idComune, Itinerary i, String[] poi)
     {
-        for(Long p : poi )
+        for(String p : poi )
         {
             i.addPOI(this.poiRepositoriy.findById(p).orElse(null));
         }
@@ -31,9 +31,9 @@ public class ItineraryController {
         this.comuneRepository.save(c);
     }
 
-    public void createItineraryPending(Long idComune, Itinerary i, Long[] poi)
+    public void createItineraryPending(String idComune, Itinerary i, String[] poi)
     {
-        for(Long p : poi )
+        for(String p : poi )
         {
             i.addPOI(this.poiRepositoriy.findById(p).orElse(null));
         }
@@ -42,7 +42,7 @@ public class ItineraryController {
         this.comuneRepository.save(c);
     }
 
-    public Itinerary viewItinerary(Long ItineraryID)
+    public Itinerary viewItinerary(String ItineraryID)
     {
         return this.itineraryRepository.findById(ItineraryID).orElse(null);
     }
