@@ -3,7 +3,7 @@ package com.example.comuneids2024.Controller;
 import com.example.comuneids2024.Model.*;
 import com.example.comuneids2024.Model.DTO.POIDTO;
 import com.example.comuneids2024.Repository.ComuneRepository;
-import com.example.comuneids2024.Repository.POIRepositoriy;
+import com.example.comuneids2024.Repository.POIRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -14,7 +14,7 @@ public class POIController {
     private   ComuneRepository comuneRepository;
 
     @Autowired
-    private POIRepositoriy poiRepository;
+    private POIRepository poiRepository;
 
     public void insertPOI(String idComune, POIFactory p, POIDTO poigi)
     {

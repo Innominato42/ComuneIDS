@@ -1,7 +1,7 @@
 package com.example.comuneids2024.Model;
 
 import com.example.comuneids2024.Repository.ItineraryRepository;
-import com.example.comuneids2024.Repository.POIRepositoriy;
+import com.example.comuneids2024.Repository.POIRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class PreferitiManager {
 
     @Autowired
-    private POIRepositoriy poiRepository;
+    private POIRepository poiRepository;
 
     @Autowired
     private ItineraryRepository itineraryRepository;

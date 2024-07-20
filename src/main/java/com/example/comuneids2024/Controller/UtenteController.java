@@ -12,6 +12,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/Utente")
 public class UtenteController {
@@ -138,8 +140,10 @@ public class UtenteController {
                 return new ResponseEntity<>("Username e/o email già utilizzate", HttpStatus.BAD_REQUEST);
             }
             System.out.println("Utente: " + utente.getEmail() + ", " + utente.getUsername());
-            this.registrazioneController.registrationUser(utente.getEmail(), utente.getUsername(), utente.getPassword(), utente.getRuolo());
-            return new ResponseEntity<>("ok", HttpStatus.OK);
+            if(this.registrazioneController.registrationUser(utente.getEmail(), utente.getUsername(), utente.getPassword(), utente.getRuolo()))
+                return new ResponseEntity<>("ok", HttpStatus.OK);
+            else
+                return new ResponseEntity<>("Scegli un ruolo che sia turista auteticato o contributor", HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>("Errore interno del server", HttpStatus.INTERNAL_SERVER_ERROR);

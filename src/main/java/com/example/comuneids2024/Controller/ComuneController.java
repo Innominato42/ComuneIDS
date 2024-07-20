@@ -32,7 +32,7 @@ public class ComuneController {
     private ItineraryRepository itineraryRepository;
 
     @Autowired
-    private POIRepositoriy POIRepository;
+    private POIRepository POIRepository;
 
     @Autowired
     private ContentController contentController;
