@@ -16,7 +16,7 @@ public class UtenteAutenticato implements Utente{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "utente_generator")
 
-    private Long id;
+    private String id;
     private String username;
     private String password;
     private Role ruolo;
@@ -38,7 +38,7 @@ public class UtenteAutenticato implements Utente{
         this.richiestaRuolo=null;
     }
 
-    public UtenteAutenticato(Long id, String username, String password, Role ruolo, String email)
+    public UtenteAutenticato(String id, String username, String password, Role ruolo, String email)
     {
         this.email=email;
         this.id=id;
@@ -53,7 +53,7 @@ public class UtenteAutenticato implements Utente{
         this.richiestaRuolo=null;
     }
 
-    public Long getId()
+    public String getId()
     {
         return id;
     }

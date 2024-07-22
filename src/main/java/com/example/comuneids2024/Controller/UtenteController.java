@@ -115,14 +115,14 @@ public class UtenteController {
     }
 
     @DeleteMapping("/rifiutaRichiesta")
-    public ResponseEntity<Object> rifiutaRichiesta(@RequestParam("id") Long id) {
+    public ResponseEntity<Object> rifiutaRichiesta(@RequestParam("id") String id) {
         this.roleManager.rifiutaRichiesta(id);
         return new ResponseEntity<>("ok", HttpStatus.OK);
     }
 
 
     @PutMapping("/approvaRichiesta")
-    public ResponseEntity<Object> approvaRichiesta(@RequestParam("id") Long id) {
+    public ResponseEntity<Object> approvaRichiesta(@RequestParam("id") String id) {
         this.roleManager.approvaRichiesta(id);
         return new ResponseEntity<>("ok", HttpStatus.OK);
     }

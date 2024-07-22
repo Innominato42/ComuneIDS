@@ -113,11 +113,11 @@ public class Contest {
      * @return true se il contributor è invitato, false altrimenti
      * @return true se il contest non è su invito
      */
-    public boolean contributorInvited(Long contributorId) {
+    public boolean contributorInvited(String contributorId) {
 
         if(isOnInvite())
         {
-            return utentiInvitati.stream().anyMatch(utenteAutenticato -> utenteAutenticato.getId()== contributorId);
+            return utentiInvitati.stream().anyMatch(utenteAutenticato -> utenteAutenticato.getId().equals(contributorId) );
 
         }
         else
@@ -143,7 +143,7 @@ public class Contest {
      * @return l email dell autore
      */
 
-    public String getAutoreContentEmail(Long contentId) {
+    public String getAutoreContentEmail(String contentId) {
         Optional<Content> contentOpt = contents.stream()
                 .filter(content -> content.getId().equals(contentId))
                 .findFirst();

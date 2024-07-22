@@ -3,6 +3,8 @@ package com.example.comuneids2024.Controller;
 import com.example.comuneids2024.Model.*;
 import com.example.comuneids2024.Model.DTO.POIDTO;
 import com.example.comuneids2024.Repository.ComuneRepository;
+
+
 import com.example.comuneids2024.Repository.POIRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

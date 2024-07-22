@@ -53,7 +53,7 @@ public class ContestController {
 
 
     @GetMapping("/viewContest/{contestID}")
-    public ResponseEntity<Contest> viewContest(@PathVariable Long contestID) {
+    public ResponseEntity<Contest> viewContest(@PathVariable String contestID) {
         Contest contest = contestRepository.findById(contestID).orElse(null);
         if (contest == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -69,7 +69,7 @@ public class ContestController {
 
 
     @PostMapping("/inviteContributor")
-    public ResponseEntity<String> inviteContributor(@RequestParam Long id, @RequestParam Long idContributor) {
+    public ResponseEntity<String> inviteContributor(@RequestParam String id, @RequestParam String idContributor) {
         Contest contest = this.contestRepository.findById(id).orElse(null);
         if (contest == null) {
             return new ResponseEntity<>("Contest non trovato", HttpStatus.NOT_FOUND);
@@ -81,7 +81,7 @@ public class ContestController {
 
 
     @PostMapping("/insertContentInfo")
-    public ResponseEntity<String> insertContentInfo(@RequestParam Long idContest, @RequestParam String nome,
+    public ResponseEntity<String> insertContentInfo(@RequestParam String idContest, @RequestParam String nome,
                                                     @RequestParam String descrizione, @RequestParam boolean onInvite,
                                                     @RequestBody List<Content> content) {
         Contest contest = this.contestRepository.findById(idContest).orElse(null);
@@ -96,7 +96,7 @@ public class ContestController {
 
     // Metodo per selezionare tutti i contenuti di un contest specifico
     @GetMapping("/selezionaContestContent/{contestID}")
-    public ResponseEntity<List<Content>> selezionaContestContent(@PathVariable Long contestID) {
+    public ResponseEntity<List<Content>> selezionaContestContent(@PathVariable String contestID) {
         Contest contest = contestRepository.findById(contestID).orElse(null);
         if (contest == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -106,7 +106,7 @@ public class ContestController {
 
 
     @PostMapping("/selezionaContentVincitore")
-    public ResponseEntity<String> selezionaContentVincitore(@RequestParam Long contestID, @RequestParam Long contentID) {
+    public ResponseEntity<String> selezionaContentVincitore(@RequestParam String contestID, @RequestParam String contentID) {
         Contest contest = contestRepository.findById(contestID).orElse(null);
         if (contest == null) {
             return new ResponseEntity<>("Contest non trovato", HttpStatus.NOT_FOUND);

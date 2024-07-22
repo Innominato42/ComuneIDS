@@ -1,7 +1,7 @@
 package com.example.comuneids2024.Model.DTO;
 
 public class ContentDTO {
-    private final Long id;
+    private final String id;
 
     private final String nome;
 
@@ -18,7 +18,7 @@ public class ContentDTO {
         this.file=file;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
     public String getNome(){return nome;}

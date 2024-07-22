@@ -16,7 +16,7 @@ public class Itinerary {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "itinerary_id_seq")
-    private Long ItineraryId;
+    private String ItineraryId;
 
     private String nome;
 
@@ -62,7 +62,7 @@ public class Itinerary {
     {
         return POIs;
     }
-    public Long getItineraryId()
+    public String getItineraryId()
     {
         return ItineraryId;
     }

@@ -81,7 +81,7 @@ public class POILuogo extends POI{
     }
 
     @Override
-    public Long getPOIId() {
+    public String getPOIId() {
         return super.getPOIId();
     }
 

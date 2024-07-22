@@ -11,7 +11,7 @@ public class Content {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "content_generator")
-    private Long idContent;
+    private String idContent;
 
     private String nome;
 
@@ -43,7 +43,7 @@ public class Content {
     {
         return this.creatore;
     }
-    public Long getId(){return this.idContent;}
+    public String getId(){return this.idContent;}
     public String getNome()
     {
         return this.nome;

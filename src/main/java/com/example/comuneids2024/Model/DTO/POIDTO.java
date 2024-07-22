@@ -10,7 +10,7 @@ import java.util.List;
 
 //TODO CAPIRE SE QUESTO TIPO DI CLASSE SERVE VERAMENTE
 public class POIDTO {
-    private final Long id;
+    private final String id;
     private final String name;
     private final String description;
     private final Coordinate coordinate;
@@ -42,7 +42,7 @@ public class POIDTO {
         this.dataInizio=null;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 

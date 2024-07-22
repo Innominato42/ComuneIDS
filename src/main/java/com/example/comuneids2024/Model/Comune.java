@@ -14,7 +14,7 @@ public class Comune {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "comune_generator")
-    private Long comuneId;
+    private String comuneId;
     private Coordinate coordinate;
     private String nome;
     @DBRef
@@ -66,7 +66,7 @@ public class Comune {
     {
         this.contests.add(contest);
     }
-    public Long getComuneId() {
+    public String getComuneId() {
         return comuneId;
     }
 

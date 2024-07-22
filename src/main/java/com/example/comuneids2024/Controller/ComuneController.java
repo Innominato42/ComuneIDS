@@ -123,7 +123,7 @@ public class ComuneController {
     }
 
     @GetMapping("/getAllPendingItinerary")
-    public ResponseEntity<Object> getAllPendingItinerary(@RequestParam("comuneId") Long id) {
+    public ResponseEntity<Object> getAllPendingItinerary(@RequestParam("comuneId") String id) {
         if (this.comuneRepository.findById(id).isEmpty())
             return new ResponseEntity<>("Errore: Comune non trovato", HttpStatus.BAD_REQUEST);
         else
@@ -230,7 +230,7 @@ public class ComuneController {
 
 
     @GetMapping("/getPOI/{comuneId}/{poiId}")
-    public ResponseEntity<Object> getPOI(@PathVariable Long comuneId, @PathVariable Long poiId) {
+    public ResponseEntity<Object> getPOI(@PathVariable String comuneId, @PathVariable String poiId) {
         Optional<Comune> comuneOpt = comuneRepository.findById(comuneId);
 
         if (comuneOpt.isPresent()) {
@@ -253,7 +253,7 @@ public class ComuneController {
 
 
     @DeleteMapping("/deletePOI/{comuneId}/{poiId}")
-    public ResponseEntity<Object> deletePOI(@PathVariable Long comuneId, @PathVariable Long poiId) {
+    public ResponseEntity<Object> deletePOI(@PathVariable String comuneId, @PathVariable String poiId) {
         Optional<Comune> comuneOpt = comuneRepository.findById(comuneId);
 
         if (comuneOpt.isPresent()) {
@@ -283,7 +283,7 @@ public class ComuneController {
     }
 
     @PostMapping("/{comuneId}/addContest")
-    public ResponseEntity<Object> addContest(@RequestBody Contest contest, @PathVariable Long comuneId) {
+    public ResponseEntity<Object> addContest(@RequestBody Contest contest, @PathVariable String comuneId) {
         // Recupera il comune dal repository
         Comune comune = comuneRepository.findById(comuneId).orElse(null);
 
@@ -302,7 +302,7 @@ public class ComuneController {
     }
 
     @DeleteMapping("/{comuneId}/deleteContest/{contestId}")
-    public ResponseEntity<Object> deleteContest(@PathVariable Long contestId, @PathVariable Long comuneId) {
+    public ResponseEntity<Object> deleteContest(@PathVariable String contestId, @PathVariable String comuneId) {
         // Recupera il comune dal repository
         Comune comune = comuneRepository.findById(comuneId).orElse(null);
 
@@ -328,7 +328,7 @@ public class ComuneController {
 
 
     @PostMapping("/segnalaPOI/{comuneId}/{poiId}")
-    public ResponseEntity<Object> segnalaPOI(@PathVariable Long comuneId, @PathVariable Long poiId) {
+    public ResponseEntity<Object> segnalaPOI(@PathVariable String comuneId, @PathVariable String poiId) {
         // Verifica l'esistenza del comune
         Comune comune = comuneRepository.findById(comuneId).orElse(null);
         if (comune == null) {
@@ -349,7 +349,7 @@ public class ComuneController {
     }
 
     @PostMapping("/segnalaItinerario/{comuneId}/{itinerarioId}")
-    public ResponseEntity<Object> segnalaItinerario(@PathVariable Long comuneId, @PathVariable Long itinerarioId) {
+    public ResponseEntity<Object> segnalaItinerario(@PathVariable String comuneId, @PathVariable String itinerarioId) {
         // Verifica l'esistenza del comune
         Comune comune = comuneRepository.findById(comuneId).orElse(null);
         if (comune == null) {
@@ -370,7 +370,7 @@ public class ComuneController {
     }
 
     @PostMapping("/modificaItinerario")
-    public ResponseEntity<Object> modificaItinerario(Long id, String nome, String descrizione)
+    public ResponseEntity<Object> modificaItinerario(String id, String nome, String descrizione)
     {
         Itinerary i= this.itineraryRepository.findById(id).orElse(null);
         if(i==null)
@@ -385,7 +385,7 @@ public class ComuneController {
 
     }
     @PostMapping("/modificaContenuto")
-    public ResponseEntity<Object> modificaContenuto(Long id, String nome, String descrizione)
+    public ResponseEntity<Object> modificaContenuto(String id, String nome, String descrizione)
     {
         Content i= this.contentRepository.findById(id).orElse(null);
         if(i==null)
@@ -400,7 +400,7 @@ public class ComuneController {
 
     }
     @PostMapping("/modificaPOI")
-    public ResponseEntity<Object> modificaPOI(Long id, String nome, String descrizione)
+    public ResponseEntity<Object> modificaPOI(String id, String nome, String descrizione)
     {
         POI poi=this.POIRepository.findById(id).orElse(null);
         if(poi==null)

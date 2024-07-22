@@ -7,14 +7,14 @@ import java.util.List;
 
 public class ItineraryDTO {
 
-    private Long id;
+    private String id;
     private String name;
     private String descrizione;
     private List<POI> POIs;
 
 
 
-    public ItineraryDTO(Long id,String name, String descrizione, List<POI> POIs)
+    public ItineraryDTO(String id,String name, String descrizione, List<POI> POIs)
     {
         this.id=id;
         this.descrizione=descrizione;

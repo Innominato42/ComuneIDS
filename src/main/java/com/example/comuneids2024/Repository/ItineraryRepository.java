@@ -5,5 +5,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ItineraryRepository extends MongoRepository<Itinerary, Long> {
+public interface ItineraryRepository extends MongoRepository<Itinerary, String> {
 }

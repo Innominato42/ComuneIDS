@@ -10,22 +10,22 @@ public class RichiestaRuolo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "richiestaRuolo_generator")
-    private Long id;
-    private Long idUtente;
+    private String id;
+    private String idUtente;
 
     private Role ruoloRichiesto;
 
-    public RichiestaRuolo(Long idUtente, Role ruoloRichiesto)
+    public RichiestaRuolo(String idUtente, Role ruoloRichiesto)
     {
         this.ruoloRichiesto=ruoloRichiesto;
         this.idUtente=idUtente;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public Long getIdUtente() {
+    public String getIdUtente() {
         return idUtente;
     }
 

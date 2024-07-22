@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
+//POI INTERVALLO
 @Document(collection = "POIEvento")
 public class POIEvento extends POI{
 
@@ -24,7 +24,7 @@ public class POIEvento extends POI{
         super();
     }
     @Override
-    public Long getPOIId()
+    public String getPOIId()
     {
         return super.getPOIId();
     }

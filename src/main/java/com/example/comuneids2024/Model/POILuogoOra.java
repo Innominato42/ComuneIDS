@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalTime;
 import java.util.List;
-
+//POI PROGRAMMATO
 @Document(collection = "POILuogoOra")
 public class POILuogoOra extends POI {
 

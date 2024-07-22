@@ -25,7 +25,7 @@ public class RoleManager {
     @Autowired
     private RichiestaRuoloRepository richiestaRuoloRepository;
 
-    public void nuovoRuolo(Long utenteId, Role role) {
+    public void nuovoRuolo(String utenteId, Role role) {
         Optional<UtenteAutenticato> utenteOpt = utenteAutenticatoRepository.findById(utenteId);
 
         if (utenteOpt.isPresent()) {
@@ -37,7 +37,7 @@ public class RoleManager {
         }
     }
 
-    public void nuovaRichiestaCambioRuolo(Long utenteId, Role ruolo) {
+    public void nuovaRichiestaCambioRuolo(String utenteId, Role ruolo) {
         RichiestaRuolo richiestaRuolo = new RichiestaRuolo(utenteId, ruolo);
         richiestaRuoloRepository.save(richiestaRuolo);
     }
@@ -48,14 +48,14 @@ public class RoleManager {
         return utenti;
     }
 
-    public void rifiutaRichiesta(Long id) {
+    public void rifiutaRichiesta(String id) {
         this.richiestaRuoloRepository.findAll().forEach(richiestaRuolo -> {
             if (richiestaRuolo.getIdUtente().equals(id))
                 this.richiestaRuoloRepository.delete(richiestaRuolo);
         });
     }
 
-    public void approvaRichiesta(Long id)
+    public void approvaRichiesta(String id)
     {
         RichiestaRuolo richiestaRuolo= this.richiestaRuoloRepository.findById(id).get();
         UtenteAutenticato utente= this.utenteAutenticatoRepository.findById(richiestaRuolo.getId()).get();

@@ -6,6 +6,8 @@ import java.util.List;
 
 public class ComuneDTO {
 
+
+    private String id;
     private String nome;
     private Coordinate coordinate;
     private UtenteAutenticato curatore;
@@ -14,6 +16,18 @@ public class ComuneDTO {
     private List<Itinerary> itinerarioValidato;
     private List<Itinerary> itinerarioAttesa;
     private List<Contest> contests;
+
+    public ComuneDTO(String id, String nome, Coordinate coordinate, UtenteAutenticato curatore, List<POI> POIValidate, List<POI> POIAttesa, List<Itinerary> itinerarioValidato, List<Itinerary> itinerarioAttesa, List<Contest> contests) {
+        this.id = id;
+        this.nome = nome;
+        this.coordinate = coordinate;
+        this.curatore = curatore;
+        this.POIValidate = POIValidate;
+        this.POIAttesa = POIAttesa;
+        this.itinerarioValidato = itinerarioValidato;
+        this.itinerarioAttesa = itinerarioAttesa;
+        this.contests = contests;
+    }
 
     public String getNome() {
         return nome;
