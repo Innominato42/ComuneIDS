@@ -5,6 +5,8 @@ import com.example.comuneids2024.Model.*;
 import com.example.comuneids2024.Model.DTO.ComuneDTO;
 import com.example.comuneids2024.Model.DTO.POIDTO;
 import com.example.comuneids2024.Repository.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -155,7 +157,7 @@ public class ComuneController {
     public ResponseEntity<Object> insertPOI(@RequestParam String id, @RequestBody POI poi)
     {
         POIFactory pf;
-        Tipo tipo=Tipo.LUOGO;
+        Tipo tipo=poi.getTipo();
         if(tipo.equals(Tipo.LUOGO))
         {
             pf=new POILuogoFactory();
@@ -188,7 +190,7 @@ public class ComuneController {
             return null;
         }
 
-        Tipo tipo=Tipo.LUOGO;
+        Tipo tipo=poi.getTipo();
         POIFactory pf;
         if(tipo.equals(Tipo.LUOGO))
         {
@@ -213,8 +215,9 @@ public class ComuneController {
     }
 
     @PostMapping("insertContentToPOI")
-    public ResponseEntity<Object> insertContentToPOI(@RequestParam("idComune") String idComune, @RequestParam("idPOI") String id,  @RequestPart("content") Content c, @RequestPart("file") MultipartFile file)
-    {
+    public ResponseEntity<Object> insertContentToPOI(@RequestParam("idComune") String idComune, @RequestParam("idPOI") String id,  @RequestPart("content") String contentJson, @RequestPart("file") MultipartFile file) throws JsonProcessingException {
+        // Converti il JSON in un oggetto Content
+        Content c = new ObjectMapper().readValue(contentJson, Content.class);
         try {
             c.addFile(file.getBytes());
         } catch (IOException e) {
@@ -235,8 +238,6 @@ public class ComuneController {
         contentController.insertContentToPOIPending(idComune, id, c);
         return new ResponseEntity<>("ok", HttpStatus.OK);
     }
-
-
 
 
 

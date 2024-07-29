@@ -131,6 +131,10 @@ public class Comune {
      */
     public POI getPOI(String id)
     {
+        if (id == null) {
+            throw new IllegalArgumentException("L'ID non può essere null.");
+        }
+
         for(POI p : getPOIValidate())
         {
             if(p.getPOIId().equals(id))

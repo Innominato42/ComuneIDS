@@ -8,6 +8,8 @@ import com.example.comuneids2024.Repository.ContentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class ContentController {
 
@@ -20,9 +22,14 @@ public class ContentController {
 
     public void insertContentToPOI(String idComune, String idPOI, Content c)
     {
-        Comune comune=this.comuneRepository.findById(idComune).get();
-        comune.getPOI(idPOI).addContent(c);
-        this.comuneRepository.save(comune);
+        Optional<Comune> optionalComune = this.comuneRepository.findById(idComune);
+        if (optionalComune.isPresent()) {
+            Comune comune = optionalComune.get();
+            comune.getPOI(idPOI).addContent(c);
+            this.comuneRepository.save(comune);
+        } else {
+            throw new RuntimeException("Comune with ID " + idComune + " not found.");
+        }
     }
 
     public void insertContentToPOIPending(String idComune, String idPOI, Content c)

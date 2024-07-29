@@ -21,11 +21,12 @@ public class Content {
     private UtenteAutenticato creatore;
     private byte[] file;
 
-    public Content(String nome,String descrizione, byte[] file)
+    public Content(String nome,String descrizione,UtenteAutenticato creatore, byte[] file)
     {
         this.nome=nome;
         this.descrizione=descrizione;
         this.file=file;
+        this.creatore=creatore;
     }
 
     public Content() {
@@ -43,6 +44,7 @@ public class Content {
     {
         return this.creatore;
     }
+
     public String getId(){return this.idContent;}
     public String getNome()
     {
@@ -57,7 +59,7 @@ public class Content {
     public byte[] getFile(){return this.file;}
     public Content getContentInfo()
     {
-        return  new Content(this.getNome(),this.getDescrizione(),this.getFile());
+        return  new Content(this.getNome(),this.getDescrizione(),this.getCreatore(),this.getFile());
     }
 
     public void setDescrizione(String descrizione) {
