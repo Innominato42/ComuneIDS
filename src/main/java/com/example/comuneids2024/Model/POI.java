@@ -2,6 +2,8 @@ package com.example.comuneids2024.Model;
 
 
 import com.example.comuneids2024.Model.DTO.POIDTO;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -9,11 +11,17 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = POILuogo.class, name = "LUOGO"),
+        @JsonSubTypes.Type(value = POIEvento.class, name = "EVENTO"),
+        @JsonSubTypes.Type(value = POILuogoOra.class, name = "LUOGOCONORA")
+})
 @Document(collection = "POI")
 public abstract class POI {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "poi_generator")
     private String idPOI;
     private String name;
     private String description;

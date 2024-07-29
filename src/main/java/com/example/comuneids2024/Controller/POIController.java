@@ -30,6 +30,7 @@ public class POIController {
         }
         Comune c = comuneRepository.findById(idComune).get();
         c.addPOI(poi);
+        poiRepository.save(poi);
         comuneRepository.save(c);
 
     }
@@ -46,6 +47,7 @@ public class POIController {
         }
         Comune c = comuneRepository.findById(idComune).get();
         c.addPOIPending(poi);
+        poiRepository.save(poi);
         comuneRepository.save(c);
     }
 
