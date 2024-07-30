@@ -1,5 +1,6 @@
 package com.example.comuneids2024.Model;
 
+import com.example.comuneids2024.Model.DTO.ComuneDTO;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -283,7 +284,10 @@ public class Comune {
         this.itinerariSegnalati.add(i);
     }
 
-
+    public ComuneDTO getComune()
+    {
+        return new ComuneDTO(this.comuneId,this.nome,this.coordinate,this.curatore,this.POIValidate,this.POIAttesa,this.itinerarioValidato,this.itinerarioAttesa,this.contests);
+    }
 
 
 }

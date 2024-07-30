@@ -116,6 +116,12 @@ public class ComuneController {
         }
     }
 
+    @GetMapping("/getComune")
+    public ResponseEntity<Object> getComune(String id)
+    {
+        return new ResponseEntity<>(comuneRepository.findById(id).get().getComune(),HttpStatus.OK);
+    }
+
     @GetMapping("/getAllItinerary")
     public ResponseEntity<Object> getAllItinerary(@RequestParam("comuneId") String id) {
         if (this.comuneRepository.findById(id).isEmpty())
