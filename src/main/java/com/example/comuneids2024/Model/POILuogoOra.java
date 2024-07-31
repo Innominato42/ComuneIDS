@@ -1,14 +1,14 @@
 package com.example.comuneids2024.Model;
 
 import com.example.comuneids2024.Model.DTO.POIDTO;
-
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalTime;
 import java.util.List;
-//POI PROGRAMMATO
-@Document(collection = "POILuogoOra")
+
+
 public class POILuogoOra extends POI {
 
     @Field("openingTime")

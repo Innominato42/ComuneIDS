@@ -14,7 +14,7 @@ public class POIDTO {
     private final String name;
     private final String description;
     private final Coordinate coordinate;
-    private final Tipo type;
+    private final Tipo tipo;
 
     private List<Content> content;
 
@@ -28,12 +28,12 @@ public class POIDTO {
 
     private LocalTime[] closingTime;
 
-    public POIDTO(String id, String name, String description, Coordinate coordinate, Tipo type, List<Content> contest, List<Content> contentPending) {
+    public POIDTO(String id, String name, String description, Coordinate coordinate, Tipo tipo, List<Content> contest, List<Content> contentPending) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.coordinate = coordinate;
-        this.type = type;
+        this.tipo = tipo;
         this.closingTime=null;
         this.content=contest;
         this.contentPending=contentPending;
@@ -46,8 +46,8 @@ public class POIDTO {
         return id;
     }
 
-    public Tipo getType() {
-        return type;
+    public Tipo getTipo() {
+        return tipo;
     }
 
     public String getName() {
@@ -104,7 +104,7 @@ public class POIDTO {
         return  "Id: "+this.id+" Name= " + name +
                 "\nDescription=" + description +
                 "\n Coordinates= lon " + coordinate.getLatitudine() + " lon " +coordinate.getLongitudine()+
-                "\n Type=" + type;
+                "\n Type=" + tipo;
     }
 
 }

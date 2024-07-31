@@ -160,10 +160,13 @@ public class ComuneController {
 
 
     @PostMapping("/insertPOI")
-    public ResponseEntity<Object> insertPOI(@RequestParam String id, @RequestBody POI poi)
+    public ResponseEntity<Object> insertPOI(@RequestParam String id, @RequestBody POIDTO poi)
     {
         POIFactory pf;
-        Tipo tipo=poi.getTipo();
+        Tipo tipo = poi.getTipo();
+        if (tipo == null) {
+            return new ResponseEntity<>("Errore : Tipo mancante", HttpStatus.BAD_REQUEST);
+        }
         if(tipo.equals(Tipo.LUOGO))
         {
             pf=new POILuogoFactory();
@@ -182,18 +185,15 @@ public class ComuneController {
         {
             return new ResponseEntity<>("Errore : Tipo errato", HttpStatus.BAD_REQUEST);
         }
-        POIDTO p = new POIDTO(poi.getPOIId(), poi.getName(), poi.getDescription(),poi.getCoordinate(), tipo, poi.getContents(), poi.getContentsPending());
+        POIDTO p = new POIDTO(poi.getId(), poi.getName(), poi.getDescription(),poi.getCoordinate(), tipo, poi.getContent(), poi.getContentPending());
         poiController.insertPOI(id, pf, p);
         return new ResponseEntity<>("ok", HttpStatus.OK);
     }
     @PostMapping("/insertPOIPending")
     public ResponseEntity<Object> insertPOIPending(@RequestParam String id, @RequestBody POI poi)
     {
-        System.out.println("ID Comune: " + id);
-        System.out.println("POI DTO: " + poi);
         if (poi == null) {
-            System.err.println("POI è null");
-            return null;
+            throw new NullPointerException("POI è null");
         }
 
         Tipo tipo=poi.getTipo();
