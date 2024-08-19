@@ -18,21 +18,28 @@ public class POIController {
     @Autowired
     private POIRepository poiRepository;
 
+    //TODO provare a cambiare il controllo instanceof
     public void insertPOI(String idComune, POIFactory p, POIDTO poigi)
     {
         POI poi= p.createPOI(poigi.getCoordinate());
         poi.insertPOIInfo(poigi.getName(),poigi.getDescription());
         if (poi instanceof POILuogoOra plo) {
             plo.insertTime(poigi.getOpeningTime(), poigi.getClosingTime());
+
         }
         if (poi instanceof POIEvento pe) {
             pe.addDate(poigi.getDateOpen(), poigi.getDateClose());
         }
-        Comune c = comuneRepository.findById(idComune).get();
-        c.addPOI(poi);
-        poiRepository.save(poi);
-        comuneRepository.save(c);
-
+        if(comuneRepository.findById(idComune).isPresent())
+        {
+            Comune c = comuneRepository.findById(idComune).get();
+            c.addPOI(poi);
+            poiRepository.save(poi);
+            comuneRepository.save(c);
+        }
+        else {
+            throw new RuntimeException();
+        }
     }
 
 
@@ -45,10 +52,12 @@ public class POIController {
         if (poi instanceof POIEvento pe) {
             pe.addDate(poigi.getDateOpen(), poigi.getDateClose());
         }
-        Comune c = comuneRepository.findById(idComune).get();
-        c.addPOIPending(poi);
-        poiRepository.save(poi);
-        comuneRepository.save(c);
+        if(comuneRepository.findById(idComune).isPresent()) {
+            Comune c = comuneRepository.findById(idComune).get();
+            c.addPOIPending(poi);
+            poiRepository.save(poi);
+            comuneRepository.save(c);
+        }
     }
 
     public POI viewPOI(String poiID) {

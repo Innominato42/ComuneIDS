@@ -9,19 +9,17 @@ import java.time.LocalTime;
 import java.util.List;
 
 
-public class POILuogoOra extends POI {
+    public class POILuogoOra extends POI {
 
-    @Field("openingTime")
-    private LocalTime[] openingTime;
+        @Field("openingTime")
+        private LocalTime[] openingTime= new LocalTime[7];
 
-    @Field("closingTime")
-    private LocalTime[] closingTime;
+        @Field("closingTime")
+    private LocalTime[] closingTime= new LocalTime[7];
 
     public POILuogoOra(Coordinate coordinate) {
         super(coordinate);
         this.setTipo(Tipo.LUOGOCONORA);
-        this.openingTime = new LocalTime[7];
-        this.closingTime = new LocalTime[7];
     }
 
     public void insertTime(LocalTime[] openingTime, LocalTime[] closingTime) {
