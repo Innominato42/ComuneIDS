@@ -45,7 +45,7 @@ public abstract class POI {
         this.content = new ArrayList<>();
         this.contentPending = new ArrayList<>();
         this.description = description;
-        this.coordinate = coordinate;
+        this.coordinate = new Coordinate(coordinate.getLatitudine(), coordinate.getLongitudine());
         this.tipo = tipo;
     }
 

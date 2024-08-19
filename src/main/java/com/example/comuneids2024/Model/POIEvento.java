@@ -46,6 +46,6 @@ public class POIEvento extends POI {
     public POIDTO getPOIInfo() {
         List<Content> contents = this.getContents().stream().map(c -> c.getContentInfo()).toList();
         List<Content> pendingContentsGI = this.getContentsPending().stream().map(pc -> pc.getContentInfo()).toList();
-        return new POIDTO(this.getPOIId(), this.getName(), this.getDescription(), this.getCoordinate(), this.getTipo(), contents, pendingContentsGI);
+        return new POIDTO(this.getPOIId(), this.getName(), this.getDescription(), this.getCoordinate(), this.getTipo(), contents, pendingContentsGI,null,null,this.getOraFine(),getOraFine());
     }
 }

@@ -28,19 +28,68 @@ public class POIDTO {
 
     private LocalTime[] closingTime;
 
-    public POIDTO(String id, String name, String description, Coordinate coordinate, Tipo tipo, List<Content> contest, List<Content> contentPending) {
+    // costruttore POILUOGO
+
+    public POIDTO(String id, String name, String description, Coordinate coordinate, Tipo tipo, List<Content> content, List<Content> contentPending,LocalTime[] openingTime, LocalTime[] closingTime,LocalDateTime oraInizio, LocalDateTime oraFine) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.coordinate = coordinate;
+        this.coordinate =  new Coordinate(coordinate.getLatitudine(),coordinate.getLongitudine());
         this.tipo = tipo;
-        this.closingTime=null;
-        this.content=contest;
+        this.content=content;
         this.contentPending=contentPending;
+        this.closingTime=null;
         this.openingTime=null;
         this.dataFine=null;
         this.dataInizio=null;
+        if(tipo.equals(Tipo.EVENTO))
+        {
+            this.dataFine = oraFine;
+            this.dataInizio = oraInizio;
+            this.closingTime=null;
+            this.openingTime=null;
+        }
+        else if(tipo.equals(Tipo.LUOGOCONORA))
+        {
+            this.openingTime=openingTime;
+            this.closingTime=closingTime;
+
+            this.dataFine=null;
+            this.dataInizio=null;
+        }
+
     }
+   /* public POIDTO(String id, String name, String description,Coordinate coordinate, Tipo tipo, List<Content> content, List<Content> contentPending,LocalTime[] openingTime, LocalTime[] closingTime)
+    {
+
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.coordinate =  new Coordinate(coordinate.getLatitudine(),coordinate.getLongitudine());
+        this.tipo = tipo;
+        this.closingTime=closingTime;
+        this.content=content;
+        this.contentPending=contentPending;
+        this.openingTime=openingTime;
+        this.dataFine=null;
+        this.dataInizio=null;
+    }
+
+    public POIDTO(String id, String name, String description,Coordinate coordinate, Tipo tipo, List<Content> content, List<Content> contentPending,LocalDateTime oraInizio, LocalDateTime oraFine)
+    {
+
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.coordinate =  new Coordinate(coordinate.getLatitudine(),coordinate.getLongitudine());
+        this.tipo = tipo;
+        this.closingTime=null;
+        this.content=content;
+        this.contentPending=contentPending;
+        this.openingTime=null;
+        this.dataFine=oraFine;
+        this.dataInizio=oraInizio;
+    }*/
 
     public String getId() {
         return id;
