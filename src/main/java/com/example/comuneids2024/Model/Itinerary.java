@@ -22,7 +22,6 @@ public class Itinerary {
 
     private String descrizione;
 
-    @DBRef
     private List<POI> POIs;
 
     private Itinerary(String nome,String descrizione)

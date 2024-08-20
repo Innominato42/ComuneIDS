@@ -23,13 +23,13 @@ public class Contest {
 
     private boolean isClosed;
 
-    @DBRef
+
     private List<UtenteAutenticato> utentiInvitati;
 
-    @DBRef
+
     private List<Content> contents;
 
-    @DBRef
+
     private UtenteAutenticato vincitore;
 
     public Contest(String nome, String descrizione, boolean onInvite, boolean isClosed, List<UtenteAutenticato> utentiInvitati, List<Content> content)

@@ -23,10 +23,10 @@ public class UtenteAutenticato implements Utente{
     private String email;
 
     private Role richiestaRuolo;
-    @DBRef
+
     private List<POI> POIFavourites=new ArrayList<>();
 
-    @DBRef
+
     private List<Itinerary> ItineraryFavourites=new ArrayList<>();
 
     public UtenteAutenticato(String username,String password, Role ruolo, String email)

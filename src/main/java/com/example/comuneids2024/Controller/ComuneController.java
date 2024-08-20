@@ -197,8 +197,6 @@ public class ComuneController {
         {
             return new ResponseEntity<>("Errore : Tipo errato", HttpStatus.BAD_REQUEST);
         }
-        //POIDTO p = new POIDTO(poi.getId(), poi.getName(), poi.getDescription(),poi.getCoordinate(), tipo, poi.getContent(), poi.getContentPending(),null,null,null,null);
-
 
     }
     @PostMapping("/insertPOIPending")
