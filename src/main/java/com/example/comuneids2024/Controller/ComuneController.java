@@ -140,20 +140,22 @@ public class ComuneController {
 
 
     @PostMapping("/createItinerary")
-    public ResponseEntity<Object> createItinerary(String idComune, Itinerary i, String [] poi)
-    {
-        if(poi.length < 2)
+    public ResponseEntity<Object> createItinerary(@RequestParam String idComune, @RequestBody ItineraryRequest request) {
+
+        if (request.getPoi() == null || request.getPoi().length < 2) {
             return new ResponseEntity<>("Errore: Itinerario deve contenere almeno 2 POI", HttpStatus.BAD_REQUEST);
-        itineraryController.createItinerary(idComune, i, poi);
+        }
+        itineraryController.createItinerary(idComune, request.getItinerary(), request.getPoi());
         return new ResponseEntity<>("ok", HttpStatus.OK);
     }
 
     @PostMapping("/createPendingItinerary")
-    public ResponseEntity<Object> createPendingItinerary(String idComune, Itinerary i, String [] poi)
+    public ResponseEntity<Object> createPendingItinerary(@RequestParam String idComune, @RequestBody ItineraryRequest request)
     {
-        if(poi.length < 2)
+        if(request.getPoi() == null || request.getPoi().length < 2) {
             return new ResponseEntity<>("Errore: Itinerario deve contenere almeno 2 POI", HttpStatus.BAD_REQUEST);
-        itineraryController.createItineraryPending(idComune, i, poi);
+        }
+        itineraryController.createItineraryPending(idComune, request.getItinerary(), request.getPoi());
         return new ResponseEntity<>("ok", HttpStatus.OK);
     }
 
@@ -172,7 +174,6 @@ public class ComuneController {
             pf=new POILuogoFactory();
             POIDTO p = new POIDTO(poi.getId(), poi.getName(), poi.getDescription(),poi.getCoordinate(), tipo, poi.getContent(), poi.getContentPending(),null,null,null,null);
             poiController.insertPOI(id, pf, p);
-            System.out.println(p.toString());
             return new ResponseEntity<>("ok", HttpStatus.OK);
         }
         else if(tipo
@@ -181,7 +182,6 @@ public class ComuneController {
             pf=new POIEventoFactory();
             POIDTO p = new POIDTO(poi.getId(), poi.getName(), poi.getDescription(),poi.getCoordinate(), tipo, poi.getContent(), poi.getContentPending(),null,null,poi.getDataInizio(),poi.getDataFine());
             poiController.insertPOI(id, pf, p);
-            System.out.println(p.toString());
             return new ResponseEntity<>("ok", HttpStatus.OK);
         }
         else if(tipo
@@ -190,7 +190,6 @@ public class ComuneController {
             pf=new POILuogoOraFactory();
             POIDTO p = new POIDTO(poi.getId(), poi.getName(), poi.getDescription(),poi.getCoordinate(), tipo, poi.getContent(), poi.getContentPending(),poi.getOpeningTime(),poi.getClosingTime(),null,null);
             poiController.insertPOI(id, pf, p);
-            System.out.println(p.toString());
             return new ResponseEntity<>("ok", HttpStatus.OK);
         }
         else
@@ -200,36 +199,40 @@ public class ComuneController {
 
     }
     @PostMapping("/insertPOIPending")
-    public ResponseEntity<Object> insertPOIPending(@RequestParam String id, @RequestBody POI poi)
+    public ResponseEntity<Object> insertPOIPending(@RequestParam String id, @RequestBody POIDTO poi)
     {
-        if (poi == null) {
-            throw new NullPointerException("POI è null");
-        }
-
-        Tipo tipo=poi.getTipo();
         POIFactory pf;
+        Tipo tipo = poi.getTipo();
+        if (tipo == null) {
+            return new ResponseEntity<>("Errore : Tipo mancante", HttpStatus.BAD_REQUEST);
+        }
         if(tipo.equals(Tipo.LUOGO))
         {
             pf=new POILuogoFactory();
-            POIDTO p = new POIDTO(poi.getPOIId(), poi.getName(), poi.getDescription(),poi.getCoordinate(), tipo, poi.getContents(), poi.getContentsPending(),null,null,null,null);
+            POIDTO p = new POIDTO(poi.getId(), poi.getName(), poi.getDescription(),poi.getCoordinate(), tipo, poi.getContent(), poi.getContentPending(),null,null,null,null);
+            poiController.insertPOIPending(id, pf, p);
+            return new ResponseEntity<>("ok", HttpStatus.OK);
         }
-        else if(tipo.equals(Tipo.EVENTO))
+        else if(tipo
+                .equals(Tipo.EVENTO))
         {
             pf=new POIEventoFactory();
-            POIDTO p = new POIDTO(poi.getPOIId(), poi.getName(), poi.getDescription(),poi.getCoordinate(), tipo, poi.getContents(), poi.getContentsPending(),null,null,null,null);
+            POIDTO p = new POIDTO(poi.getId(), poi.getName(), poi.getDescription(),poi.getCoordinate(), tipo, poi.getContent(), poi.getContentPending(),null,null,poi.getDataInizio(),poi.getDataFine());
+            poiController.insertPOIPending(id, pf, p);
+            return new ResponseEntity<>("ok", HttpStatus.OK);
         }
-        else if(tipo.equals(Tipo.LUOGOCONORA))
+        else if(tipo
+                .equals(Tipo.LUOGOCONORA))
         {
             pf=new POILuogoOraFactory();
+            POIDTO p = new POIDTO(poi.getId(), poi.getName(), poi.getDescription(),poi.getCoordinate(), tipo, poi.getContent(), poi.getContentPending(),poi.getOpeningTime(),poi.getClosingTime(),null,null);
+            poiController.insertPOIPending(id, pf, p);
+            return new ResponseEntity<>("ok", HttpStatus.OK);
         }
         else
         {
             return new ResponseEntity<>("Errore : Tipo errato", HttpStatus.BAD_REQUEST);
         }
-        //POIDTO p = new POIDTO(poi.getPOIId(), poi.getName(), poi.getDescription(),poi.getCoordinate(), tipo, poi.getContents(), poi.getContentsPending());
-       // poiController.insertPOIPending(id, pf, p);
-        return new ResponseEntity<>("ok", HttpStatus.OK);
-
     }
 
     @PostMapping("insertContentToPOI")
