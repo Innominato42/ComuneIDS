@@ -34,10 +34,8 @@ public abstract class POI {
     @Embedded
     private Coordinate coordinate;
 
-    @DBRef
     private List<Content> content;
 
-    @DBRef
     private List<Content> contentPending;
 
     public POI(String name, String description, Coordinate coordinate, Tipo tipo) {

@@ -17,7 +17,6 @@ public class Content {
 
     private String descrizione;
 
-    @DBRef
     private UtenteAutenticato creatore;
     private byte[] file;
 

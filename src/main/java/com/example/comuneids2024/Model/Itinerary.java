@@ -24,7 +24,7 @@ public class Itinerary {
 
     private List<POI> POIs;
 
-    private Itinerary(String nome,String descrizione)
+    public Itinerary(String nome,String descrizione)
     {
         this.nome=nome;
         this.descrizione=descrizione;

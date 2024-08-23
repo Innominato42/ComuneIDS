@@ -18,25 +18,19 @@ public class Comune {
     private String comuneId;
     private Coordinate coordinate;
     private String nome;
-    @DBRef
+
     private List<POI> POIValidate;
 
-    @DBRef
     private List<POI> POIAttesa;
 
-    @DBRef
     private List<Itinerary> itinerarioValidato;
 
-    @DBRef
     private List<Itinerary> itinerarioAttesa;
 
-    @DBRef
     private UtenteAutenticato curatore;
 
-    @DBRef
     private List<Contest> contests;
 
-    @DBRef
     private List<POI> POISegnalati;
 
     private List<Itinerary> itinerariSegnalati;
@@ -136,14 +130,10 @@ public class Comune {
             throw new IllegalArgumentException("L'ID non può essere null.");
         }
 
-        for(POI p : getPOIValidate())
-        {
-            if(p.getPOIId().equals(id))
-            {
-                return p;
-            }
-        }
-        return null;
+        return getPOIValidate().stream()
+                .filter(p -> p.getPOIId().equals(id))
+                .findFirst()
+                .orElse(null);
     }
 
     public boolean isInComune(Coordinate coordinate) {
@@ -219,7 +209,7 @@ public class Comune {
 
     public void addPOI(POI poi)
     {
-        this.POIValidate.add(poi);
+        this.POIValidate.add( poi);
     }
     public void addPOIPending(POI poi)
     {

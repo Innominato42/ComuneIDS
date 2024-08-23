@@ -28,6 +28,7 @@ public class ItineraryController {
         }
         Comune c =this.comuneRepository.findById(idComune).get();
         c.addItinerary(i);
+        itineraryRepository.save(i);
         this.comuneRepository.save(c);
     }
 
@@ -39,6 +40,7 @@ public class ItineraryController {
         }
         Comune c =this.comuneRepository.findById(idComune).get();
         c.addItineraryPending(i);
+        itineraryRepository.save(i);
         this.comuneRepository.save(c);
     }
 

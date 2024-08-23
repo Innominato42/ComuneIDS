@@ -18,7 +18,6 @@ public class POIController {
     @Autowired
     private POIRepository poiRepository;
 
-    //TODO provare a cambiare il controllo instanceof
     public void insertPOI(String idComune, POIFactory p, POIDTO poigi)
     {
         POI poi= p.createPOI(poigi.getCoordinate());
@@ -33,6 +32,7 @@ public class POIController {
         if(comuneRepository.findById(idComune).isPresent())
         {
             Comune c = comuneRepository.findById(idComune).get();
+            System.out.println(c.getPOIValidate().size());
             c.addPOI(poi);
             poiRepository.save(poi);
             comuneRepository.save(c);

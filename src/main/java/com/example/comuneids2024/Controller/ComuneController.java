@@ -49,6 +49,7 @@ public class ComuneController {
     private POIController poiController;
 
 
+    //Testato
     @PostMapping("/addComune")
     public ResponseEntity<String> addComune(@RequestBody ComuneDTO comuneDTO) {
         // Valida i dati del ComuneDTO
@@ -90,7 +91,7 @@ public class ComuneController {
 
 
     @GetMapping("/getAllPOI")
-    public ResponseEntity<Object> getAllPOI(String id){
+    public ResponseEntity<Object> getAllPOI(@RequestParam String id){
 
         if(this.comuneRepository.findById(id).isEmpty())
         {
@@ -103,8 +104,9 @@ public class ComuneController {
 
     }
 
+    //Testato
     @GetMapping("/getAllPendingPOI")
-    public ResponseEntity<Object> getAllPendingPOI(String id){
+    public ResponseEntity<Object> getAllPendingPOI(@RequestParam String id){
 
         if(this.comuneRepository.findById(id).isEmpty())
         {
@@ -116,22 +118,24 @@ public class ComuneController {
         }
     }
 
+    //Testato
     @GetMapping("/getComune")
-    public ResponseEntity<Object> getComune(String id)
+    public ResponseEntity<Object> getComune(@RequestParam String id)
     {
         return new ResponseEntity<>(comuneRepository.findById(id).get().getComune(),HttpStatus.OK);
     }
-
+    //Testato
     @GetMapping("/getAllItinerary")
-    public ResponseEntity<Object> getAllItinerary(@RequestParam("comuneId") String id) {
+    public ResponseEntity<Object> getAllItinerary(@RequestParam String id) {
         if (this.comuneRepository.findById(id).isEmpty())
             return new ResponseEntity<>("Errore: Comune non trovato", HttpStatus.BAD_REQUEST);
         else
             return new ResponseEntity<>(this.comuneRepository.findById(id).get().getItinerarioValidato(), HttpStatus.OK);
     }
 
+    //Testato
     @GetMapping("/getAllPendingItinerary")
-    public ResponseEntity<Object> getAllPendingItinerary(@RequestParam("comuneId") String id) {
+    public ResponseEntity<Object> getAllPendingItinerary(@RequestParam String id) {
         if (this.comuneRepository.findById(id).isEmpty())
             return new ResponseEntity<>("Errore: Comune non trovato", HttpStatus.BAD_REQUEST);
         else
@@ -139,6 +143,7 @@ public class ComuneController {
     }
 
 
+    //Testato
     @PostMapping("/createItinerary")
     public ResponseEntity<Object> createItinerary(@RequestParam String idComune, @RequestBody ItineraryRequest request) {
 
@@ -149,6 +154,7 @@ public class ComuneController {
         return new ResponseEntity<>("ok", HttpStatus.OK);
     }
 
+    //Testato
     @PostMapping("/createPendingItinerary")
     public ResponseEntity<Object> createPendingItinerary(@RequestParam String idComune, @RequestBody ItineraryRequest request)
     {
@@ -161,6 +167,7 @@ public class ComuneController {
 
 
 
+    //Testato
     @PostMapping("/insertPOI")
     public ResponseEntity<Object> insertPOI(@RequestParam String id, @RequestBody POIDTO poi)
     {
@@ -198,6 +205,8 @@ public class ComuneController {
         }
 
     }
+
+    //Testato
     @PostMapping("/insertPOIPending")
     public ResponseEntity<Object> insertPOIPending(@RequestParam String id, @RequestBody POIDTO poi)
     {
