@@ -244,6 +244,7 @@ public class ComuneController {
         }
     }
 
+    //Testato
     @PostMapping("insertContentToPOI")
     public ResponseEntity<Object> insertContentToPOI(@RequestParam("idComune") String idComune, @RequestParam("idPOI") String id,  @RequestPart("content") String contentJson, @RequestPart("file") MultipartFile file) throws JsonProcessingException {
         // Converti il JSON in un oggetto Content
@@ -257,9 +258,10 @@ public class ComuneController {
         return new ResponseEntity<>("ok", HttpStatus.OK);
     }
 
+    //Testato
     @PostMapping("insertPendingContentToPOI")
-    public ResponseEntity<Object> insertPendingContentToPOI(@RequestParam("idComune") String idComune, @RequestParam("idPOI") String id,  @RequestPart("content") Content c, @RequestPart("file") MultipartFile file)
-    {
+    public ResponseEntity<Object> insertPendingContentToPOI(@RequestParam("idComune") String idComune, @RequestParam("idPOI") String id,  @RequestPart("content") String contentJson, @RequestPart("file") MultipartFile file) throws JsonProcessingException {
+        Content c = new ObjectMapper().readValue(contentJson, Content.class);
         try {
             c.addFile(file.getBytes());
         } catch (IOException e) {
