@@ -40,12 +40,27 @@ public class ContestController {
 
 
 
-    //Testato
+    //
     @PostMapping("/createContest")
     public ResponseEntity<Object> createContest(@RequestBody Contest contest, @RequestParam String comuneId) {
         // Recupera il comune dal repository
+        boolean check=false;
         Comune comune = comuneRepository.findById(comuneId).orElse(null);
-
+        List<UtenteAutenticato> utenti = utenteAutenticatoRepository.findAll();
+        for (UtenteAutenticato u: utenti )
+        {
+            for(UtenteAutenticato uContest: contest.getUtentiInvitati())
+            {
+                if(u.getId().equals(uContest.getId()))
+                {
+                    check=true;
+                }
+            }
+        }
+        if(check==false)
+        {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Utente non trovato");
+        }
         if (comune != null) {
             // Aggiunge il contest al comune
             comune.addContest(contest);
