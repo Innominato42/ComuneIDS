@@ -44,6 +44,12 @@ public class Contest {
 
     }
 
+    public void addUtenteInvitato(UtenteAutenticato utente)
+    {
+        this.utentiInvitati.add(utente);
+    }
+
+
     public void setVincitore(UtenteAutenticato vincitore)
     {
         this.vincitore=vincitore;

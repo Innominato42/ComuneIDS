@@ -55,7 +55,17 @@ public class Comune {
 
     }
 
-
+    public Contest getContest(String idContest)
+    {
+        for(Contest c: contests)
+        {
+            if(c.getId().equals(idContest))
+            {
+                return c;
+            }
+        }
+        return null;
+    }
 
     public void addContest(Contest contest)
     {

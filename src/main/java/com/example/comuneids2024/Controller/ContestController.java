@@ -35,25 +35,35 @@ public class ContestController {
     @Autowired
     private UtenteAutenticatoManager utenteAutenticatoManager;
 
+    @Autowired
+    private ContestManager contestManager;
 
+
+
+    //Testato
     @PostMapping("/createContest")
-    public ResponseEntity<Object> createContest(@RequestParam("idComune") String idComune, @RequestBody Contest c, @RequestParam("content") String[] content) {
-        for (String i : content) {
-            c.addContent(this.contentRepository.findById(i).orElse(null));
+    public ResponseEntity<Object> createContest(@RequestBody Contest contest, @RequestParam String comuneId) {
+        // Recupera il comune dal repository
+        Comune comune = comuneRepository.findById(comuneId).orElse(null);
+
+        if (comune != null) {
+            // Aggiunge il contest al comune
+            comune.addContest(contest);
+            contestManager.addContest(contest); // Salva il contest nel repository dei contest
+
+            // Aggiorna il comune nel repository
+            comuneRepository.save(comune);
+
+            return ResponseEntity.ok("Contest aggiunto al comune con successo");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Comune non trovato");
         }
-        Comune comune = this.comuneRepository.findById(idComune).orElse(null);
-        if (comune == null) {
-            return new ResponseEntity<>("Comune not found", HttpStatus.NOT_FOUND);
-        }
-        comune.addContest(c);
-        this.comuneRepository.save(comune);
-        return new ResponseEntity<>("Contest created successfully", HttpStatus.OK);
     }
 
 
 
-    @GetMapping("/viewContest/{contestID}")
-    public ResponseEntity<Contest> viewContest(@PathVariable String contestID) {
+    @GetMapping("/viewContest")
+    public ResponseEntity<Contest> viewContest(@RequestParam String contestID) {
         Contest contest = contestRepository.findById(contestID).orElse(null);
         if (contest == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -69,12 +79,22 @@ public class ContestController {
 
 
     @PostMapping("/inviteContributor")
-    public ResponseEntity<String> inviteContributor(@RequestParam String id, @RequestParam String idContributor) {
-        Contest contest = this.contestRepository.findById(id).orElse(null);
+    public ResponseEntity<String> inviteContributor(@RequestParam String idContest,@RequestParam String idComune, @RequestParam String idContributor) {
+        Contest contest = this.contestRepository.findById(idContest).orElse(null);
+        Comune comune =this.comuneRepository.findById(idComune).orElse(null);
+        if(comune == null)
+        {
+            return new ResponseEntity<>("Comune non trovato",HttpStatus.NOT_FOUND);
+        }
         if (contest == null) {
             return new ResponseEntity<>("Contest non trovato", HttpStatus.NOT_FOUND);
         }
         contest.inviteContributor(this.utenteAutenticatoManager.getUtente(idContributor));
+        if(comune.getContest(idContest)!= null)
+        {
+            comune.getContest(idContest).addUtenteInvitato(utenteAutenticatoManager.getUtente(idContributor));
+        }
+        this.comuneRepository.save(comune);
         this.contestRepository.save(contest);
         return new ResponseEntity<>("Contributor invitato con successo", HttpStatus.OK);
     }

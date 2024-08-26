@@ -326,27 +326,11 @@ public class ComuneController {
         }
     }
 
-    @PostMapping("/{comuneId}/addContest")
-    public ResponseEntity<Object> addContest(@RequestBody Contest contest, @PathVariable String comuneId) {
-        // Recupera il comune dal repository
-        Comune comune = comuneRepository.findById(comuneId).orElse(null);
 
-        if (comune != null) {
-            // Aggiunge il contest al comune
-            comune.addContest(contest);
-            contestManager.addContest(contest); // Salva il contest nel repository dei contest
 
-            // Aggiorna il comune nel repository
-            comuneRepository.save(comune);
 
-            return ResponseEntity.ok("Contest aggiunto al comune con successo");
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Comune non trovato");
-        }
-    }
-
-    @DeleteMapping("/{comuneId}/deleteContest/{contestId}")
-    public ResponseEntity<Object> deleteContest(@PathVariable String contestId, @PathVariable String comuneId) {
+    @DeleteMapping("/deleteContest")
+    public ResponseEntity<Object> deleteContest(@RequestParam String contestId, @RequestParam String comuneId) {
         // Recupera il comune dal repository
         Comune comune = comuneRepository.findById(comuneId).orElse(null);
 
