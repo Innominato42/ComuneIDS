@@ -97,6 +97,11 @@ public class ContestController {
     public ResponseEntity<String> inviteContributor(@RequestParam String idContest,@RequestParam String idComune, @RequestParam String idContributor) {
         Contest contest = this.contestRepository.findById(idContest).orElse(null);
         Comune comune =this.comuneRepository.findById(idComune).orElse(null);
+        UtenteAutenticato contributor = utenteAutenticatoRepository.findById(idContributor).orElse(null);
+        if(!(contributor.getRole().equals(Role.CONTRIBUTOR)||(contributor.getRole().equals(Role.CONTRIBUTORAUTORIZZATO))))
+        {
+            return new ResponseEntity<>("L utente non e' un contributor",HttpStatus.NOT_ACCEPTABLE);
+        }
         if(comune == null)
         {
             return new ResponseEntity<>("Comune non trovato",HttpStatus.NOT_FOUND);
