@@ -143,7 +143,7 @@ public class UtenteController {
             if(this.registrazioneController.registrationUser(utente.getEmail(), utente.getUsername(), utente.getPassword(), utente.getRuolo()))
                 return new ResponseEntity<>("ok", HttpStatus.OK);
             else
-                return new ResponseEntity<>("Scegli un ruolo che sia turista auteticato o contributor", HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<>("Scegli un ruolo che sia turista autenticato o contributor", HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>("Errore interno del server", HttpStatus.INTERNAL_SERVER_ERROR);

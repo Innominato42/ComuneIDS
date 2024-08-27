@@ -1,7 +1,7 @@
 package com.example.comuneids2024.Controller;
 
 import com.example.comuneids2024.Model.*;
-import com.example.comuneids2024.Model.DTO.ContentDTO;
+import com.example.comuneids2024.Model.DTO.ContestDTO;
 import com.example.comuneids2024.Model.DTO.UtenteAutenticatoDTO;
 import com.example.comuneids2024.Repository.ComuneRepository;
 import com.example.comuneids2024.Repository.ContentRepository;
@@ -47,6 +47,13 @@ public class ContestController {
         boolean check=false;
         Comune comune = comuneRepository.findById(comuneId).orElse(null);
         List<UtenteAutenticato> utenti = utenteAutenticatoRepository.findAll();
+        for(UtenteAutenticato u: contest.getUtentiInvitati())
+        {
+            if(!(u.getRole().equals(Role.CONTRIBUTOR)||(u.getRole().equals(Role.CONTRIBUTORAUTORIZZATO))))
+            {
+                return new ResponseEntity<>("L'utente non e' un contributor",HttpStatus.BAD_REQUEST);
+            }
+        }
         for (UtenteAutenticato u: utenti )
         {
             for(UtenteAutenticato uContest: contest.getUtentiInvitati())
@@ -57,7 +64,7 @@ public class ContestController {
                 }
             }
         }
-        if(check==false)
+        if(!check)
         {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Utente non trovato");
         }
@@ -98,14 +105,21 @@ public class ContestController {
         Contest contest = this.contestRepository.findById(idContest).orElse(null);
         Comune comune =this.comuneRepository.findById(idComune).orElse(null);
         UtenteAutenticato contributor = utenteAutenticatoRepository.findById(idContributor).orElse(null);
+        //verifica che l'utente inserito esista
+        if(contributor == null){
+            return new ResponseEntity<>("L'utente non e' stato trovato",HttpStatus.NOT_FOUND);
+        }
+        //verifica che l'utente inserito sia effettivamente un contributor
         if(!(contributor.getRole().equals(Role.CONTRIBUTOR)||(contributor.getRole().equals(Role.CONTRIBUTORAUTORIZZATO))))
         {
-            return new ResponseEntity<>("L utente non e' un contributor",HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>("L'utente non e' un contributor",HttpStatus.BAD_REQUEST);
         }
+        //verifica che il comune inserito esista
         if(comune == null)
         {
             return new ResponseEntity<>("Comune non trovato",HttpStatus.NOT_FOUND);
         }
+        //verifica che il contest inserito esista
         if (contest == null) {
             return new ResponseEntity<>("Contest non trovato", HttpStatus.NOT_FOUND);
         }

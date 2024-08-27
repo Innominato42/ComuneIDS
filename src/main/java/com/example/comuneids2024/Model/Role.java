@@ -1,10 +1,10 @@
 package com.example.comuneids2024.Model;
 
 public enum Role {
-    TURISTAAUTENTICATO,
+    ANIMATORE,
     CONTRIBUTOR,
     CONTRIBUTORAUTORIZZATO,
     CURATORE,
-    ANIMATORE,
-    GESTORE;
+    GESTORE,
+    TURISTAAUTENTICATO;
 }
