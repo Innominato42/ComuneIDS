@@ -40,34 +40,12 @@ public class ContestController {
 
 
 
-    //
+    //Testato
     @PostMapping("/createContest")
     public ResponseEntity<Object> createContest(@RequestBody Contest contest, @RequestParam String comuneId) {
         // Recupera il comune dal repository
         boolean check=false;
         Comune comune = comuneRepository.findById(comuneId).orElse(null);
-        List<UtenteAutenticato> utenti = utenteAutenticatoRepository.findAll();
-        for(UtenteAutenticato u: contest.getUtentiInvitati())
-        {
-            if(!(u.getRole().equals(Role.CONTRIBUTOR)||(u.getRole().equals(Role.CONTRIBUTORAUTORIZZATO))))
-            {
-                return new ResponseEntity<>("L'utente non e' un contributor",HttpStatus.BAD_REQUEST);
-            }
-        }
-        for (UtenteAutenticato u: utenti )
-        {
-            for(UtenteAutenticato uContest: contest.getUtentiInvitati())
-            {
-                if(u.getId().equals(uContest.getId()))
-                {
-                    check=true;
-                }
-            }
-        }
-        if(!check)
-        {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Utente non trovato");
-        }
         if (comune != null) {
             // Aggiunge il contest al comune
             comune.addContest(contest);
@@ -100,11 +78,13 @@ public class ContestController {
     }
 
 
+    //Testato
     @PostMapping("/inviteContributor")
     public ResponseEntity<String> inviteContributor(@RequestParam String idContest,@RequestParam String idComune, @RequestParam String idContributor) {
         Contest contest = this.contestRepository.findById(idContest).orElse(null);
         Comune comune =this.comuneRepository.findById(idComune).orElse(null);
         UtenteAutenticato contributor = utenteAutenticatoRepository.findById(idContributor).orElse(null);
+
         //verifica che l'utente inserito esista
         if(contributor == null){
             return new ResponseEntity<>("L'utente non e' stato trovato",HttpStatus.NOT_FOUND);
