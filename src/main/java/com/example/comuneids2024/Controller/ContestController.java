@@ -7,11 +7,16 @@ import com.example.comuneids2024.Repository.ComuneRepository;
 import com.example.comuneids2024.Repository.ContentRepository;
 import com.example.comuneids2024.Repository.ContestRepository;
 import com.example.comuneids2024.Repository.UtenteAutenticatoRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -37,6 +42,9 @@ public class ContestController {
 
     @Autowired
     private ContestManager contestManager;
+
+    @Autowired
+    private ContentController contentController;
 
 
 
@@ -90,7 +98,7 @@ public class ContestController {
             return new ResponseEntity<>("L'utente non e' stato trovato",HttpStatus.NOT_FOUND);
         }
         //verifica che l'utente inserito sia effettivamente un contributor
-        if(!(contributor.getRole().equals(Role.CONTRIBUTOR)||(contributor.getRole().equals(Role.CONTRIBUTORAUTORIZZATO))))
+        if(!(isContributor(contributor)))
         {
             return new ResponseEntity<>("L'utente non e' un contributor",HttpStatus.BAD_REQUEST);
         }
@@ -156,6 +164,68 @@ public class ContestController {
         contest.setVincitore(vincitore);
         contestRepository.save(contest);
         return new ResponseEntity<>("Vincitore selezionato con successo", HttpStatus.OK);
+    }
+
+
+
+
+    //Testato
+    @PostMapping("insertContentToContest")
+    public ResponseEntity<Object> insertContentToContest(@RequestParam("idComune") String idComune, @RequestParam("idContest") String idContest,  @RequestPart("content") String contentJson, @RequestPart("file") MultipartFile file) throws JsonProcessingException {
+        // Converti il JSON in un oggetto Content
+        Content c = new ObjectMapper().readValue(contentJson, Content.class);
+        Contest contest=contestRepository.findById(idContest).orElse(null);
+        //controlla se è presete la mail del creatore del content
+        if(c.getCreatore().getEmail() == null){
+            return new ResponseEntity<>("E' necessario inserire la mail del creatore del content",HttpStatus.BAD_REQUEST);
+        }
+        //controlla se il contributor è stato invitato a partecipare al contest
+        boolean check=false;
+        for(UtenteAutenticato u: contest.getUtentiInvitati())
+        {
+            if(u.getId().equals(c.getCreatore().getId()))
+            {
+                check=true;
+            }
+        }
+        if(!check)
+        {
+            return new ResponseEntity<>("Il creatore del content non e' stato invitato a pratecipare al contest",HttpStatus.BAD_REQUEST);
+        }
+        //verifica che l'utente inserito sia effettivamente un contributor
+        if(!(isContributor(c.getCreatore())))
+        {
+            return new ResponseEntity<>("L'utente non e' un contributor",HttpStatus.BAD_REQUEST);
+        }
+        //controlla se il content è già presente nel contest
+        for(Content i : contest.getContents()) {
+            if(i.getNome().equals(c.getNome()))
+            {
+                return new ResponseEntity<>("Content gia presente",HttpStatus.BAD_REQUEST);
+
+            }
+        }
+
+        try {
+            c.addFile(file.getBytes());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        contentController.insertContentToContest(idComune, idContest, c);
+        return new ResponseEntity<>("ok", HttpStatus.OK);
+    }
+
+    /*
+    Controlla se l utente passato e' un contributor
+     */
+    public boolean isContributor(UtenteAutenticato utente)
+    {
+        if((utente.getRole().equals(Role.CONTRIBUTOR)||(utente.getRole().equals(Role.CONTRIBUTORAUTORIZZATO))))
+        {
+            return true;
+        }
+        return false;
     }
 
 

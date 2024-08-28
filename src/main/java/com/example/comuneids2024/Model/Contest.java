@@ -106,6 +106,7 @@ public class Contest {
         this.contents=contents;
     }
 
+
     public void addContestInfo(String nome, String descrizione, boolean onInvite, List<Content> content)
     {
         setContents(content);

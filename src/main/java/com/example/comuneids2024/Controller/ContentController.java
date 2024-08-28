@@ -3,8 +3,10 @@ package com.example.comuneids2024.Controller;
 import com.example.comuneids2024.Model.Comune;
 import com.example.comuneids2024.Model.Content;
 import com.example.comuneids2024.Model.POI;
+import com.example.comuneids2024.Model.Contest;
 import com.example.comuneids2024.Repository.ComuneRepository;
 import com.example.comuneids2024.Repository.ContentRepository;
+import com.example.comuneids2024.Repository.ContestRepository;
 import com.example.comuneids2024.Repository.POIRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,9 @@ public class ContentController {
 
     @Autowired
     private POIRepository poiRepository;
+
+    @Autowired
+    private ContestRepository contestRepository;
 
 
     public void insertContentToPOI(String idComune, String idPOI, Content c)
@@ -51,6 +56,32 @@ public class ContentController {
             this.contentRepository.save(c);
         } else {
             throw new RuntimeException("Comune with ID " + idComune + " not found.");
+        }
+    }
+
+    public void insertContentToContest(String idComune, String idContest, Content c)
+    {
+        Optional<Comune> optionalComune=this.comuneRepository.findById(idComune);
+        Optional<Contest> optionalContest=this.contestRepository.findById(idContest);
+        if(optionalComune.isPresent())
+        {
+            Comune comune= optionalComune.get();
+            comune.getContest(idContest).addContent(c);
+            this.comuneRepository.save(comune);
+            this.contentRepository.save(c);
+        }
+        else {
+            throw new RuntimeException("Comune with ID " + idComune + " not found.");
+        }
+        if(optionalContest.isPresent())
+        {
+            Contest contest=optionalContest.get();
+
+            contest.addContent(c);
+            this.contestRepository.save(contest);
+        }
+        else {
+            throw new RuntimeException("Contest con ID " + idContest + " not found.");
         }
     }
 
