@@ -22,12 +22,13 @@ public class PreferitiManager {
         UtenteAutenticato utente = utenteAutenticatoManager.getUtente(id);
         if (utente != null) {
             POI poi = poiRepository.findById(idPOI).orElse(null);
-            if (poi != null) {
+            if (poi ==null) {
+                throw new RuntimeException("POI non trovato");
+            } else {
+
                 utente.addPOIToFavourites(poi);
                 utenteAutenticatoManager.addUtente(utente);
                 return true;
-            } else {
-                throw new RuntimeException("POI non trovato");
             }
         } else {
             throw new RuntimeException("Utente non trovato");
@@ -50,13 +51,14 @@ public class PreferitiManager {
         }
     }
 
-    public void addItineraryToFavourites(String id, String idComune, String idItinerary) {
+    public boolean addItineraryToFavourites(String id, String idComune, String idItinerary) {
         UtenteAutenticato utente = utenteAutenticatoManager.getUtente(id);
         if (utente != null) {
             Itinerary itinerary = itineraryRepository.findById(idItinerary).orElse(null);
             if (itinerary != null) {
                 utente.addItineraryToFavourites(itinerary);
                 utenteAutenticatoManager.addUtente(utente);
+                return true;
             } else {
                 throw new RuntimeException("Itinerario non trovato");
             }

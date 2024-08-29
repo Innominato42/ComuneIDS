@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.imageio.stream.IIOByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Document(collection = "comuni")
 public class Comune {
@@ -175,7 +176,7 @@ public class Comune {
     {
         for(Itinerary i : itinerarioValidato)
         {
-            if(i.getItineraryId()==id)
+            if(Objects.equals(i.getItineraryId(), id))
             {
                 return i;
             }

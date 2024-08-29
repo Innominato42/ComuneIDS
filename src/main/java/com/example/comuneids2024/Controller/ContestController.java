@@ -98,7 +98,7 @@ public class ContestController {
             return new ResponseEntity<>("L'utente non e' stato trovato",HttpStatus.NOT_FOUND);
         }
         //verifica che l'utente inserito sia effettivamente un contributor
-        if(!(isContributor(contributor)))
+        if(!(contributor.getRole().equals(Role.CONTRIBUTOR)||(contributor.getRole().equals(Role.CONTRIBUTORAUTORIZZATO))))
         {
             return new ResponseEntity<>("L'utente non e' un contributor",HttpStatus.BAD_REQUEST);
         }
@@ -137,8 +137,8 @@ public class ContestController {
 
 
     // Metodo per selezionare tutti i contenuti di un contest specifico
-    @GetMapping("/selezionaContestContent/{contestID}")
-    public ResponseEntity<List<Content>> selezionaContestContent(@PathVariable String contestID) {
+    @GetMapping("/selezionaContestContent")
+    public ResponseEntity<List<Content>> selezionaContestContent(@RequestParam String contestID) {
         Contest contest = contestRepository.findById(contestID).orElse(null);
         if (contest == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -146,22 +146,30 @@ public class ContestController {
         return new ResponseEntity<>(contest.getContents(), HttpStatus.OK);
     }
 
-
+    //Testato
     @PostMapping("/selezionaContentVincitore")
-    public ResponseEntity<String> selezionaContentVincitore(@RequestParam String contestID, @RequestParam String contentID) {
+    public ResponseEntity<String> selezionaContentVincitore(@RequestParam String contestID, @RequestParam String contentID,@RequestParam String comuneID) {
         Contest contest = contestRepository.findById(contestID).orElse(null);
+        Comune comune = comuneRepository.findById(comuneID).orElse(null);
         if (contest == null) {
             return new ResponseEntity<>("Contest non trovato", HttpStatus.NOT_FOUND);
         }
 
         String emailAutore = contest.getAutoreContentEmail(contentID);
         UtenteAutenticato vincitore = utenteAutenticatoRepository.findByEmail(emailAutore);
+        if(emailAutore == null)
+        {
+            return new ResponseEntity<>("Content non trovato",HttpStatus.NOT_FOUND);
+        }
 
         if (vincitore == null) {
             return new ResponseEntity<>("Utente non trovato con l'email specificata", HttpStatus.NOT_FOUND);
         }
         contest.closeContest();
         contest.setVincitore(vincitore);
+        comune.getContest(contestID).setVincitore(vincitore);
+        comune.getContest(contestID).closeContest();
+        comuneRepository.save(comune);
         contestRepository.save(contest);
         return new ResponseEntity<>("Vincitore selezionato con successo", HttpStatus.OK);
     }
@@ -193,7 +201,7 @@ public class ContestController {
             return new ResponseEntity<>("Il creatore del content non e' stato invitato a pratecipare al contest",HttpStatus.BAD_REQUEST);
         }
         //verifica che l'utente inserito sia effettivamente un contributor
-        if(!(isContributor(c.getCreatore())))
+        if(!((c.getCreatore().getRole().equals(Role.CONTRIBUTOR))||(c.getCreatore().getRole().equals(Role.CONTRIBUTORAUTORIZZATO))))
         {
             return new ResponseEntity<>("L'utente non e' un contributor",HttpStatus.BAD_REQUEST);
         }
@@ -211,21 +219,8 @@ public class ContestController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
         contentController.insertContentToContest(idComune, idContest, c);
         return new ResponseEntity<>("ok", HttpStatus.OK);
-    }
-
-    /*
-    Controlla se l utente passato e' un contributor
-     */
-    public boolean isContributor(UtenteAutenticato utente)
-    {
-        if((utente.getRole().equals(Role.CONTRIBUTOR)||(utente.getRole().equals(Role.CONTRIBUTORAUTORIZZATO))))
-        {
-            return true;
-        }
-        return false;
     }
 
 

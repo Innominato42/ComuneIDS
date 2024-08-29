@@ -63,7 +63,7 @@ public class Itinerary {
     }
     public String getItineraryId()
     {
-        return ItineraryId;
+        return this.ItineraryId;
     }
 
     public void addPOI(POI p)

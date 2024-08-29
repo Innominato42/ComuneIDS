@@ -37,46 +37,57 @@ public class UtenteController {
 
 
 
-    @PostMapping("addPOIToFavorites")
-    public ResponseEntity<Object> addPOIToFavorites(Authentication authentication, @RequestParam("POIid") String POIid, @RequestParam("idComune") String idComune) {
+    //Testato
+    @PostMapping("/addPOIToFavorites")
+    public ResponseEntity<Object> addPOIToFavorites(@RequestParam String idUtente, @RequestParam("POIid") String POIid, @RequestParam("idComune") String idComune) {
         if(comuneRepository.findById(idComune).get().getPOI(POIid) == null){
             return new ResponseEntity<>("POI non presente nel comune", HttpStatus.BAD_REQUEST);
         }
-        String id = this.utenteAutenticatoRepository.findByUsername(authentication.getName()).getId();
-        if (this.preferitiManager.addPOItoFavourites(id, POIid, idComune)) {
+        UtenteAutenticato utente =utenteAutenticatoRepository.findById(idUtente).orElse(null);
+        if(utente==null)
+        {
+            return new ResponseEntity<>("Utente non trovato",HttpStatus.NOT_FOUND);
+        }
+        if (this.preferitiManager.addPOItoFavourites(idUtente, idComune, POIid)) {
             return new ResponseEntity<>("ok", HttpStatus.OK);
         }else {
             return new ResponseEntity<>("POI già presente tra i preferiti", HttpStatus.BAD_REQUEST);
         }
     }
 
-    @PostMapping("addItineraryToFavorites")
-    public ResponseEntity<Object> addItineraryToFavorites(Authentication authentication, @RequestParam("itineraryId") String itineraryId, @RequestParam("idComune") String idComune) {
+    @PostMapping("/addItineraryToFavorites")
+    public ResponseEntity<Object> addItineraryToFavorites(@RequestParam("utenteId") String idUtente ,@RequestParam("itineraryId") String itineraryId, @RequestParam("idComune") String idComune) {
         if(comuneRepository.findById(idComune).get().getItinerary(itineraryId) == null){
             return new ResponseEntity<>("Itinerario non presente nel comune", HttpStatus.BAD_REQUEST);
         }
-        String id = this.utenteAutenticatoRepository.findByUsername(authentication.getName()).getId();
-        if (this.preferitiManager.addPOItoFavourites(id, itineraryId, idComune)) {
+        UtenteAutenticato utente = utenteAutenticatoRepository.findById(idUtente).orElse(null);
+        if(utente==null)
+        {
+            return new ResponseEntity<>("Utente non trovato",HttpStatus.NOT_FOUND);
+        }
+        if (this.preferitiManager.addItineraryToFavourites(idUtente, idComune, itineraryId)) {
             return new ResponseEntity<>("ok", HttpStatus.OK);
         }else {
             return new ResponseEntity<>("Itinerario già presente tra i preferiti o inesistente", HttpStatus.BAD_REQUEST);
         }
     }
-    @PutMapping ("changeRole")
-    public ResponseEntity<Object> changeRole(@RequestParam("id") String id, @RequestParam("role") Role role) {
+
+    //Testato
+    @PutMapping ("/changeRole")
+    public ResponseEntity<Object> changeRole(@RequestParam("idUtente") String idUtente, @RequestParam("role") Role role) {
         if(role.equals(Role.GESTORE) || role.equals(Role.CURATORE)){
             return new ResponseEntity<>("Ruolo non assegnabile", HttpStatus.BAD_REQUEST);
         }
-        this.utenteAutenticatoManager.cambiaRuolo(id,role);
+        this.utenteAutenticatoManager.cambiaRuolo(idUtente,role);
         return new ResponseEntity<>("ok", HttpStatus.OK);
     }
-
-    @GetMapping("viewAllUsers")
+    //Testato
+    @GetMapping("/viewAllUsers")
     public ResponseEntity<Object> viewAllUsers() {
         return new ResponseEntity<>(this.utenteAutenticatoManager.viewAllUser(), HttpStatus.OK);
     }
 
-    @GetMapping("viewRegistrationUsers")
+    @GetMapping("/viewRegistrationUsers")
     public ResponseEntity<Object> viewRegistrationUsers() {
         return new ResponseEntity<>(this.utenteAutenticatoManager.viewRegistrationUsers(), HttpStatus.OK);
     }
@@ -95,11 +106,17 @@ public class UtenteController {
     @PostMapping("/gestore/rendiContributor/Autorizzato")
     private ResponseEntity<Object> rendiContributorAutorizzato(@RequestParam("id") String id)
     {
+        UtenteAutenticato utente= utenteAutenticatoRepository.findById(id).orElse(null);
+        if(!(utente.getRole().equals(Role.CONTRIBUTOR)))
+        {
+            return new ResponseEntity<>("L'utente non e' un contributor o e' gia un contributor autorizzato",HttpStatus.BAD_REQUEST);
+        }
+
         this.roleManager.nuovoRuolo(id, Role.valueOf("CONTRIBUTORAUTORIZZATO"));
         return new ResponseEntity<>("ok",HttpStatus.OK);
     }
 
-    @PostMapping("requestChangeRole")
+    @PostMapping("/requestChangeRole")
     public ResponseEntity<Object> requestChangeRole(Authentication authentication,Role ruolo) {
         String id = this.utenteAutenticatoRepository.findByUsername(authentication.getName()).getId();
         if(this.roleManager.viewChangeRoleRequests().stream().filter(x -> x.getId().equals(id)).count() > 0){
@@ -128,8 +145,8 @@ public class UtenteController {
     }
 
 
-
-    @PostMapping("registrazioneUtente")
+    //Testato
+    @PostMapping("/registrazioneUtente")
     public ResponseEntity<Object> registrationUser(@RequestBody UtenteAutenticatoDTO utente) {
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
