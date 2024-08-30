@@ -17,7 +17,11 @@ public class ComuneDTO {
     private List<Itinerary> itinerarioAttesa;
     private List<Contest> contests;
 
-    public ComuneDTO(String id, String nome, Coordinate coordinate, UtenteAutenticato curatore, List<POI> POIValidate, List<POI> POIAttesa, List<Itinerary> itinerarioValidato, List<Itinerary> itinerarioAttesa, List<Contest> contests) {
+    private List<POI> POISegnalati;
+
+    private List<Itinerary> itinerariSegnalati;
+
+    public ComuneDTO(String id, String nome, Coordinate coordinate, UtenteAutenticato curatore, List<POI> POIValidate, List<POI> POIAttesa, List<Itinerary> itinerarioValidato, List<Itinerary> itinerarioAttesa, List<Contest> contests, List<POI> POISegnalati, List<Itinerary> itinerariSegnalati) {
         this.id = id;
         this.nome = nome;
         this.coordinate = coordinate;
@@ -27,6 +31,8 @@ public class ComuneDTO {
         this.itinerarioValidato = itinerarioValidato;
         this.itinerarioAttesa = itinerarioAttesa;
         this.contests = contests;
+        this.POISegnalati = POISegnalati;
+        this.itinerariSegnalati= itinerariSegnalati;
     }
 
     public String getNome() {
@@ -93,5 +99,13 @@ public class ComuneDTO {
 
     public void setContests(List<Contest> contests) {
         this.contests = contests;
+    }
+
+    public List<Itinerary> getItinerariSegnalati() {
+        return itinerariSegnalati;
+    }
+
+    public List<POI> getPOISegnalati() {
+        return POISegnalati;
     }
 }

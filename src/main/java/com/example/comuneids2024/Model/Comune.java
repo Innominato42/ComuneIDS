@@ -50,6 +50,8 @@ public class Comune {
         itinerarioAttesa=new ArrayList<>();
         itinerarioValidato=new ArrayList<>();
         this.contests=new ArrayList<>();
+        this.itinerariSegnalati = new ArrayList<>();
+        this.POISegnalati = new ArrayList<>();
     }
 
     public Comune() {
@@ -287,8 +289,15 @@ public class Comune {
 
     public ComuneDTO getComune()
     {
-        return new ComuneDTO(this.comuneId,this.nome,this.coordinate,this.curatore,this.POIValidate,this.POIAttesa,this.itinerarioValidato,this.itinerarioAttesa,this.contests);
+        return new ComuneDTO(this.comuneId,this.nome,this.coordinate,this.curatore,this.POIValidate,this.POIAttesa,this.itinerarioValidato,this.itinerarioAttesa,this.contests,this.POISegnalati,this.itinerariSegnalati);
     }
 
+    public void setItinerariSegnalati (List<Itinerary> ItinerariSegnalati){
+        this.itinerariSegnalati = ItinerariSegnalati;
+    }
 
+    public void setPOISegnalati(List<POI> POISegnalati)
+    {
+        this.POISegnalati=POISegnalati;
+    }
 }

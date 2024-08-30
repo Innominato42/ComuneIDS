@@ -81,7 +81,8 @@ public class ComuneController {
         comune.setItinerarioValidato(comuneDTO.getItinerarioValidato());
         comune.setItinerarioAttesa(comuneDTO.getItinerarioAttesa());
         comune.setContests(comuneDTO.getContests());
-
+        comune.setItinerariSegnalati(comuneDTO.getItinerariSegnalati());
+        comune.setPOISegnalati(comuneDTO.getPOISegnalati());
         // Salva il comune nel repository
         comuneRepository.save(comune);
 
@@ -89,7 +90,7 @@ public class ComuneController {
         return new ResponseEntity<>("Comune aggiunto con successo", HttpStatus.OK);
     }
 
-
+    //Testato
     @GetMapping("/getAllPOI")
     public ResponseEntity<Object> getAllPOI(@RequestParam String id){
 
@@ -273,8 +274,9 @@ public class ComuneController {
 
 
 
-    @GetMapping("/getPOI/{comuneId}/{poiId}")
-    public ResponseEntity<Object> getPOI(@PathVariable String comuneId, @PathVariable String poiId) {
+    //Testato
+    @GetMapping("/getPOI")
+    public ResponseEntity<Object> getPOI(@RequestParam("comuneId") String comuneId, @RequestParam("poiId") String poiId) {
         Optional<Comune> comuneOpt = comuneRepository.findById(comuneId);
 
         if (comuneOpt.isPresent()) {
@@ -296,8 +298,9 @@ public class ComuneController {
     }
 
 
-    @DeleteMapping("/deletePOI/{comuneId}/{poiId}")
-    public ResponseEntity<Object> deletePOI(@PathVariable String comuneId, @PathVariable String poiId) {
+    //Testato
+    @DeleteMapping("/deletePOI")
+    public ResponseEntity<Object> deletePOI(@RequestParam("comuneID") String comuneId, @RequestParam("poiID") String poiId) {
         Optional<Comune> comuneOpt = comuneRepository.findById(comuneId);
 
         if (comuneOpt.isPresent()) {
@@ -328,9 +331,9 @@ public class ComuneController {
 
 
 
-
+    //Testato
     @DeleteMapping("/deleteContest")
-    public ResponseEntity<Object> deleteContest(@RequestParam String contestId, @RequestParam String comuneId) {
+    public ResponseEntity<Object> deleteContest(@RequestParam("contestID") String contestId, @RequestParam("comuneID") String comuneId) {
         // Recupera il comune dal repository
         Comune comune = comuneRepository.findById(comuneId).orElse(null);
 
@@ -355,8 +358,8 @@ public class ComuneController {
     }
 
 
-    @PostMapping("/segnalaPOI/{comuneId}/{poiId}")
-    public ResponseEntity<Object> segnalaPOI(@PathVariable String comuneId, @PathVariable String poiId) {
+    @PostMapping("/segnalaPOI")
+    public ResponseEntity<Object> segnalaPOI(@RequestParam("comuneID") String comuneId, @RequestParam("poiID") String poiId) {
         // Verifica l'esistenza del comune
         Comune comune = comuneRepository.findById(comuneId).orElse(null);
         if (comune == null) {
