@@ -55,6 +55,7 @@ public class UtenteController {
         }
     }
 
+    //Testato
     @PostMapping("/addItineraryToFavorites")
     public ResponseEntity<Object> addItineraryToFavorites(@RequestParam("utenteId") String idUtente ,@RequestParam("itineraryId") String itineraryId, @RequestParam("idComune") String idComune) {
         if(comuneRepository.findById(idComune).get().getItinerary(itineraryId) == null){

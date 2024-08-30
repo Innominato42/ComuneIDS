@@ -1,5 +1,6 @@
 package com.example.comuneids2024.Model;
 
+import com.example.comuneids2024.Repository.ComuneRepository;
 import com.example.comuneids2024.Repository.ItineraryRepository;
 import com.example.comuneids2024.Repository.POIRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ public class PreferitiManager {
 
     @Autowired
     private UtenteAutenticatoManager utenteAutenticatoManager;
+
+    @Autowired
+    private ComuneRepository comuneRepository;
 
 
     public boolean addPOItoFavourites(String id, String idComune, String idPOI) {
@@ -53,8 +57,13 @@ public class PreferitiManager {
 
     public boolean addItineraryToFavourites(String id, String idComune, String idItinerary) {
         UtenteAutenticato utente = utenteAutenticatoManager.getUtente(id);
+        Comune comune = comuneRepository.findById(idComune).orElse(null);
+        if(comune==null)
+        {
+            throw new NullPointerException("Comune non trovato");
+        }
         if (utente != null) {
-            Itinerary itinerary = itineraryRepository.findById(idItinerary).orElse(null);
+            Itinerary itinerary=comune.getItinerary(idItinerary);
             if (itinerary != null) {
                 utente.addItineraryToFavourites(itinerary);
                 utenteAutenticatoManager.addUtente(utente);
