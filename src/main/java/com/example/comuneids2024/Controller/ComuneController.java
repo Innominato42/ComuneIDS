@@ -379,8 +379,8 @@ public class ComuneController {
         return ResponseEntity.ok("POI segnalato con successo");
     }
 
-    @PostMapping("/segnalaItinerario/{comuneId}/{itinerarioId}")
-    public ResponseEntity<Object> segnalaItinerario(@PathVariable String comuneId, @PathVariable String itinerarioId) {
+    @PostMapping("/segnalaItinerario")
+    public ResponseEntity<Object> segnalaItinerario(@RequestParam String comuneId, @RequestParam String itinerarioId) {
         // Verifica l'esistenza del comune
         Comune comune = comuneRepository.findById(comuneId).orElse(null);
         if (comune == null) {
@@ -388,7 +388,7 @@ public class ComuneController {
         }
 
         // Verifica l'esistenza dell'Itinerario
-        Itinerary itinerario = itineraryRepository.findById(itinerarioId).orElse(null);
+        Itinerary itinerario = comune.getItinerary(itinerarioId);
         if (itinerario == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Itinerario non trovato");
         }
