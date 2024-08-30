@@ -42,30 +42,44 @@ public class RoleManager {
         richiestaRuoloRepository.save(richiestaRuolo);
     }
 
-    public List<UtenteAutenticato> viewChangeRoleRequests() {
-        List<UtenteAutenticato> utenti = new ArrayList<>();
+    public List<RichiestaRuolo> viewChangeRoleRequests() {
+        /*List<UtenteAutenticato> utenti = new ArrayList<>();
         this.richiestaRuoloRepository.findAll().forEach(richiestaRuolo -> utenti.add(this.utentiAutenticatiManager.getUtente(richiestaRuolo.getIdUtente())));
-        return utenti;
+        return utenti;*/
+        List<RichiestaRuolo> richieste =richiestaRuoloRepository.findAll();
+        return richieste;
+
     }
 
     public void rifiutaRichiesta(String id) {
-        this.richiestaRuoloRepository.findAll().forEach(richiestaRuolo -> {
-            if (richiestaRuolo.getIdUtente().equals(id))
-                this.richiestaRuoloRepository.delete(richiestaRuolo);
-        });
+        RichiestaRuolo richiestaRuolo= richiestaRuoloRepository.findById(id).orElse(null);
+        if(richiestaRuolo==null)
+        {
+            throw new NullPointerException("Richiesta non trovata");
+        }
+        richiestaRuoloRepository.delete(richiestaRuolo);
     }
 
     public void approvaRichiesta(String id)
     {
-        RichiestaRuolo richiestaRuolo= this.richiestaRuoloRepository.findById(id).get();
-        UtenteAutenticato utente= this.utenteAutenticatoRepository.findById(richiestaRuolo.getId()).get();
-        if(richiestaRuolo.getRuoloRichiesto().equals("GESTORE"))
+        RichiestaRuolo richiestaRuolo= this.richiestaRuoloRepository.findById(id).orElse(null);
+        if(richiestaRuolo==null)
+        {
+            throw new NullPointerException("richiesta non trovata");
+        }
+        UtenteAutenticato utente= this.utenteAutenticatoRepository.findById(richiestaRuolo.getIdUtente()).orElse(null);
+        if(utente==null)
+        {
+            throw new NullPointerException("Utente non trovato");
+        }
+        if(richiestaRuolo.getRuoloRichiesto().equals(Role.GESTORE))
         {
             throw new RuntimeException("Impossibile diventare il gestore della piattaforma");
         }
         else {
             utente.setRole(richiestaRuolo.getRuoloRichiesto());
         }
+        this.richiestaRuoloRepository.delete(richiestaRuolo);
         this.utenteAutenticatoRepository.save(utente);
     }
 }

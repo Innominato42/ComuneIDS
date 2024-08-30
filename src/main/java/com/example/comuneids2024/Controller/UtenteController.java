@@ -104,6 +104,8 @@ public class UtenteController {
         return new ResponseEntity<>("ok", HttpStatus.OK);
     }
 
+
+    //Testato
     @PostMapping("/gestore/rendiContributor/Autorizzato")
     private ResponseEntity<Object> rendiContributorAutorizzato(@RequestParam("id") String id)
     {
@@ -117,32 +119,38 @@ public class UtenteController {
         return new ResponseEntity<>("ok",HttpStatus.OK);
     }
 
+
+    //Testato
     @PostMapping("/requestChangeRole")
-    public ResponseEntity<Object> requestChangeRole(Authentication authentication,Role ruolo) {
-        String id = this.utenteAutenticatoRepository.findByUsername(authentication.getName()).getId();
-        if(this.roleManager.viewChangeRoleRequests().stream().filter(x -> x.getId().equals(id)).count() > 0){
+    public ResponseEntity<Object> requestChangeRole(@RequestParam("idUtente") String idUtente, @RequestParam ("ruolo") Role ruolo) {
+        //UtenteAutenticato utente= this.utenteAutenticatoRepository.findById(id).orElse(null);
+        if(this.roleManager.viewChangeRoleRequests().stream().anyMatch(x -> x.getId().equals(idUtente))){
             return new ResponseEntity<>("Richiesta già inviata", HttpStatus.BAD_REQUEST);
         }
-        this.roleManager.nuovaRichiestaCambioRuolo(id,ruolo);
+        this.roleManager.nuovaRichiestaCambioRuolo(idUtente,ruolo);
         return new ResponseEntity<>("ok", HttpStatus.OK);
     }
 
+    //Testato
     @GetMapping("viewChangeRoleRequests")
     public ResponseEntity<Object> viewChangeRoleRequests() {
         return new ResponseEntity<>(this.roleManager.viewChangeRoleRequests(), HttpStatus.OK);
     }
 
+
+    //Testato
     @DeleteMapping("/rifiutaRichiesta")
     public ResponseEntity<Object> rifiutaRichiesta(@RequestParam("id") String id) {
         this.roleManager.rifiutaRichiesta(id);
-        return new ResponseEntity<>("ok", HttpStatus.OK);
+        return new ResponseEntity<>("Richiesta rifiutata", HttpStatus.OK);
     }
 
 
+    //Testato
     @PutMapping("/approvaRichiesta")
     public ResponseEntity<Object> approvaRichiesta(@RequestParam("id") String id) {
         this.roleManager.approvaRichiesta(id);
-        return new ResponseEntity<>("ok", HttpStatus.OK);
+        return new ResponseEntity<>("Richiesta approvata", HttpStatus.OK);
     }
 
 
