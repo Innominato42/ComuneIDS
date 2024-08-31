@@ -3,6 +3,7 @@ package com.example.comuneids2024.Model.DTO;
 import com.example.comuneids2024.Model.POI;
 import com.example.comuneids2024.Model.UtenteAutenticato;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ItineraryDTO {
@@ -21,6 +22,17 @@ public class ItineraryDTO {
         this.name=name;
         this.POIs=POIs;
     }
+
+    public ItineraryDTO(String id, String nome, String descrizione)
+    {
+        this.id=id;
+        this.name=nome;
+        this.descrizione=descrizione;
+        this.POIs=new ArrayList<>();
+    }
+
+
+
     public String getName() {
         return name;
     }
@@ -36,6 +48,10 @@ public class ItineraryDTO {
     public String getDescrizione()
     {
         return this.descrizione;
+    }
+
+    public String getNome(){
+        return this.name;
     }
 
     public List<POI> getPOIs() {

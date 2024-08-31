@@ -16,7 +16,7 @@ public class Itinerary {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "itinerary_id_seq")
-    private String ItineraryId;
+    private String itineraryId;
 
     private String nome;
 
@@ -31,12 +31,23 @@ public class Itinerary {
         this.POIs=new ArrayList<>();
     }
 
+    public Itinerary(String nome)
+    {
+        this.nome=nome;
+        this.descrizione=null;
+        this.POIs=new ArrayList<>();
+    }
+
 
 
     public Itinerary() {
         this.POIs=new ArrayList<>();
     }
 
+    public void removePOI()
+    {
+        this.POIs= new ArrayList<>();
+    }
     public String getNome()
     {
         return nome;
@@ -44,11 +55,19 @@ public class Itinerary {
 
     public void setNome(String nome)
     {
+        if(nome == null)
+        {
+            return;
+        }
         this.nome=nome;
     }
 
     public void setDescrizione(String descrizione)
     {
+        if(descrizione == null)
+        {
+            return;
+        }
         this.descrizione=descrizione;
     }
 
@@ -63,9 +82,12 @@ public class Itinerary {
     }
     public String getItineraryId()
     {
-        return this.ItineraryId;
+        return this.itineraryId;
     }
-
+    public void addPOIS(List<POI> pois)
+    {
+        this.POIs.addAll(pois);
+    }
     public void addPOI(POI p)
     {
         if(p==null)
@@ -78,7 +100,7 @@ public class Itinerary {
     public ItineraryDTO getItineraryInfo()
     {
 
-        return new ItineraryDTO(this.ItineraryId,this.nome,this.descrizione,this.getPOIs());
+        return new ItineraryDTO(this.itineraryId,this.nome,this.descrizione,this.getPOIs());
     }
 
     public void addItineraryInfo(String nome, String descrizione)

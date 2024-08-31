@@ -3,6 +3,7 @@ package com.example.comuneids2024.Controller;
 
 import com.example.comuneids2024.Model.*;
 import com.example.comuneids2024.Model.DTO.ComuneDTO;
+import com.example.comuneids2024.Model.DTO.ItineraryDTO;
 import com.example.comuneids2024.Model.DTO.POIDTO;
 import com.example.comuneids2024.Repository.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -357,7 +358,7 @@ public class ComuneController {
         }
     }
 
-
+    //Testato
     @PostMapping("/segnalaPOI")
     public ResponseEntity<Object> segnalaPOI(@RequestParam("comuneID") String comuneId, @RequestParam("poiID") String poiId) {
         // Verifica l'esistenza del comune
@@ -379,6 +380,7 @@ public class ComuneController {
         return ResponseEntity.ok("POI segnalato con successo");
     }
 
+    //Testato
     @PostMapping("/segnalaItinerario")
     public ResponseEntity<Object> segnalaItinerario(@RequestParam String comuneId, @RequestParam String itinerarioId) {
         // Verifica l'esistenza del comune
@@ -400,16 +402,32 @@ public class ComuneController {
         return ResponseEntity.ok("Itinerario segnalato con successo");
     }
 
+    //Testato
     @PostMapping("/modificaItinerario")
-    public ResponseEntity<Object> modificaItinerario(String id, String nome, String descrizione)
+    public ResponseEntity<Object> modificaItinerario(@RequestParam("idComune") String idComune, @RequestParam ("idItinerario") String idItinerario, @RequestBody Itinerary itinerario)
     {
-        Itinerary i= this.itineraryRepository.findById(id).orElse(null);
+        Comune comune = this.comuneRepository.findById(idComune).orElse(null);
+        if(comune==null)
+        {
+            return new ResponseEntity<>("Comune non trovato",HttpStatus.NOT_FOUND);
+        }
+        Itinerary i= comune.getItinerary(idItinerario);
         if(i==null)
         {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Itinerario non trovato");
+            return new ResponseEntity<>("Itinerario non trovato",HttpStatus.NOT_FOUND);
         }
         else {
-            i.addItineraryInfo(nome, descrizione);
+
+            i.addItineraryInfo(itinerario.getNome(),itinerario.getDescrizione());
+            if(itinerario.getPOIs().isEmpty())
+            {
+                return new ResponseEntity<>("Itinerario modificato con successo",HttpStatus.OK);
+            }
+            else {
+                i.removePOI();
+                i.addPOIS(itinerario.getPOIs());
+            }
+            comuneRepository.save(comune);
             itineraryRepository.save(i);
             return ResponseEntity.ok("Itinerario modificato con successo");
         }
