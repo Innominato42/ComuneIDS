@@ -133,6 +133,24 @@ public class Comune {
     }
 
     /**
+     * Controlla se un poi passato come argomento &grave presente nel comune
+     * @param p il poi da controllare
+     * @return true se presente, false altrimenti
+     */
+    public boolean isInComune(POI p)
+    {
+        //return POIValidate.contains(p);
+        for(POI poi :POIValidate)
+        {
+            if(poi.getPOIId().equals(p.getPOIId())) {
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+    /**
      * Restituisce il POI con l'id passato come parametro
      * @param id di cui cercare il POI
      * @return il POI se presente, null altrimenti

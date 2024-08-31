@@ -55,19 +55,13 @@ public class Itinerary {
 
     public void setNome(String nome)
     {
-        if(nome == null)
-        {
-            return;
-        }
+        if(nome == "") return;
         this.nome=nome;
     }
 
     public void setDescrizione(String descrizione)
     {
-        if(descrizione == null)
-        {
-            return;
-        }
+        if(descrizione == "") return;
         this.descrizione=descrizione;
     }
 

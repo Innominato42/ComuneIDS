@@ -152,6 +152,7 @@ public class ComuneController {
         if (request.getPoi() == null || request.getPoi().length < 2) {
             return new ResponseEntity<>("Errore: Itinerario deve contenere almeno 2 POI", HttpStatus.BAD_REQUEST);
         }
+
         itineraryController.createItinerary(idComune, request.getItinerary(), request.getPoi());
         return new ResponseEntity<>("ok", HttpStatus.OK);
     }
@@ -404,7 +405,7 @@ public class ComuneController {
 
     //Testato
     @PostMapping("/modificaItinerario")
-    public ResponseEntity<Object> modificaItinerario(@RequestParam("idComune") String idComune, @RequestParam ("idItinerario") String idItinerario, @RequestBody Itinerary itinerario)
+    public ResponseEntity<Object> modificaItinerario(@RequestParam("idComune") String idComune, @RequestParam ("idItinerario") String idItinerario, @RequestParam("nome") String nome,@RequestParam("descrizione") String descrizione)
     {
         Comune comune = this.comuneRepository.findById(idComune).orElse(null);
         if(comune==null)
@@ -417,22 +418,39 @@ public class ComuneController {
             return new ResponseEntity<>("Itinerario non trovato",HttpStatus.NOT_FOUND);
         }
         else {
-
-            i.addItineraryInfo(itinerario.getNome(),itinerario.getDescrizione());
-            if(itinerario.getPOIs().isEmpty())
-            {
-                return new ResponseEntity<>("Itinerario modificato con successo",HttpStatus.OK);
-            }
-            else {
-                i.removePOI();
-                i.addPOIS(itinerario.getPOIs());
-            }
+            i.addItineraryInfo(nome,descrizione);
             comuneRepository.save(comune);
             itineraryRepository.save(i);
-            return ResponseEntity.ok("Itinerario modificato con successo");
+            return new ResponseEntity<>("Itinerario modificato con successo",HttpStatus.OK);
         }
 
     }
+
+    @PostMapping("addPOItoItinerary")
+    public ResponseEntity<Object> addPOItoItinerary(@RequestParam ("idComune")String idComune, @RequestParam("idItinerary") String idItinerary, @RequestParam("idPOI") String idPOI)
+    {
+        Comune comune= comuneRepository.findById(idComune).orElse(null);
+        if(comune==null)
+        {
+            return new ResponseEntity<>("Comune non trovato",HttpStatus.NOT_FOUND);
+        }
+        POI poi=POIRepository.findById(idPOI).orElse(null);
+        if(poi==null)
+        {
+            return new ResponseEntity<>("poi non trovato",HttpStatus.NOT_FOUND);
+        }
+        if(!(comune.isInComune(poi)))
+        {
+            return new ResponseEntity<>("il poi non è presente nel comune",HttpStatus.NOT_FOUND);
+        }
+
+        Itinerary itinerary=comune.getItinerary(idItinerary);
+        itinerary.addPOI(poi);
+        this.comuneRepository.save(comune);
+        this.itineraryRepository.save(itinerary);
+        return new ResponseEntity<>("POI aggiunto con successo",HttpStatus.OK);
+    }
+    //Testato
     @PostMapping("/modificaContenuto")
     public ResponseEntity<Object> modificaContenuto(String id, String nome, String descrizione)
     {
