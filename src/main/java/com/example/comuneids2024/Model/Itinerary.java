@@ -102,7 +102,13 @@ public class Itinerary {
         this.setNome(nome);
         this.setDescrizione(descrizione);
     }
+    public void removePOI(String id)
+    {
+        POIs.removeIf(p -> p.getPOIId().equals(id));
+    }
+
 }
+
 
 
 

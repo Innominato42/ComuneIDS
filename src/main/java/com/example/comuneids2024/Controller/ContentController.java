@@ -38,9 +38,9 @@ public class ContentController {
             comune.getPOI(idPOI).addContent(c);
             POI poi=optionalPOI.get();
             poi.addContent(c);
-            this.comuneRepository.save(comune);
             this.contentRepository.save(c);
             this.poiRepository.save(poi);
+            this.comuneRepository.save(comune);
         } else {
             throw new RuntimeException("Comune with ID " + idComune + " not found.");
         }
@@ -48,14 +48,20 @@ public class ContentController {
 
     public void insertContentToPOIPending(String idComune, String idPOI, Content c)
     {
-        Optional<Comune> optionalComune = this.comuneRepository.findById(idComune);
-        if (optionalComune.isPresent()) {
-            Comune comune = optionalComune.get();
-            comune.getPOI(idPOI).addContent(c);
-            this.comuneRepository.save(comune);
-            this.contentRepository.save(c);
-        } else {
-            throw new RuntimeException("Comune with ID " + idComune + " not found.");
+        {
+            Optional<Comune> optionalComune = this.comuneRepository.findById(idComune);
+            Optional<POI> optionalPOI =this.poiRepository.findById(idPOI);
+            if (optionalComune.isPresent()) {
+                Comune comune = optionalComune.get();
+                comune.getPOI(idPOI).addContentPending(c);
+                POI poi=optionalPOI.get();
+                poi.addContent(c);
+                this.contentRepository.save(c);
+                this.poiRepository.save(poi);
+                this.comuneRepository.save(comune);
+            } else {
+                throw new RuntimeException("Comune with ID " + idComune + " not found.");
+            }
         }
     }
 

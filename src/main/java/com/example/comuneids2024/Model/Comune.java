@@ -57,6 +57,10 @@ public class Comune {
     public Comune() {
 
     }
+    public List<Itinerary> getAllItinerary()
+    {
+        return itinerarioValidato;
+    }
 
     public Contest getContest(String idContest)
     {

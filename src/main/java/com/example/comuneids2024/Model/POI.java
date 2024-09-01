@@ -81,6 +81,15 @@ public abstract class POI {
         return this.content;
     }
 
+    public Content getContent(int  id)
+    {
+        if(content.isEmpty())
+        {
+            return null;
+        }
+        return content.get(id);
+    }
+
     public List<Content> getContentsPending() {
         return contentPending;
     }
