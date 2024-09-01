@@ -426,7 +426,7 @@ public class ComuneController {
 
     }
 
-    @PostMapping("addPOItoItinerary")
+    @PostMapping("/addPOItoItinerary")
     public ResponseEntity<Object> addPOItoItinerary(@RequestParam ("idComune")String idComune, @RequestParam("idItinerary") String idItinerary, @RequestParam("idPOI") String idPOI)
     {
         Comune comune= comuneRepository.findById(idComune).orElse(null);
