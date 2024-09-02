@@ -1,16 +1,14 @@
 package com.example.comuneids2024.Controller;
 
-import com.example.comuneids2024.Model.Comune;
-import com.example.comuneids2024.Model.Content;
-import com.example.comuneids2024.Model.POI;
-import com.example.comuneids2024.Model.Contest;
-import com.example.comuneids2024.Repository.ComuneRepository;
-import com.example.comuneids2024.Repository.ContentRepository;
-import com.example.comuneids2024.Repository.ContestRepository;
-import com.example.comuneids2024.Repository.POIRepository;
+import com.example.comuneids2024.Model.*;
+import com.example.comuneids2024.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -28,16 +26,38 @@ public class ContentController {
     @Autowired
     private ContestRepository contestRepository;
 
+    @Autowired
+    private ItineraryRepository itineraryRepository;
+
 
     public void insertContentToPOI(String idComune, String idPOI, Content c)
     {
         Optional<Comune> optionalComune = this.comuneRepository.findById(idComune);
-        Optional<POI> optionalPOI =this.poiRepository.findById(idPOI);
         if (optionalComune.isPresent()) {
             Comune comune = optionalComune.get();
+            POI poi=comune.getPOI(idPOI);
+            if(poi==null)
+            {
+                throw new NullPointerException("POI non trovato");
+            }
+            List<Itinerary> itinerary=comune.getAllItinerary();
+            int cont=0;
+            for(Itinerary i: itinerary)
+            {
+                if(i.getPOIs().get(cont).getPOIId().equals(poi.getPOIId()))
+                {
+                    comune.getPOI(idPOI).addContent(c);
+                    i.getPOIs().get(cont).addContent(c);
+                    this.itineraryRepository.save(i);
+                    this.contentRepository.save(c);
+                    this.poiRepository.save(poi);
+                    this.comuneRepository.save(comune);
+                    return;
+                }
+                cont++;
+            }
             comune.getPOI(idPOI).addContent(c);
-            POI poi=optionalPOI.get();
-            poi.addContent(c);
+            //poi.addContent(c);
             this.contentRepository.save(c);
             this.poiRepository.save(poi);
             this.comuneRepository.save(comune);
@@ -48,20 +68,36 @@ public class ContentController {
 
     public void insertContentToPOIPending(String idComune, String idPOI, Content c)
     {
-        {
-            Optional<Comune> optionalComune = this.comuneRepository.findById(idComune);
-            Optional<POI> optionalPOI =this.poiRepository.findById(idPOI);
-            if (optionalComune.isPresent()) {
-                Comune comune = optionalComune.get();
-                comune.getPOI(idPOI).addContentPending(c);
-                POI poi=optionalPOI.get();
-                poi.addContent(c);
-                this.contentRepository.save(c);
-                this.poiRepository.save(poi);
-                this.comuneRepository.save(comune);
-            } else {
-                throw new RuntimeException("Comune with ID " + idComune + " not found.");
+        Optional<Comune> optionalComune = this.comuneRepository.findById(idComune);
+        if (optionalComune.isPresent()) {
+            Comune comune = optionalComune.get();
+            POI poi=comune.getPOI(idPOI);
+            if(poi==null)
+            {
+                throw new NullPointerException("POI non trovato");
             }
+            List<Itinerary> itinerary=comune.getAllItinerary();
+            int cont=0;
+            for(Itinerary i: itinerary)
+            {
+                if(i.getPOIs().get(cont).getPOIId().equals(poi.getPOIId()))
+                {
+                    comune.getPOI(idPOI).addContentPending(c);
+                    i.getPOIs().get(cont).addContentPending(c);
+                    this.itineraryRepository.save(i);
+                    this.contentRepository.save(c);
+                    this.poiRepository.save(poi);
+                    this.comuneRepository.save(comune);
+                    return;
+                }
+                cont++;
+            }
+            comune.getPOI(idPOI).addContentPending(c);
+            this.contentRepository.save(c);
+            this.poiRepository.save(poi);
+            this.comuneRepository.save(comune);
+        } else {
+            throw new RuntimeException("Comune with ID " + idComune + " not found.");
         }
     }
 

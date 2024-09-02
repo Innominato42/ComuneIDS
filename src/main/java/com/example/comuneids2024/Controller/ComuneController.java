@@ -165,28 +165,33 @@ public class ComuneController {
 
     //Testato
     @PostMapping("/insertPOI")
-    public ResponseEntity<Object> insertPOI(@RequestParam String id, @RequestBody POIDTO poi) {
+    public ResponseEntity<Object> insertPOI(@RequestParam("comuneId") String idComune, @RequestBody POIDTO poi) {
         POIFactory pf;
         Tipo tipo = poi.getTipo();
+        Comune comune= comuneRepository.findById(idComune).orElse(null);
+        if(comune==null)
+        {
+            return new ResponseEntity<>("Comune non trovato",HttpStatus.NOT_FOUND);
+        }
         if (tipo == null) {
             return new ResponseEntity<>("Errore : Tipo mancante", HttpStatus.BAD_REQUEST);
         }
         if (tipo.equals(Tipo.LUOGO)) {
             pf = new POILuogoFactory();
             POIDTO p = new POIDTO(poi.getId(), poi.getName(), poi.getDescription(), poi.getCoordinate(), tipo, poi.getContent(), poi.getContentPending(), null, null, null, null);
-            poiController.insertPOI(id, pf, p);
+            poiController.insertPOI(idComune, pf, p);
             return new ResponseEntity<>("ok", HttpStatus.OK);
         } else if (tipo
                 .equals(Tipo.EVENTO)) {
             pf = new POIEventoFactory();
             POIDTO p = new POIDTO(poi.getId(), poi.getName(), poi.getDescription(), poi.getCoordinate(), tipo, poi.getContent(), poi.getContentPending(), null, null, poi.getDataInizio(), poi.getDataFine());
-            poiController.insertPOI(id, pf, p);
+            poiController.insertPOI(idComune, pf, p);
             return new ResponseEntity<>("ok", HttpStatus.OK);
         } else if (tipo
                 .equals(Tipo.LUOGOCONORA)) {
             pf = new POILuogoOraFactory();
             POIDTO p = new POIDTO(poi.getId(), poi.getName(), poi.getDescription(), poi.getCoordinate(), tipo, poi.getContent(), poi.getContentPending(), poi.getOpeningTime(), poi.getClosingTime(), null, null);
-            poiController.insertPOI(id, pf, p);
+            poiController.insertPOI(idComune, pf, p);
             return new ResponseEntity<>("ok", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Errore : Tipo errato", HttpStatus.BAD_REQUEST);
@@ -235,7 +240,7 @@ public class ComuneController {
             throw new RuntimeException(e);
         }
         contentController.insertContentToPOI(idComune, id, c);
-        return new ResponseEntity<>("ok", HttpStatus.OK);
+        return new ResponseEntity<>("Content aggiunto con successo", HttpStatus.OK);
     }
 
     //Testato
@@ -445,11 +450,11 @@ public class ComuneController {
         return new ResponseEntity<>("il poi non è presente nell'itinerario", HttpStatus.NOT_FOUND);
     }
 
-        @PostMapping("/modificaContenuto")
+    //Testato
+    @PostMapping("/modificaContenuto")
     public ResponseEntity<Object> modificaContenuto(String idContenuto, String idComune, String nome, String descrizione) {
             Comune comune = comuneRepository.findById(idComune).orElse(null);
             Content content = contentRepository.findById(idContenuto).orElse(null);
-            boolean check = false;
             if (content == null) {
                 return new ResponseEntity<>("Contenuto non trovato", HttpStatus.NOT_FOUND);
             }
@@ -469,15 +474,14 @@ public class ComuneController {
                         List<Itinerary> itineraries = comune.getAllItinerary();
                         int j = 0;int k=0;
                         for (Itinerary I : itineraries) {
-                            j = 0;
+                            j = 0; k=0;
                             for (POI p1 : I.getPOIs()) {
-                                k=0;
+
                                 if (!(p1.getContents().isEmpty())) {
                                     if (idContenuto.equals(p1.getContent(j).getId())) {
-                                        content.insertContentInfo(nome, descrizione);
-                                        I.getPOIs().get(j).getContent(k);
+                                        I.getPOIs().get(j).getContent(k).insertContentInfo(nome,descrizione);
                                         itineraryRepository.save(I);
-                                        return new ResponseEntity<>("Content modificato all interno dell itinerario", HttpStatus.OK);
+                                        return new ResponseEntity<>("Content modificato all interno dell itinerario e del poi", HttpStatus.OK);
                                     }
                                     k++;
                                     j++;
@@ -486,25 +490,45 @@ public class ComuneController {
                         }
                         return new ResponseEntity<>("Content modificato in un POI", HttpStatus.OK);
                     }
+                    i++;
                 }
-                i++;
+
             }
             return new ResponseEntity<>("Content non trovato", HttpStatus.NOT_FOUND);
         }
-
+        //Testato
     @PostMapping("/modificaPOI")
-    public ResponseEntity<Object> modificaPOI(String id, String nome, String descrizione)
+    public ResponseEntity<Object> modificaPOI(@RequestParam("idComune") String idComune, @RequestParam("idPOI") String id, @RequestParam("nome") String nome, @RequestParam("descrizione") String descrizione)
     {
-        POI poi=this.POIRepository.findById(id).orElse(null);
+        Comune comune= comuneRepository.findById(idComune).orElse(null);
+        if(comune==null)
+        {
+            return  new ResponseEntity<>("Comune non trovato",HttpStatus.NOT_FOUND);
+        }
+        POI poi=comune.getPOI(id);
         if(poi==null)
         {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("POI non trovato");
+            return  new ResponseEntity<>("POI non trovato",HttpStatus.NOT_FOUND);
         }
-        else {
-            poi.insertPOIInfo(nome,descrizione);
-            POIRepository.save(poi);
-            return ResponseEntity.ok("POI modificato con successo");
+        List<Itinerary> itineraries = comune.getAllItinerary();
+        int cont = 0;
+        for(Itinerary i : itineraries)
+        {
+            if(i.getPOIs().get(cont).getPOIId().equals(poi.getPOIId()))
+            {
+                comune.getAllPOI().get(cont).insertPOIInfo(nome,descrizione);
+                poi.insertPOIInfo(nome,descrizione);
+                i.getPOIs().get(cont).insertPOIInfo(nome,descrizione);
+                itineraryRepository.save(i);
+                comuneRepository.save(comune);
+                POIRepository.save(poi);
+                return new ResponseEntity<>("POI modificato con successo nell itinerario",HttpStatus.OK);
+            }
         }
+        poi.insertPOIInfo(nome,descrizione);
+        comuneRepository.save(comune);
+        POIRepository.save(poi);
+        return ResponseEntity.ok("POI modificato con successo");
 
     }
 
