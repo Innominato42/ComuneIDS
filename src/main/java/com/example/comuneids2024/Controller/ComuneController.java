@@ -106,13 +106,24 @@ public class ComuneController {
 
     //Testato
     @GetMapping("/getAllPendingPOI")
-    public ResponseEntity<Object> getAllPendingPOI(@RequestParam String id) {
+    public ResponseEntity<Object> getAllPendingPOI(@RequestParam ("idComune") String idComune) {
 
-        if (this.comuneRepository.findById(id).isEmpty()) {
-            return new ResponseEntity<>("Errore : Comune non trovato", HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(comuneRepository.findById(id).get().getAllPOIPending(), HttpStatus.OK);
+        Comune comune= comuneRepository.findById(idComune).orElse(null);
+        if(comune==null)
+        {
+            return new ResponseEntity<>("Comune non trovato", HttpStatus.NOT_FOUND);
         }
+        return new ResponseEntity<>(comune.getAllPOIPending(),HttpStatus.OK);
+    }
+
+    @GetMapping("/getAllPendingContent")
+    public ResponseEntity<Object> getAllPendingContent(@RequestParam ("idComune")String idComune, @RequestParam ("idPOI")String idPOI) {
+        Comune comune= comuneRepository.findById(idComune).orElse(null);
+        if(comune==null)
+        {
+            return new ResponseEntity<>("Comune non trovato", HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(comune.getPOI(idPOI).getContentsPending(),HttpStatus.OK);
     }
 
     //Testato
@@ -201,7 +212,7 @@ public class ComuneController {
 
     //Testato
     @PostMapping("/insertPOIPending")
-    public ResponseEntity<Object> insertPOIPending(@RequestParam String id, @RequestBody POIDTO poi) {
+    public ResponseEntity<Object> insertPOIPending(@RequestParam ("idComune") String id, @RequestBody POIDTO poi) {
         POIFactory pf;
         Tipo tipo = poi.getTipo();
         if (tipo == null) {
@@ -466,10 +477,10 @@ public class ComuneController {
             for (POI p : pois) {
                 if (!(p.getContents().isEmpty())) {
 
-                    if ((idContenuto.equals(p.getContent(i).getId()))) {
+                    if ((idContenuto.equals(p.getContentIndex(i).getId()))) {
                         content.insertContentInfo(nome, descrizione);
-                        comune.getPOI(p.getPOIId()).getContent(i).insertContentInfo(nome, descrizione);
-                        p.getContent(i).insertContentInfo(nome, descrizione);
+                        comune.getPOI(p.getPOIId()).getContentIndex(i).insertContentInfo(nome, descrizione);
+                        p.getContentIndex(i).insertContentInfo(nome, descrizione);
                         contentRepository.save(content);POIRepository.save(p);comuneRepository.save(comune);
                         List<Itinerary> itineraries = comune.getAllItinerary();
                         int j = 0;int k=0;
@@ -478,8 +489,8 @@ public class ComuneController {
                             for (POI p1 : I.getPOIs()) {
 
                                 if (!(p1.getContents().isEmpty())) {
-                                    if (idContenuto.equals(p1.getContent(j).getId())) {
-                                        I.getPOIs().get(j).getContent(k).insertContentInfo(nome,descrizione);
+                                    if (idContenuto.equals(p1.getContentIndex(j).getId())) {
+                                        I.getPOIs().get(j).getContentIndex(k).insertContentInfo(nome,descrizione);
                                         itineraryRepository.save(I);
                                         return new ResponseEntity<>("Content modificato all interno dell itinerario e del poi", HttpStatus.OK);
                                     }
@@ -496,6 +507,7 @@ public class ComuneController {
             }
             return new ResponseEntity<>("Content non trovato", HttpStatus.NOT_FOUND);
         }
+
         //Testato
     @PostMapping("/modificaPOI")
     public ResponseEntity<Object> modificaPOI(@RequestParam("idComune") String idComune, @RequestParam("idPOI") String id, @RequestParam("nome") String nome, @RequestParam("descrizione") String descrizione)
@@ -531,6 +543,64 @@ public class ComuneController {
         return ResponseEntity.ok("POI modificato con successo");
 
     }
+
+    @PostMapping("/approvaPOI")
+    public ResponseEntity<Object> approvaPOI(@RequestParam ("idComune")String idComune, @RequestParam ("idPOI") String idPOI)
+    {
+        Comune comune= comuneRepository.findById(idComune).orElse(null);
+        if(comune==null)
+        {
+            return new ResponseEntity<>("Comune non trovato",HttpStatus.NOT_FOUND);
+        }
+        POI poi= comune.getPOIPending(idPOI);
+        if(poi==null)
+        {
+            return new ResponseEntity<>("POI non trovato all interno del comune",HttpStatus.NOT_FOUND);
+        }
+        comune.getAllPOIPending().remove(poi);
+        comune.addPOI(poi);
+        comuneRepository.save(comune);
+        return new ResponseEntity<>("poi approvato con successo",HttpStatus.OK);
+
+    }
+
+    @PostMapping("/approvaItinerario")
+    public ResponseEntity<Object> approvaItinerario(@RequestParam ("idComune")String idComune, @RequestParam ("idItinerario") String idItinerario)
+    {
+        Comune comune= comuneRepository.findById(idComune).orElse(null);
+        if(comune==null)
+        {
+            return new ResponseEntity<>("Comune non trovato",HttpStatus.NOT_FOUND);
+        }
+        Itinerary itinerary = comune.getItinerary(idItinerario);
+        if(itinerary==null)
+        {
+            return new ResponseEntity<>("itinerario non trovato",HttpStatus.NOT_FOUND);
+        }
+        comune.getItinerarioAttesa().remove(itinerary);
+        comune.addItinerary(itinerary);
+        comuneRepository.save(comune);
+        return new ResponseEntity<>("itinerario approvato con successo",HttpStatus.OK);
+    }
+
+    @PostMapping("/approvaContent")
+    public ResponseEntity<Object> approvaContent(@RequestParam("idComune") String idComune,@RequestParam("idContent") String idContent,@RequestParam("idPOI") String idPOI)
+    {
+        Comune comune= comuneRepository.findById(idComune).orElse(null);
+        if(comune==null)
+        {
+            return new ResponseEntity<>("Comune non trovato",HttpStatus.NOT_FOUND);
+        }
+        Content content =comune.getPOI(idPOI).getContentById(idContent);
+        comune.getPOI(idPOI).getContentsPending().remove(content);
+        comune.getPOI(idPOI).addContent(content);
+        comuneRepository.save(comune);
+        POIRepository.save(comune.getPOI(idPOI));
+        return new ResponseEntity<>("Contenuto approvato con successo",HttpStatus.OK);
+
+
+    }
+
 
 }
 

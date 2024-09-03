@@ -171,6 +171,18 @@ public class Comune {
                 .orElse(null);
     }
 
+    public POI getPOIPending(String id)
+    {
+        if (id == null) {
+            throw new IllegalArgumentException("L'ID non può essere null.");
+        }
+
+        return getAllPOIPending().stream()
+                .filter(p -> p.getPOIId().equals(id))
+                .findFirst()
+                .orElse(null);
+    }
+
     public boolean isInComune(Coordinate coordinate) {
         for (POI poi : POIValidate) {
             if (poi.getCoordinate().equals(coordinate)) {

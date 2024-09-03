@@ -81,13 +81,22 @@ public abstract class POI {
         return this.content;
     }
 
-    public Content getContent(int  id)
+    public Content getContentIndex(int  id)
     {
         if(content.isEmpty())
         {
             return null;
         }
         return content.get(id);
+    }
+
+    public Content getContentById(String id)
+    {
+        return getContents().stream()
+                .filter(p -> p.getId().equals(id))
+                .findFirst()
+                .orElse(null);
+
     }
 
     public List<Content> getContentsPending() {

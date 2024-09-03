@@ -13,15 +13,14 @@ import org.springframework.stereotype.Controller;
 public class POIController {
 
     @Autowired
-    private   ComuneRepository comuneRepository;
+    private ComuneRepository comuneRepository;
 
     @Autowired
     private POIRepository poiRepository;
 
-    public void insertPOI(String idComune, POIFactory p, POIDTO poigi)
-    {
-        POI poi= p.createPOI(poigi.getCoordinate());
-        poi.insertPOIInfo(poigi.getName(),poigi.getDescription());
+    public void insertPOI(String idComune, POIFactory p, POIDTO poigi) {
+        POI poi = p.createPOI(poigi.getCoordinate());
+        poi.insertPOIInfo(poigi.getName(), poigi.getDescription());
         if (poi instanceof POILuogoOra plo) {
             plo.insertTime(poigi.getOpeningTime(), poigi.getClosingTime());
 
@@ -29,39 +28,39 @@ public class POIController {
         if (poi instanceof POIEvento pe) {
             pe.addDate(poigi.getDateOpen(), poigi.getDateClose());
         }
-        if(comuneRepository.findById(idComune).isPresent())
-        {
+        if (comuneRepository.findById(idComune).isPresent()) {
             Comune c = comuneRepository.findById(idComune).get();
             System.out.println(c.getPOIValidate().size());
             c.addPOI(poi);
             poiRepository.save(poi);
             comuneRepository.save(c);
-        }
-        else {
+        } else {
             throw new RuntimeException();
         }
     }
 
 
-    public  void insertPOIPending(String idComune, POIFactory p, POIDTO poigi) {
+    public void insertPOIPending(String idComune, POIFactory p, POIDTO poigi) {
+
         POI poi = p.createPOI(poigi.getCoordinate());
         poi.insertPOIInfo(poigi.getName(), poigi.getDescription());
         if (poi instanceof POILuogoOra plo) {
             plo.insertTime(poigi.getOpeningTime(), poigi.getClosingTime());
+
         }
         if (poi instanceof POIEvento pe) {
             pe.addDate(poigi.getDateOpen(), poigi.getDateClose());
         }
-        if(comuneRepository.findById(idComune).isPresent()) {
+        if (comuneRepository.findById(idComune).isPresent()) {
             Comune c = comuneRepository.findById(idComune).get();
+            System.out.println(c.getPOIValidate().size());
             c.addPOIPending(poi);
             poiRepository.save(poi);
             comuneRepository.save(c);
+        } else {
+            throw new RuntimeException();
         }
     }
 
-    public POI viewPOI(String poiID) {
-        return poiRepository.findById(poiID).orElse(null);
-    }
-
 }
+
