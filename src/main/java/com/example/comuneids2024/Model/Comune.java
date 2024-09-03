@@ -185,7 +185,7 @@ public class Comune {
 
     public boolean isInComune(Coordinate coordinate) {
         for (POI poi : POIValidate) {
-            if (poi.getCoordinate().equals(coordinate)) {
+            if (poi.getCoord().equals(coordinate)) {
                 return true; // Trovato un POI con le stesse coordinate
             }
         }
@@ -246,12 +246,13 @@ public class Comune {
     {
         for(Itinerary i : itinerarioAttesa)
         {
-            if(i.getItineraryId()==id)
+            if(Objects.equals(i.getItineraryId(), id))
             {
                 return i;
             }
         }
         return null;
+
     }
 
     public void addPOI(POI poi)

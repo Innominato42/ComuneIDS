@@ -15,8 +15,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @RestController
 @RequestMapping("/comune")
@@ -96,34 +99,33 @@ public class ComuneController {
     @GetMapping("/getAllPOI")
     public ResponseEntity<Object> getAllPOI(@RequestParam String id) {
 
-        if (this.comuneRepository.findById(id).isEmpty()) {
-            return new ResponseEntity<>("Errore : Comune non trovato", HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(comuneRepository.findById(id).get().getAllPOI(), HttpStatus.OK);
+
+        Comune comune = comuneRepository.findById(id).orElse(null);
+        if (comune == null) {
+            return new ResponseEntity<>("Comune non trovato", HttpStatus.NOT_FOUND);
         }
+        return new ResponseEntity<>(comune.getAllPOI(), HttpStatus.OK);
 
     }
 
     //Testato
     @GetMapping("/getAllPendingPOI")
-    public ResponseEntity<Object> getAllPendingPOI(@RequestParam ("idComune") String idComune) {
+    public ResponseEntity<Object> getAllPendingPOI(@RequestParam("idComune") String idComune) {
 
-        Comune comune= comuneRepository.findById(idComune).orElse(null);
-        if(comune==null)
-        {
+        Comune comune = comuneRepository.findById(idComune).orElse(null);
+        if (comune == null) {
             return new ResponseEntity<>("Comune non trovato", HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(comune.getAllPOIPending(),HttpStatus.OK);
+        return new ResponseEntity<>(comune.getAllPOIPending(), HttpStatus.OK);
     }
 
     @GetMapping("/getAllPendingContent")
-    public ResponseEntity<Object> getAllPendingContent(@RequestParam ("idComune")String idComune, @RequestParam ("idPOI")String idPOI) {
-        Comune comune= comuneRepository.findById(idComune).orElse(null);
-        if(comune==null)
-        {
+    public ResponseEntity<Object> getAllPendingContent(@RequestParam("idComune") String idComune, @RequestParam("idPOI") String idPOI) {
+        Comune comune = comuneRepository.findById(idComune).orElse(null);
+        if (comune == null) {
             return new ResponseEntity<>("Comune non trovato", HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(comune.getPOI(idPOI).getContentsPending(),HttpStatus.OK);
+        return new ResponseEntity<>(comune.getPOI(idPOI).getContentsPending(), HttpStatus.OK);
     }
 
     //Testato
@@ -134,12 +136,36 @@ public class ComuneController {
 
     //Testato
     @GetMapping("/getAllItinerary")
-    public ResponseEntity<Object> getAllItinerary(@RequestParam String id) {
-        if (this.comuneRepository.findById(id).isEmpty())
-            return new ResponseEntity<>("Errore: Comune non trovato", HttpStatus.BAD_REQUEST);
-        else
-            return new ResponseEntity<>(this.comuneRepository.findById(id).get().getItinerarioValidato(), HttpStatus.OK);
+    public ResponseEntity<Object> getAllItinerary(@RequestParam("idComune") String idComune) {
+        Comune comune = comuneRepository.findById(idComune).orElse(null);
+        if (comune == null) {
+            return new ResponseEntity<>("Comune non trovato", HttpStatus.NOT_FOUND);
+        }
+        List<Itinerary> itineraries = comune.getAllItinerary();
+        return new ResponseEntity<>(itineraries.get(0), HttpStatus.OK);
     }
+
+    /*@GetMapping("/getPOI2")
+    public ResponseEntity<Object> getPOI2(@RequestParam("idComune") String idComune, @RequestParam("idPOI") String idPOI) {
+        ObjectMapper mapper = new ObjectMapper();
+        POIEvento poiEvento = new POIEvento();
+// Popola il POIEvento con i dati di esempio
+        poiEvento.setName("Manifestazione");
+        poiEvento.setDescription("Null");
+        poiEvento.addDate(LocalDateTime.of(2024, 8, 19, 7, 0), LocalDateTime.of(2024, 8, 19, 16, 0));
+        poiEvento.setCoordinate(new Coordinate(74.4642, 80.1933));
+
+        try {
+            String json = mapper.writeValueAsString(poiEvento);
+            System.out.println(json);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace(); // Stampa lo stack trace per il debug o gestisce l'errore in altro modo
+        }
+    return null;
+    }*/
+
+
+
 
     //Testato
     @GetMapping("/getAllPendingItinerary")
@@ -544,6 +570,7 @@ public class ComuneController {
 
     }
 
+    //Testato
     @PostMapping("/approvaPOI")
     public ResponseEntity<Object> approvaPOI(@RequestParam ("idComune")String idComune, @RequestParam ("idPOI") String idPOI)
     {
@@ -555,7 +582,7 @@ public class ComuneController {
         POI poi= comune.getPOIPending(idPOI);
         if(poi==null)
         {
-            return new ResponseEntity<>("POI non trovato all interno del comune",HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("POI in attesa non trovato all interno del comune",HttpStatus.NOT_FOUND);
         }
         comune.getAllPOIPending().remove(poi);
         comune.addPOI(poi);
@@ -564,6 +591,7 @@ public class ComuneController {
 
     }
 
+    //Testato
     @PostMapping("/approvaItinerario")
     public ResponseEntity<Object> approvaItinerario(@RequestParam ("idComune")String idComune, @RequestParam ("idItinerario") String idItinerario)
     {
@@ -572,7 +600,7 @@ public class ComuneController {
         {
             return new ResponseEntity<>("Comune non trovato",HttpStatus.NOT_FOUND);
         }
-        Itinerary itinerary = comune.getItinerary(idItinerario);
+        Itinerary itinerary = comune.getItineraryPending(idItinerario);
         if(itinerary==null)
         {
             return new ResponseEntity<>("itinerario non trovato",HttpStatus.NOT_FOUND);
@@ -583,6 +611,7 @@ public class ComuneController {
         return new ResponseEntity<>("itinerario approvato con successo",HttpStatus.OK);
     }
 
+    //Testato
     @PostMapping("/approvaContent")
     public ResponseEntity<Object> approvaContent(@RequestParam("idComune") String idComune,@RequestParam("idContent") String idContent,@RequestParam("idPOI") String idPOI)
     {
@@ -591,7 +620,7 @@ public class ComuneController {
         {
             return new ResponseEntity<>("Comune non trovato",HttpStatus.NOT_FOUND);
         }
-        Content content =comune.getPOI(idPOI).getContentById(idContent);
+        Content content =comune.getPOI(idPOI).getContentByIdPending(idContent);
         comune.getPOI(idPOI).getContentsPending().remove(content);
         comune.getPOI(idPOI).addContent(content);
         comuneRepository.save(comune);
@@ -601,6 +630,27 @@ public class ComuneController {
 
     }
 
+    @DeleteMapping("/deleteItinerary")
+    public ResponseEntity<Object> deleteItinerary(@RequestParam("idComune") String idComune,@RequestParam("idItinerary") String idItinerary)
+    {
+        Comune comune= comuneRepository.findById(idComune).orElse(null);
+        if(comune==null)
+        {
+            return new ResponseEntity<>("Comune non trovato",HttpStatus.NOT_FOUND);
+        }
+        Itinerary itinerary=comune.getItinerary(idItinerary);
+        if(itinerary==null)
+        {
+            return new ResponseEntity<>("Itinerario non trovato",HttpStatus.NOT_FOUND);
+        }
+        comune.getAllItinerary().remove(itinerary);
+        itineraryRepository.delete(itinerary);
+        comuneRepository.save(comune);
+        return new ResponseEntity<>("Itinerario rimosso",HttpStatus.OK);
+
+
+
+    }
 
 }
 

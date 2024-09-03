@@ -32,6 +32,6 @@ public class POILuogo extends POI {
     public POIDTO getPOIInfo() {
         List<Content> contents = this.getContents().stream().map(c -> c.getContentInfo()).toList();
         List<Content> pendingContents = this.getContentsPending().stream().map(pc -> pc.getContentInfo()).toList();
-        return new POIDTO(this.getPOIId(), this.getName(), this.getDescription(), this.getCoordinate(), this.getTipo(), contents, pendingContents,null,null,null,null);
+        return new POIDTO(this.getPOIId(), this.getName(), this.getDescription(), this.getCoord(), this.getTipo(), contents, pendingContents,null,null,null,null);
     }
 }

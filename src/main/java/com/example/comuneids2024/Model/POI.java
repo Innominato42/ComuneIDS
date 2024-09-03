@@ -77,6 +77,12 @@ public abstract class POI {
         return coordinate;
     }
 
+    public void setCoordinate(Coordinate coordinate)
+    {
+        this.coordinate.setLatitudine(coordinate.getLatitudine());
+        this.coordinate.setLongitudine(coordinate.getLongitudine());
+    }
+
     public List<Content> getContents() {
         return this.content;
     }
@@ -93,6 +99,14 @@ public abstract class POI {
     public Content getContentById(String id)
     {
         return getContents().stream()
+                .filter(p -> p.getId().equals(id))
+                .findFirst()
+                .orElse(null);
+
+    }
+    public Content getContentByIdPending(String id)
+    {
+        return getContentsPending().stream()
                 .filter(p -> p.getId().equals(id))
                 .findFirst()
                 .orElse(null);
@@ -129,9 +143,6 @@ public abstract class POI {
         return idPOI;
     }
 
-    public Coordinate getCoordinate() {
-        return coordinate;
-    }
 
     public abstract void insertPOIInfo(String name, String description);
 

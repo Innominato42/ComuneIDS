@@ -37,7 +37,7 @@ import java.util.List;
     public POIDTO getPOIInfo() {
         List<Content> contents = this.getContents().stream().map(Content::getContentInfo).toList();
         List<Content> pendingContents = this.getContentsPending().stream().map(Content::getContentInfo).toList();
-        return new POIDTO(this.getPOIId(), this.getName(), this.getDescription(), this.getCoordinate(), this.getTipo(), contents, pendingContents,getOpeningTime(),getClosingTime(),null,null);
+        return new POIDTO(this.getPOIId(), this.getName(), this.getDescription(), this.getCoord(), this.getTipo(), contents, pendingContents,getOpeningTime(),getClosingTime(),null,null);
     }
 
     public LocalTime[] getOpeningTime() {
