@@ -8,6 +8,9 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +64,13 @@ public abstract class POI {
         this.contentPending = new ArrayList<>();
     }
 
+    public abstract LocalTime[] getOpeningTime();
+
+    public abstract LocalTime[] getClosingTime();
+
+    public abstract LocalDateTime getDataInizio();
+
+    public abstract LocalDateTime getDataFine();
     public String getName() {
         return name;
     }
@@ -145,6 +155,7 @@ public abstract class POI {
 
 
     public abstract void insertPOIInfo(String name, String description);
+
 
     public abstract POIDTO getPOIInfo();
 }

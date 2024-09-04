@@ -16,9 +16,9 @@ public class POIDTO {
     private final Coordinate coordinate;
     private final Tipo tipo;
 
-    private List<Content> content;
+    private List<ContentDTO> content;
 
-    private List<Content> contentPending;
+    private List<ContentDTO> contentPending;
 
     private LocalDateTime dataInizio;
 
@@ -28,9 +28,9 @@ public class POIDTO {
 
     private LocalTime[] closingTime;
 
-    // costruttore POILUOGO
 
-    public POIDTO(String id, String name, String description, Coordinate coordinate, Tipo tipo, List<Content> content, List<Content> contentPending,LocalTime[] openingTime, LocalTime[] closingTime,LocalDateTime oraInizio, LocalDateTime oraFine) {
+
+    public POIDTO(String id, String name, String description, Coordinate coordinate, Tipo tipo, List<ContentDTO> content, List<ContentDTO> contentPending,LocalTime[] openingTime, LocalTime[] closingTime,LocalDateTime oraInizio, LocalDateTime oraFine) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -59,37 +59,8 @@ public class POIDTO {
         }
 
     }
-   /* public POIDTO(String id, String name, String description,Coordinate coordinate, Tipo tipo, List<Content> content, List<Content> contentPending,LocalTime[] openingTime, LocalTime[] closingTime)
-    {
 
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.coordinate =  new Coordinate(coordinate.getLatitudine(),coordinate.getLongitudine());
-        this.tipo = tipo;
-        this.closingTime=closingTime;
-        this.content=content;
-        this.contentPending=contentPending;
-        this.openingTime=openingTime;
-        this.dataFine=null;
-        this.dataInizio=null;
-    }
 
-    public POIDTO(String id, String name, String description,Coordinate coordinate, Tipo tipo, List<Content> content, List<Content> contentPending,LocalDateTime oraInizio, LocalDateTime oraFine)
-    {
-
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.coordinate =  new Coordinate(coordinate.getLatitudine(),coordinate.getLongitudine());
-        this.tipo = tipo;
-        this.closingTime=null;
-        this.content=content;
-        this.contentPending=contentPending;
-        this.openingTime=null;
-        this.dataFine=oraFine;
-        this.dataInizio=oraInizio;
-    }*/
 
     public String getId() {
         return id;
@@ -107,19 +78,16 @@ public class POIDTO {
         return description;
     }
 
-    public Coordinate getCoordinates() {
-        return coordinate;
-    }
 
     public Coordinate getCoordinate() {
         return coordinate;
     }
 
-    public List<Content> getContent() {
+    public List<ContentDTO> getContent() {
         return content;
     }
 
-    public List<Content> getContentPending() {
+    public List<ContentDTO> getContentPending() {
         return contentPending;
     }
 
@@ -139,21 +107,8 @@ public class POIDTO {
         return closingTime;
     }
 
-    public LocalDateTime getDateOpen()
-    {
-        return dataInizio;
-    }
-    public LocalDateTime getDateClose()
-    {
-        return dataFine;
-    }
 
-    @Override
-    public String toString() {
-        return  "Id: "+this.id+" Name= " + name +
-                "\nDescription=" + description +
-                "\n Coordinates= lon " + coordinate.getLatitudine() + " lon " +coordinate.getLongitudine()+
-                "\n Type=" + tipo;
-    }
+
+
 
 }

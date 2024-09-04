@@ -1,14 +1,37 @@
 package com.example.comuneids2024.Model;
 
+import com.example.comuneids2024.Model.DTO.ContentDTO;
 import com.example.comuneids2024.Model.DTO.POIDTO;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 
 @Document(collection = "POILuogo")
 public class POILuogo extends POI {
+
+    @Override
+    public LocalDateTime getDataFine() {
+        return null;
+    }
+
+    @Override
+    public LocalDateTime getDataInizio() {
+        return null;
+    }
+
+    @Override
+    public LocalTime[] getOpeningTime() {
+        return null;
+    }
+
+    @Override
+    public LocalTime[] getClosingTime() {
+        return null;
+    }
 
     public POILuogo(Coordinate coordinate) {
         super(coordinate);
@@ -30,8 +53,8 @@ public class POILuogo extends POI {
 
     @Override
     public POIDTO getPOIInfo() {
-        List<Content> contents = this.getContents().stream().map(c -> c.getContentInfo()).toList();
-        List<Content> pendingContents = this.getContentsPending().stream().map(pc -> pc.getContentInfo()).toList();
+        List<ContentDTO> contents = this.getContents().stream().map(Content::getContentInfo).toList();
+        List<ContentDTO> pendingContents = this.getContentsPending().stream().map(Content::getContentInfo).toList();
         return new POIDTO(this.getPOIId(), this.getName(), this.getDescription(), this.getCoord(), this.getTipo(), contents, pendingContents,null,null,null,null);
     }
 }

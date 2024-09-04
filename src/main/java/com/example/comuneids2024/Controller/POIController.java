@@ -26,7 +26,7 @@ public class POIController {
 
         }
         if (poi instanceof POIEvento pe) {
-            pe.addDate(poigi.getDateOpen(), poigi.getDateClose());
+            pe.addDate(poigi.getDataInizio(), poigi.getDataFine());
         }
         if (comuneRepository.findById(idComune).isPresent()) {
             Comune c = comuneRepository.findById(idComune).get();
@@ -49,7 +49,7 @@ public class POIController {
 
         }
         if (poi instanceof POIEvento pe) {
-            pe.addDate(poigi.getDateOpen(), poigi.getDateClose());
+            pe.addDate(poigi.getDataInizio(), poigi.getDataFine());
         }
         if (comuneRepository.findById(idComune).isPresent()) {
             Comune c = comuneRepository.findById(idComune).get();
@@ -61,6 +61,7 @@ public class POIController {
             throw new RuntimeException();
         }
     }
+
 
 }
 

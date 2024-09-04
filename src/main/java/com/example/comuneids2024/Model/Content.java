@@ -56,9 +56,9 @@ public class Content {
     }
 
     public byte[] getFile(){return this.file;}
-    public Content getContentInfo()
+    public ContentDTO getContentInfo()
     {
-        return  new Content(this.getNome(),this.getDescrizione(),this.getCreatore(),this.getFile());
+        return  new ContentDTO(this.getId(),this.getNome(),this.getDescrizione(),this.getFile());
     }
 
     public void setDescrizione(String descrizione) {

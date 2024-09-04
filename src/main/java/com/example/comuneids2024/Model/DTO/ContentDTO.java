@@ -25,8 +25,4 @@ public class ContentDTO {
 
     public String getDescrizione(){return descrizione;}
 
-    public byte[] getFile()
-    {
-        return this.file;
-    }
 }
