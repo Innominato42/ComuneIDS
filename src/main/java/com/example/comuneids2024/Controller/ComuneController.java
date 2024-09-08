@@ -171,25 +171,6 @@ public class ComuneController {
         return new ResponseEntity<>(itineraries.get(0), HttpStatus.OK);
     }
 
-    /*@GetMapping("/getPOI2")
-    public ResponseEntity<Object> getPOI2(@RequestParam("idComune") String idComune, @RequestParam("idPOI") String idPOI) {
-        ObjectMapper mapper = new ObjectMapper();
-        POIEvento poiEvento = new POIEvento();
-// Popola il POIEvento con i dati di esempio
-        poiEvento.setName("Manifestazione");
-        poiEvento.setDescription("Null");
-        poiEvento.addDate(LocalDateTime.of(2024, 8, 19, 7, 0), LocalDateTime.of(2024, 8, 19, 16, 0));
-        poiEvento.setCoordinate(new Coordinate(74.4642, 80.1933));
-
-        try {
-            String json = mapper.writeValueAsString(poiEvento);
-            System.out.println(json);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace(); // Stampa lo stack trace per il debug o gestisce l'errore in altro modo
-        }
-    return null;
-    }*/
-
 
 
 
